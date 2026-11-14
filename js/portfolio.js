@@ -4,6 +4,7 @@
  */
 class Component extends DCLogic {
   componentDidMount() {
+    setTimeout(() => this.playCardVideos(), 0);
     try {
       if (typeof IntersectionObserver !== 'undefined') {
         const vis = {};
@@ -36,6 +37,17 @@ class Component extends DCLogic {
       this._wObs.observe(el);
     } catch (e) {}
   }
+  /* 작업물 영상: 소리 없이 자동 반복 재생 */
+  playCardVideos() {
+    try {
+      document.querySelectorAll('#works-track video').forEach((v) => {
+        v.muted = true;
+        v.defaultMuted = true;
+        if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+      });
+    } catch (e) {}
+  }
+  componentDidUpdate() { this.playCardVideos(); }
   componentWillUnmount() {
     if (this._wObs) this._wObs.disconnect();
     if (this._qObs) this._qObs.disconnect();
@@ -287,7 +299,7 @@ class Component extends DCLogic {
         tone: tones[i % tones.length],
         label: type === 'image' ? 'IMAGE' : 'MP4',
         isImage: type === 'image', isGif: false, isVideo: type === 'video',
-        src, thumb: src ? src + '#t=0.5' : '', hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
+        src, thumb: src ? src + '#t=0.5' : '', showPlay: type === 'video' && !src, hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
         title: '[' + (cur.avatar ? '아바타 이름' : '작업물 제목') + ' ' + pad(i + 1) + ']',
         meta: cur.avatar ? '[짧은 설명]' : '[한 줄 설명]',
         hasStatus: !!cur.status,
