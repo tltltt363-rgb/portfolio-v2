@@ -415,6 +415,8 @@ class Component extends DCLogic {
       { k: 'd1', name: String(this.props.dl1Name ?? '당일 마감').trim() || '당일 마감', pct: Math.max(0, num(this.props.dl1Pct, 100)) }
     ];
     const revPrice = num(this.props.revisionPrice, 10000);
+    const revFree = Math.max(0, Math.round(num(this.props.revisionFree, 0)));
+    const eventText = String(this.props.eventText ?? '').trim();
     const baseItems = [
       { id: 'a', pk: 'priceA', name: '성형', desc: '얼굴형 · 이목구비 쉐이프 수정', price: 80000 },
       { id: 'b', pk: 'priceB', name: '페이셜', desc: '표정 블렌드쉐이프 · 립싱크', price: 120000 },
@@ -428,11 +430,13 @@ class Component extends DCLogic {
       const b = baseItems[i] || { id: 'i' + (i + 1), pk: 'item' + (i + 1) + 'Price', name: '', desc: '', price: 0 };
       const nm = String(this.props['item' + (i + 1) + 'Name'] ?? '').trim();
       const ds = String(this.props['item' + (i + 1) + 'Desc'] ?? '').trim();
+      const gp = String(this.props['item' + (i + 1) + 'Group'] ?? '').trim();
       P[b.id] = Math.max(0, num(this.props[b.pk], b.price));
       itemDefs.push({
         id: b.id,
+        group: gp,
         name: nm || b.name || '[항목 이름 ' + pad(i + 1) + ']',
-        desc: ds || b.desc || '[항목 설명을 한 줄로 적어주세요]'
+        desc: ds || (gp || nm ? '' : (b.desc || '[항목 설명을 한 줄로 적어주세요]'))
       });
     }
     const priceOf = (id) => P[id] || 0;
@@ -511,7 +515,7 @@ class Component extends DCLogic {
       const locked = !!inSet[it.id];
       const on = locked || !!sel[it.id];
       return {
-        name: it.name, desc: it.desc, on, locked, free: !locked,
+        name: it.name, desc: it.desc, hasDesc: !!it.desc, group: it.group, on, locked, free: !locked,
         priceLabel: locked ? '세트 포함' : priceText(priceOf(it.id)) + (priceOf(it.id) > 0 ? '~' : ''),
         priceColor: locked ? '#6E6266' : accent,
         priceDeco: 'none',
@@ -529,7 +533,21 @@ class Component extends DCLogic {
 
     const ITEM_PREVIEW = 8;
     const itemsAll = !!st.itemsAll;
-    const itemsShown = (itemsAll || items.length <= ITEM_PREVIEW) ? items : items.filter((it, idx) => idx < ITEM_PREVIEW || it.on);
+    /* 미리보기: 묶음(분류)이 중간에 잘리지 않게 묶음 단위로 보여줘요 */
+    let previewN = Math.min(ITEM_PREVIEW, items.length);
+    if (items.some((it) => it.group)) {
+      previewN = 0;
+      while (previewN < items.length && previewN < ITEM_PREVIEW) {
+        const g = items[previewN].group;
+        do { previewN++; } while (previewN < items.length && g && items[previewN].group === g);
+      }
+    }
+    const itemsShown0 = (itemsAll || items.length <= previewN) ? items : items.filter((it, idx) => idx < previewN || it.on);
+    const itemsShown = itemsShown0.map((it, idx) => {
+      const prev = idx > 0 ? itemsShown0[idx - 1].group : null;
+      const start = !!it.group && it.group !== prev;
+      return { ...it, groupStart: start, groupGap: idx === 0 ? '0' : '10px' };
+    });
 
     /* options */
     const dlKey = st.deadline || null;
@@ -735,10 +753,12 @@ class Component extends DCLogic {
       wPageLabel: '총 ' + cards.length + '개 · ' + (wPage + 1) + ' / ' + wN + ' 페이지',
       sales, salePrev: () => saleStep(-1), saleNext: () => saleStep(1),
       avPrev: () => avStep(-1), avNext: () => avStep(1), avDown, avClickCapture,
-      items, opts, rev, revDesc: '1회당 +' + won(revPrice),
+      items, opts, rev,
+      revDesc: (revFree > 0 ? revFree + '회 무료 · 추가 ' : '') + '1회당 +' + won(revPrice),
+      eventText, hasEvent: !!eventText,
       revMinus: () => set({ rev: Math.max(0, rev - 1) }),
       revPlus: () => set({ rev: Math.min(10, rev + 1) }),
-      itemsShown, itemTotal: items.length, itemsMore: items.length > ITEM_PREVIEW,
+      itemsShown, itemTotal: items.length, itemsMore: items.length > previewN,
       itemsExpanded: itemsAll ? 'true' : 'false', itemsMoreRot: itemsAll ? '180' : '0',
       itemsMoreLabel: itemsAll ? '접기' : '작업 ' + (items.length - itemsShown.length) + '개 더 보기',
       toggleItemsAll: () => set({ itemsAll: !itemsAll }),

@@ -11,7 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=19 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
+  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=20 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
 
   ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
     [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
@@ -530,6 +530,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
 <sc-for list="{{itemsShown}}" as="it" hint-placeholder-count="4">
+<sc-if value="{{it.groupStart}}" hint-placeholder-val="{{ false }}"><div style="grid-column:1 / -1;display:flex;align-items:center;gap:12px;margin-top:{{it.groupGap}};font-size:15px;font-weight:700;color:{{accent}};">{{it.group}}<span style="flex:1;height:1px;background:#EBD9DD;"></span></div></sc-if>
 <button aria-pressed="{{it.pressed}}" disabled="{{it.locked}}" onClick="{{it.toggle}}" style="min-height:76px;box-sizing:border-box;padding:14px 18px;display:flex;align-items:center;gap:14px;border-radius:16px;border:2px {{it.borderStyle}} {{it.border}};background:{{it.bg}};text-align:left;color:#2B2327;box-shadow:{{it.shadow}};cursor:{{it.cursor}};">
 <sc-if value="{{it.free}}" hint-placeholder-val="{{ true }}">
 <span style="flex-shrink:0;width:24px;height:24px;box-sizing:border-box;border-radius:7px;border:2px solid {{it.boxBorder}};background:{{it.boxBg}};display:flex;align-items:center;justify-content:center;color:#FFFFFF;">
@@ -541,7 +542,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </sc-if>
 <span style="flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
 <span style="font-size:16px;font-weight:700;line-height:1.35;">{{it.name}}</span>
-<span style="font-size:13px;line-height:1.45;color:#6E6266;">{{it.desc}}</span>
+<sc-if value="{{it.hasDesc}}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;line-height:1.45;color:#6E6266;">{{it.desc}}</span></sc-if>
 </span>
 <span style="flex-shrink:0;font-size:15px;font-weight:700;color:{{it.priceColor}};font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;">{{it.priceLabel}}</span>
 </button>
@@ -575,6 +576,12 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </span>
 </div>
 </div>
+<sc-if value="{{hasEvent}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;background:linear-gradient(150deg,#FDF1F4 0%,#F7DCE3 100%);color:#2B2327;">
+<span style="flex-shrink:0;padding:4px 10px;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:0.02em;">이벤트</span>
+<span style="font-size:15px;font-weight:600;line-height:1.45;">{{eventText}}</span>
+</div>
+</sc-if>
 </div>
 </div>
 
@@ -922,10 +929,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=19"></script>
+<script src="config.js?v=20"></script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=19"></script>
-<script src="js/portfolio.js?v=19"></script>
+<script src="js/dc-runtime.js?v=20"></script>
+<script src="js/portfolio.js?v=20"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
 </body>
 </html>
