@@ -543,10 +543,26 @@ class Component extends DCLogic {
       }
     }
     const itemsShown0 = (itemsAll || items.length <= previewN) ? items : items.filter((it, idx) => idx < previewN || it.on);
-    const itemsShown = itemsShown0.map((it, idx) => {
-      const prev = idx > 0 ? itemsShown0[idx - 1].group : null;
-      const start = !!it.group && it.group !== prev;
-      return { ...it, groupStart: start, groupGap: idx === 0 ? '0' : '10px' };
+    const itemsShown = itemsShown0;
+    /* 분류별 묶음 상자 */
+    const itemGroups = [];
+    itemsShown.forEach((it) => {
+      const last = itemGroups[itemGroups.length - 1];
+      if (last && last.name === it.group) last.items.push(it);
+      else itemGroups.push({ name: it.group, items: [it] });
+    });
+    const groupTotals = {};
+    items.forEach((it) => { groupTotals[it.group] = (groupTotals[it.group] || 0) + 1; });
+    itemGroups.forEach((g) => {
+      const has = !!g.name;
+      const picked = g.items.filter((it) => it.on).length;
+      g.hasHead = has;
+      g.countLabel = (groupTotals[g.name] || g.items.length) + '개';
+      g.hasPicked = picked > 0;
+      g.pickedLabel = picked + '개 선택';
+      g.pad = has ? '16px' : '0';
+      g.bg = has ? 'rgba(255,255,255,0.55)' : 'transparent';
+      g.border = has ? '#EAD3D9' : 'transparent';
     });
 
     /* options */
@@ -758,7 +774,7 @@ class Component extends DCLogic {
       eventText, hasEvent: !!eventText,
       revMinus: () => set({ rev: Math.max(0, rev - 1) }),
       revPlus: () => set({ rev: Math.min(10, rev + 1) }),
-      itemsShown, itemTotal: items.length, itemsMore: items.length > previewN,
+      itemsShown, itemGroups, itemTotal: items.length, itemsMore: items.length > previewN,
       itemsExpanded: itemsAll ? 'true' : 'false', itemsMoreRot: itemsAll ? '180' : '0',
       itemsMoreLabel: itemsAll ? '접기' : '작업 ' + (items.length - itemsShown.length) + '개 더 보기',
       toggleItemsAll: () => set({ itemsAll: !itemsAll }),
