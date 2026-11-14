@@ -55,7 +55,13 @@ window.PORTFOLIO_CONFIG = {
   countC: 12,  // 텍스쳐 임시 카드 수 (파일을 넣으면 무시돼요)
   countD: 12,  // 뽀잉눈 임시 카드 수 (파일을 넣으면 무시돼요)
   worksMediaA: [  // 성형 파일 목록
+    "media/seonghyeong/seonghyeong-01.webp",
+    "media/seonghyeong/seonghyeong-02.webp",
+    "media/seonghyeong/seonghyeong-03.webp",
+    "media/seonghyeong/seonghyeong-04.webp",
+    "media/seonghyeong/seonghyeong-05.webp",
     "media/seonghyeong/seonghyeong-06.webp",
+    "media/seonghyeong/seonghyeong-07.webp",
     "media/seonghyeong/seonghyeong-08.webp",
     "media/seonghyeong/seonghyeong-09.webp",
     "media/seonghyeong/seonghyeong-10.webp",
@@ -82,7 +88,13 @@ window.PORTFOLIO_CONFIG = {
     "media/seonghyeong/seonghyeong-31.webp",
   ],
   worksTitlesA: [  // 성형 카드 제목
+    "[아바타 이름]",
+    "[아바타 이름]",
+    "[아바타 이름]",
+    "[아바타 이름]",
+    "[아바타 이름]",
     "Milltina",
+    "[아바타 이름]",
     "Mayo",
     "Milltina",
     "Mayo",
@@ -109,6 +121,12 @@ window.PORTFOLIO_CONFIG = {
     "Eku",
   ],
   worksDescsA: [  // 성형 카드 한 줄 설명
+    "성형",
+    "성형",
+    "성형",
+    "성형",
+    "성형",
+    "성형",
     "성형",
     "성형",
     "성형",
