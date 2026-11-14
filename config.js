@@ -54,7 +54,30 @@ window.PORTFOLIO_CONFIG = {
   countC: 12,  // 텍스쳐 임시 카드 수 (파일을 넣으면 무시돼요)
   countD: 12,  // 뽀잉눈 임시 카드 수 (파일을 넣으면 무시돼요)
   worksMediaA: [],  // 성형 파일 목록
-  worksMediaB: [],  // 페이셜 파일 목록
+  worksMediaB: [  // 페이셜 파일 목록
+    "media/facial/facial-02.mp4",
+    "media/facial/facial-03.mp4",
+    "media/facial/facial-04.mp4",
+    "media/facial/facial-05.mp4",
+    "media/facial/facial-06.mp4",
+    "media/facial/facial-07.mp4",
+  ],
+  worksTitlesB: [  // 페이셜 카드 제목
+    "Mayo",
+    "Milltina",
+    "[아바타 이름]",
+    "[아바타 이름]",
+    "Airi",
+    "Milltina",
+  ],
+  worksDescsB: [  // 페이셜 카드 한 줄 설명
+    "페이셜",
+    "페이셜",
+    "페이셜",
+    "페이셜",
+    "페이셜",
+    "페이셜",
+  ],
   worksMediaC: [  // 텍스쳐 파일 목록
     "media/texture/texture-01.webp",
     "media/texture/texture-02.webp",
