@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[브랜드명] · 방송용 아바타 포트폴리오</title>
+<meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
+<style>body{margin:0;background:#F8F2F1}</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!--
+  ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
+    [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
+    {{ ... }} 로 된 부분은 config.js 값이나 계산 결과가 들어가는 자리라 그대로 두세요.
+-->
+<template id="dc-template">
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+body{margin:0;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#F8F2F1;color:#2B2327;word-break:keep-all}
+html{scroll-behavior:smooth}
+a{color:#2B2327;text-decoration:none}
+a:hover{color:#A4495B}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid rgba(164,73,91,0.45);outline-offset:2px}
+.ba-range{-webkit-appearance:none;appearance:none;background:transparent}
+.ba-range:focus-visible{outline:none}
+.av-track{scrollbar-width:none}
+.av-track::-webkit-scrollbar{display:none}
+.av-track{overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none}
+.av-track.is-dragging{cursor:grabbing !important;scroll-snap-type:none !important;scroll-behavior:auto !important}
+@keyframes wNudge{0%,100%{transform:translateX(0)}35%{transform:translateX(-56px)}60%{transform:translateX(0)}78%{transform:translateX(-18px)}}
+.w-nudge .works-page{animation:wNudge 1.4s ease-in-out 1}
+@media (prefers-reduced-motion:reduce){.w-nudge .works-page{animation:none}}
+.proc{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0}
+.proc-step{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:0 10px}
+.proc-line{position:absolute;top:27px;left:50%;width:100%;height:2px;background:repeating-linear-gradient(90deg,#E2CFD3 0 6px,transparent 6px 12px)}
+.proc-body{flex:1 1 auto;width:100%;display:flex;flex-direction:column;align-items:center;gap:8px}
+.proc-desc{min-height:4.8em}
+.proc-chip{margin-top:auto}
+@media (max-width:960px){.proc{grid-template-columns:1fr}.proc-step{flex-direction:row;align-items:flex-start;text-align:left;gap:18px;padding:0 0 28px}.proc-step:last-child{padding-bottom:0}.proc-line{top:56px;left:27px;width:2px;height:calc(100% - 56px);background:repeating-linear-gradient(180deg,#E2CFD3 0 6px,transparent 6px 12px)}.proc-body{align-items:flex-start;padding-top:4px}.proc-desc{min-height:0}.proc-chip{margin-top:2px}}
+.quote-col{position:sticky;top:24px}
+@media (max-width:1100px){.quote-col{position:static;max-width:none !important}}
+.zoomable .zoom-chip{opacity:0.85;transition:opacity 0.2s ease,transform 0.2s ease}
+.zoomable:hover .zoom-chip,.zoomable:focus-visible .zoom-chip{opacity:1;transform:scale(1.08)}
+@media (max-width:820px){.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+@media (max-width:720px){.works-page{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:16px !important}}
+</style>
+</helmet>
+<div style="width:100%;min-height:100vh;box-sizing:border-box;overflow-x:clip;display:flex;flex-direction:column;background:#F8F2F1;color:#2B2327;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+
+<header style="position:relative;z-index:2;background:#FFFFFF;box-shadow:0 1px 0 #EFE4E5,0 10px 28px -14px rgba(80,40,55,0.16);">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:14px clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;">
+<a href="#top" style="display:flex;align-items:center;gap:10px;font-size:22px;font-weight:600;color:#2B2327;min-height:44px;">
+<span style="width:14px;height:14px;border-radius:50%;background:{{accent}};box-shadow:0 3px 6px -1px rgba(164,73,91,0.5),inset 0 1px 0 rgba(255,255,255,0.35);"></span>
+<span>[브랜드명]</span>
+</a>
+<nav aria-label="주요 메뉴" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
+<a href="#works" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">작업물</a>
+<a href="#sale" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">분양 아바타</a>
+<a href="#avatars" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">보유 아바타</a>
+<a href="#before-after" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">비포·애프터</a>
+<a href="#price" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">가격 계산</a>
+<a href="#process" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">진행 과정</a>
+<a href="#inquiry" style="margin-left:8px;height:44px;padding:0 20px;display:flex;align-items:center;border-radius:999px;background:#2B2327;color:#FFFFFF;font-size:15px;font-weight:500;box-shadow:0 8px 16px -6px rgba(43,35,39,0.5);">문의 양식 작성</a>
+</nav>
+</div>
+</header>
+
+<section id="top" style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:clamp(28px,4vw,44px) clamp(20px,5vw,80px) 64px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:48px;">
+<div style="flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:24px;">
+<span style="font-size:13px;font-weight:600;letter-spacing:0.14em;color:{{accent}};">STREAMING AVATAR PORTFOLIO</span>
+<h1 style="margin:0;font-weight:700;font-size:clamp(36px,5vw,56px);line-height:1.28;color:#2B2327;">방송 화면에서<br>더 빛나는 아바타로</h1>
+<p style="margin:0;max-width:520px;font-size:18px;line-height:1.7;color:#6E6266;">성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.</p>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:8px;">
+<a href="#price" style="height:52px;padding:0 30px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:16px;font-weight:600;box-shadow:0 10px 20px -8px rgba(164,73,91,0.6),inset 0 1px 0 rgba(255,255,255,0.22);">견적 계산하기</a>
+<a href="#before-after" style="min-height:44px;display:flex;align-items:center;font-size:16px;font-weight:500;text-decoration:underline;text-underline-offset:6px;">비포·애프터 보기</a>
+</div>
+<a href="#strengths" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;" aria-label="장점 자세히 보기">
+<sc-for list="{{heroStrengths}}" as="h" hint-placeholder-count="3">
+<span style="height:34px;padding:0 14px 0 10px;display:flex;align-items:center;gap:6px;border-radius:999px;background:#FFFFFF;border:1px solid #EFE4E5;color:#2B2327;font-size:14px;font-weight:600;box-shadow:0 1px 2px rgba(80,40,55,0.06);">
+<span style="width:20px;height:20px;border-radius:50%;background:{{accent}};color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></span>{{h.title}}</span>
+</sc-for>
+</a>
+</div>
+<div style="flex:0 1 460px;min-width:280px;position:relative;aspect-ratio:46/40;">
+<div style="position:absolute;top:7%;left:7%;right:-4%;bottom:-5%;border-radius:36px;background:#F0DCE0;transform:rotate(3deg);"></div>
+<div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px;">
+<sc-for list="{{heroTiles}}" as="t" hint-placeholder-count="3">
+<div style="grid-column:{{t.col}};grid-row:{{t.row}};position:relative;box-sizing:border-box;border:6px solid #FFFFFF;border-radius:24px;overflow:hidden;background-color:{{t.tone}};box-shadow:0 3px 6px rgba(80,40,55,0.1),0 22px 36px -14px rgba(80,40,55,0.38);transform:rotate({{t.rot}}deg);">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
+<span style="position:absolute;top:12px;left:12px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:{{t.labelBg}};color:{{t.labelColor}};font-size:12px;font-weight:600;letter-spacing:0.04em;">{{t.label}}</span>
+<sc-if value="{{t.isVideo}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;">
+<div style="width:56px;height:56px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#2B2327;box-shadow:0 8px 16px -4px rgba(80,40,55,0.35);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{t.isImage}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;color:rgba(43,35,39,0.5);">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="strengths" style="background:#FFFFFF;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>01 · WHY ME</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">[브랜드명]에게 맡기면 좋은 점</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;">
+<sc-for list="{{strengths}}" as="g" hint-placeholder-count="4">
+<article style="position:relative;box-sizing:border-box;padding:28px 24px 24px;border-radius:24px;background:linear-gradient(150deg,#FDF1F4 0%,#F7DCE3 55%,#EFC6D1 100%);border:1px solid #EBC3CD;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(80,40,55,0.06),0 20px 36px -22px rgba(120,40,65,0.4);overflow:hidden;">
+<span aria-hidden="true" style="position:absolute;top:14px;right:20px;font-size:44px;font-weight:700;line-height:1;color:#E9BCC8;">{{g.no}}</span>
+<span style="position:relative;width:52px;height:52px;border-radius:16px;background:#FFFFFF;color:{{accent}};display:flex;align-items:center;justify-content:center;box-shadow:0 6px 12px -6px rgba(120,40,65,0.35);">
+<sc-if value="{{g.iZap}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></sc-if>
+<sc-if value="{{g.iSpark}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg></sc-if>
+<sc-if value="{{g.iChat}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg></sc-if>
+<sc-if value="{{g.iScreen}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path><path d="M12 17v4"></path></svg></sc-if>
+<sc-if value="{{g.iHeart}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"></path></svg></sc-if>
+<sc-if value="{{g.iShield}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+</span>
+<h3 style="position:relative;margin:0;font-size:21px;font-weight:700;line-height:1.35;">{{g.title}}</h3>
+<p style="position:relative;margin:0;font-size:15px;line-height:1.65;color:#574850;">{{g.desc}}</p>
+<sc-if value="{{g.hasTag}}" hint-placeholder-val="{{ false }}">
+<span style="align-self:flex-start;margin-top:auto;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:8px;background:#2B2327;color:#FFFFFF;font-size:13px;font-weight:600;">{{g.tag}}</span>
+</sc-if>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="before-after" style="background:#F8F2F1;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>02 · BEFORE · AFTER</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">손잡이를 밀어서 비교해 보세요</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">같은 아바타, 같은 각도로 작업 전과 후를 나란히 담았어요.</p>
+</div>
+<div role="group" aria-label="보기 방식" style="display:flex;padding:4px;border-radius:999px;background:#F5E8EA;">
+<sc-for list="{{baModes}}" as="m" hint-placeholder-count="2">
+<button aria-pressed="{{m.pressed}}" onClick="{{m.pick}}" style="height:40px;padding:0 18px;border:0;border-radius:999px;background:{{m.bg}};color:#2B2327;font-size:14px;font-weight:500;box-shadow:{{m.shadow}};">{{m.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div role="tablist" aria-label="비교 사례" style="display:flex;flex-wrap:wrap;gap:8px;">
+<sc-for list="{{baCases}}" as="c" hint-placeholder-count="4">
+<button role="tab" aria-selected="{{c.selected}}" onClick="{{c.pick}}" style="height:44px;padding:0 20px;border-radius:999px;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}};font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;">{{c.label}}<span style="font-size:12px;font-weight:600;">{{c.count}}</span></button>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:stretch;">
+<div style="flex:999 1 600px;min-width:0;">
+<sc-if value="{{isSlider}}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:28px;overflow:hidden;background:#E9E3E4;box-shadow:0 2px 4px rgba(80,40,55,0.08),0 24px 40px -18px rgba(80,40,55,0.35);">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background:{{baBefore}};display:flex;align-items:center;justify-content:center;">
+<svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+</div>
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background:{{baAfter}};display:flex;align-items:center;justify-content:center;clip-path:inset(0 0 0 {{ba}}%);">
+<svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="81" cy="93" r="1.6" fill="#FFFFFF"></circle><circle cx="113" cy="93" r="1.6" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+</div>
+<span style="position:absolute;top:18px;left:18px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
+<span style="position:absolute;top:18px;right:18px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
+<div style="position:absolute;top:0;bottom:0;left:{{ba}}%;width:0;pointer-events:none;">
+<div style="position:absolute;top:0;bottom:0;left:-1.5px;width:3px;background:#FFFFFF;box-shadow:0 0 12px rgba(43,35,39,0.25);"></div>
+<div style="position:absolute;top:50%;left:-26px;margin-top:-26px;width:52px;height:52px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#2B2327;box-shadow:0 8px 20px -6px rgba(43,35,39,0.45);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6"></path><path d="m15 6 6 6-6 6"></path></svg>
+</div>
+</div>
+<input class="ba-range" type="range" min="0" max="100" step="1" value="{{ba}}" onChange="{{onBa}}" aria-label="비포 애프터 비교 위치" style="position:absolute;top:0;left:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;">
+<button onClick="{{baZoom}}" aria-label="비포 애프터 크게 보기" style="position:absolute;right:16px;bottom:16px;z-index:2;height:40px;padding:0 14px;border:0;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg>크게 보기</button>
+</div>
+</sc-if>
+<sc-if value="{{isSide}}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+<div style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:{{baBefore}};display:flex;align-items:center;justify-content:center;">
+<svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+<span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
+</div>
+<div style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:{{baAfter}};display:flex;align-items:center;justify-content:center;">
+<svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+<span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
+</div>
+</div>
+</sc-if>
+<div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<button aria-label="이전 사례" onClick="{{baPrev}}" style="flex-shrink:0;width:48px;height:48px;border-radius:50%;border:1px solid #EFE4E5;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(80,40,55,0.08),0 8px 16px -8px rgba(80,40,55,0.25);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;">
+<div style="display:flex;align-items:center;flex-wrap:wrap;justify-content:center;">
+<sc-for list="{{baDots}}" as="d" hint-placeholder-count="4">
+<button aria-label="{{d.aria}}" aria-current="{{d.current}}" onClick="{{d.pick}}" style="height:32px;min-width:24px;padding:0 4px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;">
+<span style="display:block;width:{{d.w}}px;height:8px;border-radius:999px;background:{{d.bg}};"></span>
+</button>
+</sc-for>
+</div>
+<span aria-live="polite" style="font-size:13px;font-weight:600;color:#6E6266;font-variant-numeric:tabular-nums;">{{baCounter}}</span>
+</div>
+<button aria-label="다음 사례" onClick="{{baNext}}" style="flex-shrink:0;width:48px;height:48px;border-radius:50%;border:0;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(43,35,39,0.5);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</div>
+<aside style="flex:1 1 300px;min-width:0;box-sizing:border-box;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #EFE4E5;display:flex;flex-direction:column;gap:18px;">
+<span style="font-size:13px;font-weight:600;color:{{accent}};">{{baLabel}} · CASE {{baCaseNo}}</span>
+<h3 style="margin:0;font-size:24px;font-weight:700;line-height:1.35;">{{baTitle}}</h3>
+<p style="margin:0;font-size:15px;line-height:1.7;color:#5F5458;">[이 사례에서 무엇을 바꿨는지 두세 줄로 적어주세요. 예: 턱선을 부드럽게 다듬고 눈 크기를 키웠어요.]</p>
+<div style="display:flex;flex-direction:column;gap:10px;">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">작업 기간</span><span style="font-weight:600;">[N]일</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">작업 항목</span><span style="font-weight:600;">{{baLabel}}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;border-bottom:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">사용 플랫폼</span><span style="font-weight:600;">[예: VRChat · 치지직]</span></div>
+</div>
+<button onClick="{{baZoom}}" style="margin-top:auto;height:48px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;border:0;background:#2B2327;color:#FFFFFF;font-size:15px;font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg>전후 사진 크게 보기</button>
+</aside>
+</div>
+</div>
+</section>
+
+<section id="works" style="background:#FFFFFF;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:28px;">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>03 · WORKS</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">작업물</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[작업물 영역 설명을 한 줄로 적어주세요]</p>
+</div>
+<div role="group" aria-label="미디어 종류" style="display:flex;flex-wrap:wrap;gap:8px;">
+<sc-for list="{{chips}}" as="chip" hint-placeholder-count="3">
+<button aria-pressed="{{chip.pressed}}" onClick="{{chip.pick}}" style="height:40px;padding:0 16px;border-radius:999px;border:1px solid {{chip.border}};background:{{chip.bg}};color:{{chip.color}};font-size:13px;font-weight:500;">{{chip.label}}</button>
+</sc-for>
+</div>
+</div>
+<div role="tablist" aria-label="작업 카테고리" class="cat-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="4">
+<button role="tab" aria-selected="{{c.selected}}" onClick="{{c.pick}}" style="min-height:84px;box-sizing:border-box;padding:14px 18px;border-radius:20px;border:2px solid {{c.border}};background:{{c.bg}};color:{{c.color}};display:flex;align-items:center;gap:14px;text-align:left;box-shadow:{{c.shadow}};transition:background-color 0.2s ease,box-shadow 0.2s ease;">
+<span style="flex-shrink:0;width:48px;height:48px;border-radius:14px;background:{{c.iconBg}};color:{{c.iconColor}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{c.iFace}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c4 0 7 3.2 7 7.6 0 4.6-3.2 8.4-7 10.4-3.8-2-7-5.8-7-10.4C5 6.2 8 3 12 3z"></path><path d="M9.5 10.5h.01"></path><path d="M14.5 10.5h.01"></path><path d="M10 14.5c1.2 1 2.8 1 4 0"></path></svg></sc-if>
+<sc-if value="{{c.iSmile}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><path d="M9 9.5c.5-.7 1.5-.7 2 0"></path><path d="M13 9.5c.5-.7 1.5-.7 2 0"></path></svg></sc-if>
+<sc-if value="{{c.iBrush}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.9 1.8-1.9 0-.5-.2-.9-.5-1.3-.3-.3-.5-.8-.5-1.3 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.4 17 3 12 3z"></path><circle cx="7.5" cy="11" r="1"></circle><circle cx="10.5" cy="7" r="1"></circle><circle cx="15" cy="7.5" r="1"></circle></svg></sc-if>
+<sc-if value="{{c.iEye}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3.2"></circle><path d="M13 10.6h.01"></path></svg></sc-if>
+</span>
+<span style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+<span style="font-size:19px;font-weight:700;line-height:1.3;">{{c.label}}</span>
+<span style="font-size:13px;font-weight:500;color:{{c.subColor}};">작업물 {{c.count}}개</span>
+</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{hasCards}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+<span aria-live="polite" style="font-size:14px;font-weight:600;color:#6E6266;font-variant-numeric:tabular-nums;">{{wPageLabel}}</span>
+<sc-if value="{{wMulti}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;gap:10px;">
+<span style="height:44px;box-sizing:border-box;padding:0 16px;display:flex;align-items:center;gap:8px;border-radius:999px;background:#F5E8EA;color:#5F5458;font-size:14px;font-weight:600;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-4 0v1"></path><path d="M14 10V4a2 2 0 0 0-4 0v2"></path><path d="M10 10.5V6a2 2 0 0 0-4 0v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+옆으로 드래그해서 더 보기
+</span>
+<button aria-label="이전 작업물 페이지" onClick="{{wPrev}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(80,40,55,0.08),0 8px 16px -8px rgba(80,40,55,0.25);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+<button aria-label="다음 작업물 페이지" onClick="{{wNext}}" style="width:44px;height:44px;border-radius:50%;border:0;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(43,35,39,0.5);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</sc-if>
+</div>
+<div style="position:relative;">
+<div id="works-track" class="av-track" role="region" aria-label="작업물 목록, 옆으로 넘겨서 보기" tabindex="0" onScroll="{{wScroll}}" onMouseDown="{{avDown}}" onClickCapture="{{avClickCapture}}" style="display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;margin-bottom:-28px;padding:4px 0 28px;cursor:grab;">
+<sc-for list="{{pages}}" as="pg" hint-placeholder-count="1">
+<div class="works-page" style="flex:0 0 {{wPageW}};scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-content:start;">
+<sc-for list="{{pg.cards}}" as="card" hint-placeholder-count="8">
+<article style="display:flex;flex-direction:column;gap:12px;user-select:none;">
+<button onClick="{{card.open}}" aria-label="{{card.aria}}" class="zoomable" style="position:relative;display:block;width:100%;padding:0;border:0;cursor:zoom-in;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background-color:{{card.tone}};box-shadow:0 2px 4px rgba(80,40,55,0.08),0 16px 24px -12px rgba(80,40,55,0.32);">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
+<sc-if value="{{card.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{card.src}}" alt="{{card.title}}" draggable="false" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{card.hasVid}}" hint-placeholder-val="{{ false }}"><video src="{{card.src}}" muted playsinline preload="metadata" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></video></sc-if>
+<span style="position:absolute;top:14px;left:14px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:12px;font-weight:600;">{{card.label}}</span>
+<sc-if value="{{card.hasStatus}}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;top:14px;right:14px;height:26px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{card.statusBg}};color:#FFFFFF;font-size:12px;font-weight:600;">{{card.statusLabel}}</span>
+</sc-if>
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;color:rgba(43,35,39,0.5);">
+<sc-if value="{{card.isVideo}}" hint-placeholder-val="{{ false }}">
+<div style="width:60px;height:60px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#2B2327;box-shadow:0 10px 20px -6px rgba(80,40,55,0.4);"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg></div>
+</sc-if>
+<sc-if value="{{card.isGif}}" hint-placeholder-val="{{ false }}">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg>
+</sc-if>
+<sc-if value="{{card.phImage}}" hint-placeholder-val="{{ true }}">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg>
+</sc-if>
+</div>
+<span aria-hidden="true" class="zoom-chip" style="position:absolute;right:12px;bottom:12px;width:36px;height:36px;border-radius:50%;background:rgba(43,35,39,0.72);color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg></span>
+</button>
+<div style="display:flex;flex-direction:column;gap:2px;">
+<span style="font-size:16px;font-weight:600;line-height:1.4;">{{card.title}}</span>
+<span style="font-size:14px;line-height:1.4;color:#6E6266;">{{card.meta}}</span>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-for>
+<sc-if value="{{wMulti}}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="flex:0 0 64px;"></div></sc-if>
+</div>
+<sc-if value="{{wShowPrev}}" hint-placeholder-val="{{ false }}">
+<button aria-label="이전 작업물 페이지" onClick="{{wPrev}}" style="position:absolute;top:38%;left:-20px;width:56px;height:56px;border-radius:50%;border:1px solid #EFE4E5;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px -8px rgba(80,40,55,0.45);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+</sc-if>
+<sc-if value="{{wShowNext}}" hint-placeholder-val="{{ true }}">
+<button aria-label="다음 작업물 페이지" onClick="{{wNext}}" style="position:absolute;top:38%;right:-20px;width:56px;height:56px;border-radius:50%;border:0;background:{{accent}};color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px -8px rgba(164,73,91,0.7);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</sc-if>
+</div>
+<sc-if value="{{wMulti}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;justify-content:center;align-items:center;flex-wrap:wrap;padding-top:4px;">
+<sc-for list="{{wDots}}" as="d" hint-placeholder-count="2">
+<button aria-label="{{d.aria}}" aria-current="{{d.current}}" onClick="{{d.pick}}" style="height:32px;min-width:24px;padding:0 4px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;">
+<span style="display:block;width:{{d.w}}px;height:8px;border-radius:999px;background:{{d.bg}};"></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{noCards}}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 24px;border-radius:24px;background:#FFFFFF;border:1px dashed #E2CFD3;text-align:center;font-size:15px;color:#6E6266;">이 카테고리에는 해당 형식의 작업물이 없어요.</div>
+</sc-if>
+</div>
+</section>
+
+<section id="sale" style="background:#F8F2F1;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>04 · FOR SALE</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">분양 아바타</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[분양 아바타 소개를 한 줄로 적어주세요]</p>
+</div>
+<div style="display:flex;align-items:center;gap:10px;">
+<span style="height:44px;box-sizing:border-box;padding:0 16px;display:flex;align-items:center;gap:8px;border-radius:999px;background:#F5E8EA;color:#5F5458;font-size:14px;font-weight:600;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-4 0v1"></path><path d="M14 10V4a2 2 0 0 0-4 0v2"></path><path d="M10 10.5V6a2 2 0 0 0-4 0v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+옆으로 드래그해서 더 보기
+</span>
+<button aria-label="이전 분양 아바타 보기" onClick="{{salePrev}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(80,40,55,0.08),0 8px 16px -8px rgba(80,40,55,0.25);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+<button aria-label="다음 분양 아바타 보기" onClick="{{saleNext}}" style="width:44px;height:44px;border-radius:50%;border:0;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(43,35,39,0.5);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</div>
+<div id="sale-track" class="av-track" role="region" aria-label="분양 아바타 목록, 옆으로 넘겨서 보기" tabindex="0" onMouseDown="{{avDown}}" onClickCapture="{{avClickCapture}}" style="display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x proximity;margin:-8px -8px -28px;padding:8px 8px 28px;cursor:grab;">
+<sc-for list="{{sales}}" as="sv" hint-placeholder-count="4">
+<article style="flex:0 0 clamp(240px,26vw,290px);scroll-snap-align:start;user-select:none;box-sizing:border-box;padding:12px 12px 20px;border-radius:28px;background:#FFFFFF;border:1px solid #EFE4E5;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(80,40,55,0.06),0 18px 32px -20px rgba(80,40,55,0.35);">
+<button onClick="{{sv.open}}" aria-label="{{sv.aria}}" class="zoomable" style="position:relative;width:100%;padding:0;border:0;cursor:zoom-in;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background-color:{{sv.tone}};display:flex;align-items:flex-end;justify-content:center;">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.35) 0px,rgba(255,255,255,0.35) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
+<svg viewBox="0 0 200 200" style="position:relative;width:82%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><circle cx="87" cy="84" r="3" fill="#FFFFFF"></circle><circle cx="119" cy="84" r="3" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse></svg>
+<span style="position:absolute;top:14px;left:14px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:12px;font-weight:600;">{{sv.no}}</span>
+<span style="position:absolute;top:14px;right:14px;height:28px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{sv.statusBg}};color:#FFFFFF;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(80,40,55,0.22);">{{sv.statusLabel}}</span>
+<span aria-hidden="true" class="zoom-chip" style="position:absolute;right:12px;bottom:12px;width:36px;height:36px;border-radius:50%;background:rgba(43,35,39,0.72);color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg></span>
+</button>
+<div style="padding:0 8px;display:flex;flex-direction:column;gap:6px;">
+<h3 style="margin:0;font-size:20px;font-weight:700;line-height:1.35;">{{sv.name}}</h3>
+<p style="margin:0;font-size:14px;line-height:1.55;color:#6E6266;">{{sv.desc}}</p>
+<span style="margin-top:4px;font-size:18px;font-weight:700;color:{{sv.priceColor}};text-decoration:{{sv.priceDeco}};font-variant-numeric:tabular-nums;">{{sv.price}}</span>
+</div>
+<div style="margin-top:auto;padding:0 8px;">
+<sc-if value="{{sv.hasLink}}" hint-placeholder-val="{{ false }}">
+<a href="{{sv.link}}" target="_blank" rel="noopener noreferrer" draggable="false" style="height:46px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;background:#2B2327;color:#FFFFFF;font-size:15px;font-weight:600;box-shadow:0 8px 16px -8px rgba(43,35,39,0.5);">분양 페이지 보기
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+</a>
+</sc-if>
+<sc-if value="{{sv.noLink}}" hint-placeholder-val="{{ true }}">
+<span style="height:46px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;border:1px dashed #D9C8CC;background:#FFFFFF;color:#6E6266;font-size:14px;font-weight:500;">링크 준비 중</span>
+</sc-if>
+<sc-if value="{{sv.sold}}" hint-placeholder-val="{{ false }}">
+<span style="height:46px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#EFE4E5;color:#5F5458;font-size:14px;font-weight:600;">분양이 완료된 아바타예요</span>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="avatars" style="background:#FFFFFF;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>05 · MY AVATARS</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">보유 아바타</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[보유 아바타 소개를 한 줄로 적어주세요]</p>
+</div>
+<div style="display:flex;align-items:center;gap:10px;">
+<span style="height:44px;box-sizing:border-box;padding:0 16px;display:flex;align-items:center;gap:8px;border-radius:999px;background:#F5E8EA;color:#5F5458;font-size:14px;font-weight:600;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-4 0v1"></path><path d="M14 10V4a2 2 0 0 0-4 0v2"></path><path d="M10 10.5V6a2 2 0 0 0-4 0v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+옆으로 드래그해서 더 보기
+</span>
+<button aria-label="이전 아바타 보기" onClick="{{avPrev}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(80,40,55,0.08),0 8px 16px -8px rgba(80,40,55,0.25);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+<button aria-label="다음 아바타 보기" onClick="{{avNext}}" style="width:44px;height:44px;border-radius:50%;border:0;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(43,35,39,0.5);">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</div>
+<div id="avatar-track" class="av-track" role="region" aria-label="보유 아바타 목록, 옆으로 넘겨서 보기" tabindex="0" onMouseDown="{{avDown}}" onClickCapture="{{avClickCapture}}" style="display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x proximity;margin:-8px -8px -28px;padding:8px 8px 28px;cursor:grab;">
+<sc-for list="{{avatars}}" as="av" hint-placeholder-count="4">
+<article style="flex:0 0 clamp(240px,26vw,290px);scroll-snap-align:start;user-select:none;box-sizing:border-box;padding:12px 12px 20px;border-radius:28px;background:#F8F2F1;border:1px solid #EFE4E5;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(80,40,55,0.06),0 18px 32px -20px rgba(80,40,55,0.35);">
+<button onClick="{{av.open}}" aria-label="{{av.aria}}" class="zoomable" style="position:relative;width:100%;padding:0;border:0;cursor:zoom-in;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background-color:{{av.tone}};display:flex;align-items:flex-end;justify-content:center;">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.35) 0px,rgba(255,255,255,0.35) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
+<svg viewBox="0 0 200 200" style="position:relative;width:82%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><circle cx="87" cy="84" r="3" fill="#FFFFFF"></circle><circle cx="119" cy="84" r="3" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse></svg>
+<span style="position:absolute;top:14px;left:14px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:12px;font-weight:600;">{{av.no}}</span>
+<span aria-hidden="true" class="zoom-chip" style="position:absolute;right:12px;bottom:12px;width:36px;height:36px;border-radius:50%;background:rgba(43,35,39,0.72);color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg></span>
+</button>
+<div style="padding:0 8px;display:flex;flex-direction:column;gap:6px;">
+<h3 style="margin:0;font-size:20px;font-weight:700;line-height:1.35;">{{av.name}}</h3>
+<p style="margin:0;font-size:14px;line-height:1.55;color:#6E6266;">{{av.desc}}</p>
+</div>
+<div style="margin-top:auto;padding:0 8px;">
+<sc-if value="{{av.hasLink}}" hint-placeholder-val="{{ false }}">
+<a href="{{av.link}}" target="_blank" rel="noopener noreferrer" draggable="false" style="height:46px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;background:#2B2327;color:#FFFFFF;font-size:15px;font-weight:600;box-shadow:0 8px 16px -8px rgba(43,35,39,0.5);">아바타 보러 가기
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+</a>
+</sc-if>
+<sc-if value="{{av.noLink}}" hint-placeholder-val="{{ true }}">
+<span style="height:46px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;border:1px dashed #D9C8CC;background:#FFFFFF;color:#6E6266;font-size:14px;font-weight:500;">링크 준비 중</span>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="price" style="background:#F3E1E4;">
+<div style="max-width:1520px;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,4vw,64px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>06 · PRICE CALCULATOR</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">원하는 작업을 골라 견적을 확인하세요</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#5F5458;">세트로 고르면 더 저렴해요. 고른 내용은 아래 문의 양식에 자동으로 들어가요.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+<div style="flex:999 1 640px;min-width:0;display:flex;flex-direction:column;gap:36px;">
+
+<sc-if value="{{hasSets}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;">
+<h3 style="margin:0;font-size:19px;font-weight:700;"><span style="color:{{accent}};">1.</span> 세트 상품</h3>
+<span style="font-size:14px;color:#5F5458;">하나만 고를 수 있어요 · 안 골라도 돼요</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding-top:10px;">
+<sc-for list="{{sets}}" as="s" hint-placeholder-count="3">
+<button aria-pressed="{{s.pressed}}" onClick="{{s.toggle}}" style="position:relative;box-sizing:border-box;padding:24px 22px 22px;display:flex;flex-direction:column;align-items:stretch;gap:14px;border-radius:22px;border:2px solid {{s.border}};background:#FFFFFF;text-align:left;color:#2B2327;box-shadow:{{s.shadow}};">
+<sc-if value="{{s.best}}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;top:-13px;left:20px;height:26px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:0.04em;box-shadow:0 6px 12px -4px rgba(164,73,91,0.6);">추천</span>
+</sc-if>
+<span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+<span style="display:flex;flex-direction:column;gap:4px;">
+<span style="font-size:19px;font-weight:700;line-height:1.3;">{{s.name}}</span>
+<sc-if value="{{s.hasDesc}}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;line-height:1.5;color:#6E6266;">{{s.desc}}</span></sc-if>
+</span>
+<span style="flex-shrink:0;width:26px;height:26px;box-sizing:border-box;border-radius:50%;border:2px solid {{s.ring}};background:#FFFFFF;display:flex;align-items:center;justify-content:center;">
+<span style="width:12px;height:12px;border-radius:50%;background:{{s.dot}};"></span>
+</span>
+</span>
+<span style="display:flex;flex-wrap:wrap;gap:6px;">
+<sc-for list="{{s.inc}}" as="x" hint-placeholder-count="3">
+<span style="height:28px;padding:0 10px;display:flex;align-items:center;gap:4px;border-radius:8px;background:#F5E8EA;color:#5F5458;font-size:13px;font-weight:600;">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>{{x.name}}</span>
+</sc-for>
+</span>
+<sc-if value="{{s.hasNote}}" hint-placeholder-val="{{ false }}">
+<span style="display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:#FBF6F7;border:1px solid #EFE4E5;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+<span style="font-size:14px;line-height:1.6;color:#4A3E44;white-space:pre-line;">{{s.note}}</span>
+</span>
+</sc-if>
+<span style="margin-top:auto;padding-top:14px;border-top:1px dashed #EFE4E5;display:flex;flex-direction:column;gap:4px;">
+<sc-if value="{{s.hasSave}}" hint-placeholder-val="{{ true }}">
+<span style="display:flex;align-items:center;gap:8px;">
+<span style="font-size:14px;color:#6E6266;text-decoration:line-through;font-variant-numeric:tabular-nums;">{{s.origLabel}}</span>
+<span style="height:22px;padding:0 8px;display:flex;align-items:center;border-radius:6px;background:#E3F1EA;color:#1F6146;font-size:12px;font-weight:700;">{{s.pctLabel}}</span>
+</span>
+</sc-if>
+<span style="font-size:24px;font-weight:700;color:{{accent}};font-variant-numeric:tabular-nums;">{{s.priceLabel}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;">
+<h3 style="margin:0;font-size:19px;font-weight:700;"><span style="color:{{accent}};">{{stepItems}}.</span> 개별 작업 <span style="font-size:15px;font-weight:600;color:#6E6266;">{{itemTotal}}개</span></h3>
+<span style="font-size:14px;color:#5F5458;">{{itemsHint}}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+<sc-for list="{{itemsShown}}" as="it" hint-placeholder-count="4">
+<button aria-pressed="{{it.pressed}}" disabled="{{it.locked}}" onClick="{{it.toggle}}" style="min-height:76px;box-sizing:border-box;padding:14px 18px;display:flex;align-items:center;gap:14px;border-radius:16px;border:2px {{it.borderStyle}} {{it.border}};background:{{it.bg}};text-align:left;color:#2B2327;box-shadow:{{it.shadow}};cursor:{{it.cursor}};">
+<sc-if value="{{it.free}}" hint-placeholder-val="{{ true }}">
+<span style="flex-shrink:0;width:24px;height:24px;box-sizing:border-box;border-radius:7px;border:2px solid {{it.boxBorder}};background:{{it.boxBg}};display:flex;align-items:center;justify-content:center;color:#FFFFFF;">
+<sc-if value="{{it.on}}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></sc-if>
+</span>
+</sc-if>
+<sc-if value="{{it.locked}}" hint-placeholder-val="{{ false }}">
+<span style="flex-shrink:0;width:24px;height:24px;border-radius:7px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>
+</sc-if>
+<span style="flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+<span style="font-size:16px;font-weight:700;line-height:1.35;">{{it.name}}</span>
+<span style="font-size:13px;line-height:1.45;color:#6E6266;">{{it.desc}}</span>
+</span>
+<span style="flex-shrink:0;font-size:15px;font-weight:700;color:{{it.priceColor}};font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;">{{it.priceLabel}}</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{itemsMore}}" hint-placeholder-val="{{ false }}">
+<button onClick="{{toggleItemsAll}}" aria-expanded="{{itemsExpanded}}" style="align-self:center;height:48px;padding:0 24px;border-radius:999px;border:1px solid #E2CFD3;background:#FFFFFF;color:#2B2327;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(80,40,55,0.08),0 8px 16px -10px rgba(80,40,55,0.3);">{{itemsMoreLabel}}
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{itemsMoreRot}}deg);"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+</sc-if>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;">
+<h3 style="margin:0;font-size:19px;font-weight:700;"><span style="color:{{accent}};">{{stepOpts}}.</span> 추가 옵션</h3>
+<span style="font-size:14px;color:#5F5458;">마감 옵션은 하나만 고를 수 있어요</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="2">
+<button aria-pressed="{{o.pressed}}" onClick="{{o.toggle}}" style="min-height:76px;box-sizing:border-box;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:18px;border:2px solid {{o.border}};background:#FFFFFF;color:#2B2327;text-align:left;">
+<span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:16px;font-weight:600;">{{o.name}}</span><span style="font-size:13px;color:#6E6266;">{{o.desc}}</span></span>
+<span style="flex-shrink:0;width:46px;height:28px;box-sizing:border-box;padding:3px;border-radius:999px;background:{{o.track}};display:flex;justify-content:{{o.justify}};"><span style="width:22px;height:22px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(43,35,39,0.3);"></span></span>
+</button>
+</sc-for>
+<div style="min-height:76px;box-sizing:border-box;padding:12px 12px 12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:18px;border:2px solid #FFFFFF;background:#FFFFFF;">
+<span style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:16px;font-weight:600;">수정 횟수 추가</span><span style="font-size:13px;color:#6E6266;">{{revDesc}}</span></span>
+<span style="display:flex;align-items:center;gap:4px;">
+<button aria-label="수정 횟수 줄이기" onClick="{{revMinus}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#F8F2F1;color:#2B2327;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width:36px;text-align:center;font-size:17px;font-weight:700;">{{rev}}회</span>
+<button aria-label="수정 횟수 늘리기" onClick="{{revPlus}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#F8F2F1;color:#2B2327;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="quote-col" style="flex:1 1 360px;max-width:440px;min-width:0;box-sizing:border-box;border-radius:28px;background:#FFFFFF;box-shadow:0 2px 4px rgba(80,40,55,0.06),0 28px 48px -20px rgba(80,40,55,0.35);display:flex;flex-direction:column;overflow:hidden;">
+<div style="padding:20px 24px 22px;background:#2B2327;color:#FFFFFF;display:flex;flex-direction:column;gap:14px;">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<span style="display:flex;align-items:baseline;gap:8px;">
+<span style="font-size:17px;font-weight:700;">예상 견적서</span>
+<span style="font-size:12px;color:#BFB1B6;">{{today}} 기준</span>
+</span>
+<button onClick="{{resetCalc}}" style="min-height:36px;padding:0 12px;border:1px solid #5A4C53;border-radius:999px;background:transparent;color:#FFFFFF;font-size:12px;font-weight:500;">초기화</button>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;">
+<span style="font-size:13px;color:#D9CCD0;">총 예상 금액</span>
+<span aria-live="polite" style="font-size:38px;font-weight:700;line-height:1.15;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:#FFFFFF;">{{total}}</span>
+</div>
+<sc-if value="{{hasSave}}" hint-placeholder-val="{{ false }}">
+<span style="align-self:flex-start;height:28px;padding:0 10px;display:flex;align-items:center;gap:6px;border-radius:8px;background:#E3F1EA;color:#1F6146;font-size:13px;font-weight:700;">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>세트 할인 {{saveShort}} 적용</span>
+</sc-if>
+</div>
+<div style="padding:18px 24px 24px;display:flex;flex-direction:column;gap:16px;">
+<sc-if value="{{noLines}}" hint-placeholder-val="{{ false }}">
+<div style="padding:24px 16px;border-radius:14px;background:#F8F2F1;text-align:center;font-size:14px;line-height:1.7;color:#6E6266;">세트 상품이나 개별 작업을<br>선택해 주세요</div>
+</sc-if>
+<sc-if value="{{hasLines}}" hint-placeholder-val="{{ true }}">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;">
+<sc-for list="{{quoteLines}}" as="q" hint-placeholder-count="3">
+<li style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #F3EAEC;">
+<span style="flex-shrink:0;margin-top:1px;min-width:34px;height:22px;padding:0 6px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:6px;background:{{q.tagBg}};color:{{q.tagColor}};font-size:11px;font-weight:700;">{{q.tag}}</span>
+<span style="flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+<span style="font-size:15px;font-weight:600;line-height:1.4;">{{q.name}}</span>
+<sc-if value="{{q.hasSub}}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;line-height:1.5;color:#6E6266;">{{q.sub}}</span></sc-if>
+</span>
+<span style="flex-shrink:0;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;">{{q.amount}}</span>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{hasBreakdown}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:#6E6266;font-variant-numeric:tabular-nums;">
+<span>정가 {{listLabel}}</span>
+<sc-if value="{{hasSave}}" hint-placeholder-val="{{ false }}"><span style="color:#1F6146;font-weight:600;">할인 {{saveLabel}}</span></sc-if>
+<sc-if value="{{hasOpt}}" hint-placeholder-val="{{ false }}"><span>옵션 {{optLabel}}</span></sc-if>
+</div>
+</sc-if>
+</sc-if>
+<p style="margin:0;font-size:12px;line-height:1.6;color:#6E6266;">최종 금액은 레퍼런스와 아바타 상태를 확인한 뒤 확정돼요.</p>
+<a href="#inquiry" style="height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:16px;font-weight:600;box-shadow:0 10px 20px -8px rgba(164,73,91,0.6);">이 견적으로 문의서 쓰기
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="m6 13 6 6 6-6"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="process" style="background:#FFFFFF;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>07 · PROCESS</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">이렇게 진행돼요</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">문의부터 전달까지 6단계예요. 단계마다 진행 상황을 알려드려요.</p>
+</div>
+<div style="box-sizing:border-box;padding:clamp(28px,4vw,48px) clamp(20px,3vw,36px);border-radius:32px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 2px 4px rgba(80,40,55,0.05),0 28px 48px -28px rgba(80,40,55,0.3);">
+<ol class="proc" style="margin:0;padding:0;list-style:none;">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+<li class="proc-step">
+<sc-if value="{{s.notLast}}" hint-placeholder-val="{{ true }}"><span class="proc-line" aria-hidden="true"></span></sc-if>
+<span style="position:relative;z-index:1;flex-shrink:0;width:56px;height:56px;box-sizing:border-box;border-radius:50%;border:2px solid {{accent}};background:{{s.circleBg}};color:{{s.circleColor}};display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px #FFFFFF;">
+<sc-if value="{{s.iChat}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path><path d="M8.5 12h.01"></path><path d="M12 12h.01"></path><path d="M15.5 12h.01"></path></svg></sc-if>
+<sc-if value="{{s.iQuote}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></sc-if>
+<sc-if value="{{s.iPay}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M8 3v4"></path><path d="M16 3v4"></path><path d="m9 15 2 2 4-4"></path></svg></sc-if>
+<sc-if value="{{s.iWork}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 4 5 5"></path><path d="M13.5 5.5 4 15v5h5l9.5-9.5"></path><path d="M3 21h4"></path></svg></sc-if>
+<sc-if value="{{s.iCheck}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+<sc-if value="{{s.iDone}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8v13H3V8"></path><path d="M1 3h22v5H1z"></path><path d="M10 12h4"></path></svg></sc-if>
+</span>
+<span class="proc-body">
+<span style="font-size:12px;font-weight:700;letter-spacing:0.1em;color:{{accent}};">STEP {{s.no}}</span>
+<span style="font-size:18px;font-weight:700;line-height:1.35;color:#2B2327;white-space:nowrap;">{{s.title}}</span>
+<span class="proc-desc" style="font-size:14px;line-height:1.6;color:#6E6266;">{{s.desc}}</span>
+<span class="proc-chip" style="align-self:{{s.chipAlign}};height:28px;white-space:nowrap;padding:0 10px;display:flex;align-items:center;border-radius:8px;background:#F5E8EA;color:#5F5458;font-size:12px;font-weight:600;">{{s.chip}}</span>
+</span>
+</li>
+</sc-for>
+</ol>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+<div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<span style="font-size:14px;color:#5F5458;">작업 기한</span><span style="font-size:18px;font-weight:700;">7~14일</span>
+</div>
+<div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<span style="font-size:14px;color:#5F5458;">기본 수정 횟수</span><span style="font-size:18px;font-weight:700;">[N]회</span>
+</div>
+<div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<span style="font-size:14px;color:#5F5458;">결제 방식</span><span style="font-size:18px;font-weight:700;">[선금 N%]</span>
+</div>
+</div>
+</div>
+</section>
+
+<section id="inquiry" style="background:#2B2327;color:#FFFFFF;">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:#F2B8C4;"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:#F2B8C4;"></span>08 · INQUIRY</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;color:#FFFFFF;">문의 양식을 채우고 복사해서 보내주세요</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#D9CCD0;">빈칸을 채우면 오른쪽 양식이 바로 바뀌어요. 복사한 뒤 문의 채널에 붙여넣기만 하면 돼요.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:stretch;">
+<form onSubmit="{{noSubmit}}" style="flex:1 1 420px;min-width:0;box-sizing:border-box;padding:28px;border-radius:28px;background:#FFFFFF;color:#2B2327;display:flex;flex-direction:column;gap:18px;">
+<div style="display:flex;flex-direction:column;gap:8px;">
+<label for="f-nick" style="font-size:14px;font-weight:600;">닉네임 / 방송명</label>
+<input id="f-nick" type="text" value="{{fNick}}" onChange="{{onNick}}" placeholder="예: 무리 / 무리의 작업방송" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
+</div>
+<fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:8px;">
+<legend style="padding:0;margin-bottom:8px;font-size:14px;font-weight:600;">방송 플랫폼</legend>
+<div style="display:flex;flex-wrap:wrap;gap:8px;">
+<sc-for list="{{platforms}}" as="p" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{p.pressed}}" onClick="{{p.pick}}" style="height:44px;padding:0 18px;border-radius:999px;border:1px solid {{p.border}};background:{{p.bg}};color:{{p.color}};font-size:14px;font-weight:500;">{{p.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+<div style="display:flex;flex-direction:column;gap:8px;">
+<label for="f-contact" style="font-size:14px;font-weight:600;">연락받을 곳</label>
+<input id="f-contact" type="text" value="{{fContact}}" onChange="{{onContact}}" placeholder="디스코드 아이디 / 이메일" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;">
+<label for="f-ref" style="font-size:14px;font-weight:600;">레퍼런스 링크</label>
+<input id="f-ref" type="text" value="{{fRef}}" onChange="{{onRef}}" placeholder="이미지·영상 링크를 붙여넣어 주세요" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;">
+<label for="f-memo" style="font-size:14px;font-weight:600;">요청사항</label>
+<textarea id="f-memo" rows="3" value="{{fMemo}}" onChange="{{onMemo}}" placeholder="원하는 분위기, 꼭 살리고 싶은 부분 등" style="box-sizing:border-box;padding:12px 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;line-height:1.6;color:#2B2327;resize:vertical;"></textarea>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px;border-radius:14px;background:#F5E8EA;font-size:14px;">
+<span><span style="color:#6E6266;">계산기 견적</span> <strong style="font-weight:700;">{{quoteSummary}}</strong></span>
+<a href="#price" style="min-height:32px;display:flex;align-items:center;color:{{accent}};font-weight:600;text-decoration:underline;text-underline-offset:4px;">항목 바꾸기</a>
+</div>
+<label for="f-agree" style="min-height:52px;box-sizing:border-box;padding:12px 16px;display:flex;align-items:center;gap:12px;border-radius:14px;border:2px solid {{agreeBorder}};background:{{agreeBg}};font-size:15px;font-weight:600;cursor:pointer;">
+<input id="f-agree" type="checkbox" checked="{{fAgree}}" onChange="{{onAgree}}" style="flex-shrink:0;width:22px;height:22px;margin:0;accent-color:#A4495B;cursor:pointer;">
+<span style="flex-grow:1;"><a href="#notice" style="text-decoration:underline;text-underline-offset:4px;">주의사항</a>을 모두 확인했어요</span>
+<span style="flex-shrink:0;font-size:12px;font-weight:600;color:{{agreeTagColor}};">{{agreeTag}}</span>
+</label>
+</form>
+
+<div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+<div style="flex-grow:1;box-sizing:border-box;padding:24px;border-radius:28px;background:#3A3036;border:1px solid #4A3E45;display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<span style="font-size:13px;font-weight:600;letter-spacing:0.08em;color:#D9CCD0;">미리보기</span>
+<span style="font-size:12px;color:#BFB1B6;">입력하면 바로 반영돼요</span>
+</div>
+<pre id="inquiry-text" style="flex-grow:1;margin:0;min-height:300px;box-sizing:border-box;padding:20px;border-radius:18px;background:#2B2327;color:#F6EEF0;font-family:inherit;font-size:15px;line-height:1.85;white-space:pre-wrap;word-break:break-all;">{{inquiryText}}</pre>
+<button onClick="{{copy}}" disabled="{{copyLocked}}" aria-describedby="copy-hint" style="height:56px;border:0;border-radius:999px;background:{{copyBg}};color:{{copyColor}};font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:{{copyShadow}};cursor:{{copyCursor}};transition:background-color 0.2s ease,color 0.2s ease;">
+<sc-if value="{{copyLocked}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if>
+<sc-if value="{{copyDone}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></sc-if>
+<sc-if value="{{copyIdle}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></sc-if>
+<span aria-live="polite">{{copyLabel}}</span>
+</button>
+<p id="copy-hint" style="margin:0;text-align:center;font-size:13px;line-height:1.5;color:{{copyHintColor}};">{{copyHint}}</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="notice" style="background:#F8F2F1;border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:56px;">
+<div style="display:flex;flex-direction:column;gap:28px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>09 · NOTICE</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">주의사항</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">문의 전에 꼭 읽어주세요.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+
+<div style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:clamp(20px,3vw,32px);border-radius:28px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 1px 2px rgba(80,40,55,0.05),0 24px 40px -28px rgba(80,40,55,0.35);">
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#FDEDEE;border:1px solid #F4C9CE;">
+<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#C0262D;color:#FFFFFF;font-size:14px;font-weight:700;">1</span>
+<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+<p style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:17px;font-weight:700;line-height:1.5;color:#C0262D;"><span style="height:22px;padding:0 8px;display:inline-flex;align-items:center;border-radius:6px;background:#C0262D;color:#FFFFFF;font-size:12px;font-weight:700;">필독</span>꼭!! 꼭!! 이용규약 확인 후 에셋 가져와주세요!</p>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#4A3E44;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>유의사항을 숙지하지 않아 생기는 문제는 작가가 책임지지 않습니다.</li>
+</ul>
+</div>
+</li>
+<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
+<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">2</span>
+<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">작업 후 보관 기간은 <strong style="font-weight:700;color:{{accent}};">한 달</strong>입니다.</p>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>장기 보관이 필요한 경우 미리 문의해주세요.</li>
+</ul>
+</div>
+</li>
+<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
+<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">3</span>
+<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">모든 작업은 결제 확인 후 시작됩니다.</p>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>의뢰인 본인만 사용 가능합니다.</li>
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>무단 복제, 배포, 재판매, 상업적 사용을 금지합니다.</li>
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>타인의 모델, 유료 에셋 무단 공유 등 작가와 무관한 저작권 문제로 인한 상황은 작가가 책임지지 않습니다.</li>
+</ul>
+</div>
+</li>
+<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
+<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">4</span>
+<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">작업한 결과물은 포트폴리오로 사용될 수 있습니다. <span style="font-weight:500;color:#6E6266;">(원하시지 않는 분은 미리 문의해주세요)</span></p>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>헤어 및 의상 추가는 파라미터 상황에 따라 추가 요청이 거절될 수 있습니다.</li>
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>지나치게 모호한 요청(“대충 예쁘게 해주세요”)은 작업 진행이 어렵습니다.</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+
+<div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:20px;">
+<div style="box-sizing:border-box;padding:26px;border-radius:28px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 1px 2px rgba(80,40,55,0.05),0 24px 40px -28px rgba(80,40,55,0.35);display:flex;flex-direction:column;gap:16px;">
+<h3 style="margin:0;display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;">
+<span style="width:36px;height:36px;border-radius:12px;background:#FDEDEE;color:#C0262D;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m5.7 5.7 12.6 12.6"></path></svg></span>불가능 작업</h3>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>아바타 100% 풀 모델링 <span style="color:#6E6266;">(제로베이스 제작)</span></span></li>
+<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>저작권 침해 가능성이 있는 캐릭터 도용 요청 <span style="color:#6E6266;">(특정 게임 캐릭터)</span></span></li>
+<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>R18 관련 작업</span></li>
+</ul>
+</div>
+<div style="box-sizing:border-box;padding:26px;border-radius:28px;background:#2B2327;color:#FFFFFF;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 40px -24px rgba(43,35,39,0.6);">
+<h3 style="margin:0;display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#FFFFFF;">
+<span style="width:36px;height:36px;border-radius:12px;background:#3A3036;color:#F2B8C4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>작업 기한</h3>
+<p style="margin:4px 0 0;font-size:36px;font-weight:700;line-height:1.2;color:#FFFFFF;">7일 ~ 14일</p>
+<p style="margin:0;font-size:14px;line-height:1.65;color:#D9CCD0;">작업량 및 상황에 따라 일정이 변동될 수 있으며, 변동 시 미리 안내드립니다.</p>
+</div>
+</div>
+
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:10px;">
+<span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};">FAQ</span>
+<h2 style="margin:0;font-weight:700;font-size:clamp(26px,3vw,32px);line-height:1.3;">자주 묻는 질문</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:10px;align-items:start;">
+<sc-for list="{{faqs}}" as="f" hint-placeholder-count="4">
+<div style="border-radius:18px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 1px 2px rgba(80,40,55,0.06);">
+<button aria-expanded="{{f.expanded}}" onClick="{{f.toggle}}" style="width:100%;min-height:60px;box-sizing:border-box;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:0;border-radius:18px;background:transparent;color:#2B2327;font-size:16px;font-weight:600;text-align:left;">
+<span>{{f.q}}</span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B2327" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;transform:rotate({{f.rot}}deg);"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
+<p style="margin:0;padding:0 20px 20px;font-size:15px;line-height:1.7;color:#5F5458;">{{f.a}}</p>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<footer style="border-top:1px solid #EFE4E5;">
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:24px clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+<span style="font-size:14px;color:#6E6266;">© 2026 [브랜드명]</span>
+<a href="#top" style="min-height:44px;display:flex;align-items:center;gap:6px;font-size:14px;color:#6E6266;">맨 위로
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg>
+</a>
+</div>
+</footer>
+<sc-if value="{{lbOpen}}" hint-placeholder-val="{{ false }}">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="{{lbTitle}}" tabindex="-1" onKeyDown="{{lbKey}}" onClick="{{lbBackdrop}}" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:60;box-sizing:border-box;padding:20px clamp(16px,6vw,96px);background:rgba(22,16,19,0.9);display:flex;align-items:center;justify-content:center;outline:none;">
+<div style="position:relative;width:100%;max-width:1100px;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:16px;">
+<div style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#FFFFFF;">
+<span style="font-size:14px;font-weight:600;color:#D9CCD0;font-variant-numeric:tabular-nums;">{{lbCounter}}</span>
+<button aria-label="닫기" onClick="{{lbClose}}" style="width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#FFFFFF;display:flex;align-items:center;justify-content:center;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg>
+</button>
+</div>
+
+<sc-if value="{{lbIsBa}}" hint-placeholder-val="{{ false }}">
+<div style="width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+<div style="position:relative;max-height:68vh;aspect-ratio:4/5;margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbBefore}};display:flex;align-items:center;justify-content:center;">
+<svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+<span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
+</div>
+<div style="position:relative;max-height:68vh;aspect-ratio:4/5;margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbAfter}};display:flex;align-items:center;justify-content:center;">
+<svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+<span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{lbIsSingle}}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;height:min(70vh,760px);max-width:100%;aspect-ratio:{{lbRatio}};border-radius:24px;overflow:hidden;background-color:{{lbTone}};display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);">
+<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 14px,rgba(255,255,255,0) 14px,rgba(255,255,255,0) 28px);"></div>
+<sc-if value="{{lbHasImg}}" hint-placeholder-val="{{ false }}"><img src="{{lbSrc}}" alt="{{lbTitle}}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1A1416;"></sc-if>
+<sc-if value="{{lbHasVid}}" hint-placeholder-val="{{ false }}"><video src="{{lbSrc}}" controls autoplay playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1A1416;"></video></sc-if>
+<sc-if value="{{lbShowLabel}}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:18px;left:18px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:13px;font-weight:700;">{{lbLabel}}</span></sc-if>
+<sc-if value="{{lbIsVideo}}" hint-placeholder-val="{{ false }}"><div style="position:relative;width:88px;height:88px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#2B2327;box-shadow:0 14px 28px -8px rgba(0,0,0,0.45);"><svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg></div></sc-if>
+<sc-if value="{{lbIsGif}}" hint-placeholder-val="{{ false }}"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(43,35,39,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position:relative;"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></sc-if>
+<sc-if value="{{lbIsImage}}" hint-placeholder-val="{{ true }}"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(43,35,39,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position:relative;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg></sc-if>
+<sc-if value="{{lbIsAvatar}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 200 200" style="position:absolute;bottom:0;left:9%;width:82%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="8" ry="10" fill="#5B2A38"></ellipse><circle cx="87" cy="84" r="3" fill="#FFFFFF"></circle><circle cx="119" cy="84" r="3" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="7" ry="3.5" fill="#F2B8C4"></ellipse></svg></sc-if>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;color:#FFFFFF;">
+<span style="font-size:18px;font-weight:700;">{{lbTitle}}</span>
+<span style="font-size:14px;color:#D9CCD0;">{{lbMeta}}</span>
+</div>
+
+<sc-if value="{{lbHasNav}}" hint-placeholder-val="{{ false }}">
+<button aria-label="이전 사진" onClick="{{lbPrev}}" style="position:absolute;top:50%;left:-8px;margin-top:-28px;width:56px;height:56px;border-radius:50%;border:0;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(0,0,0,0.5);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+</button>
+<button aria-label="다음 사진" onClick="{{lbNext}}" style="position:absolute;top:50%;right:-8px;margin-top:-28px;width:56px;height:56px;border-radius:50%;border:0;background:#FFFFFF;color:#2B2327;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(0,0,0,0.5);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{showBar}}" hint-placeholder-val="{{ false }}">
+<div role="region" aria-label="선택한 견적 요약" style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:30;width:min(620px,calc(100% - 24px));box-sizing:border-box;padding:10px 10px 10px 22px;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:14px;box-shadow:0 18px 40px -12px rgba(43,35,39,0.65);">
+<span style="flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:1px;">
+<span style="font-size:12px;color:#D9CCD0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{barSummary}}</span>
+<span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;">{{total}}</span>
+</span>
+<a href="#price" style="flex-shrink:0;height:48px;padding:0 22px;display:flex;align-items:center;gap:6px;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:15px;font-weight:600;">견적서 보기
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg>
+</a>
+<button aria-label="견적 요약 숨기기" onClick="{{hideBar}}" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;border:1px solid #5A4C53;background:transparent;color:#D9CCD0;display:flex;align-items:center;justify-content:center;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+</div>
+</sc-if>
+<sc-if value="{{showMiniBar}}" hint-placeholder-val="{{ false }}">
+<button aria-label="견적 요약 다시 보기" onClick="{{showBarAgain}}" style="position:fixed;right:20px;bottom:20px;z-index:30;height:52px;padding:0 18px 0 14px;border:0;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 14px 30px -10px rgba(43,35,39,0.6);">
+<span style="width:30px;height:30px;border-radius:50%;background:{{accent}};display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></span>
+{{total}}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg>
+</button>
+</sc-if>
+
+</div>
+</x-dc>
+</template>
+
+<script src="config.js"></script>
+<script src="js/react.bundle.js"></script>
+<script src="js/dc-runtime.js"></script>
+<script src="js/portfolio.js"></script>
+<script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
+</body>
+</html>
