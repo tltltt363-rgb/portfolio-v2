@@ -318,7 +318,7 @@ class Component extends DCLogic {
     }
 
     cards.forEach((c, idx) => { c.open = () => this.openLb('works', idx); c.aria = c.title + ' 크게 보기'; });
-    const PER = 8;
+    const PER = 6;
     const pages = [];
     for (let i = 0; i < cards.length; i += PER) pages.push({ cards: cards.slice(i, i + PER) });
     const wN = Math.max(1, pages.length);
