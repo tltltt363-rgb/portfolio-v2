@@ -287,7 +287,7 @@ class Component extends DCLogic {
         tone: tones[i % tones.length],
         label: type === 'image' ? 'IMAGE' : 'MP4',
         isImage: type === 'image', isGif: false, isVideo: type === 'video',
-        src, hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
+        src, thumb: src ? src + '#t=0.5' : '', hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
         title: '[' + (cur.avatar ? '아바타 이름' : '작업물 제목') + ' ' + pad(i + 1) + ']',
         meta: cur.avatar ? '[짧은 설명]' : '[한 줄 설명]',
         hasStatus: !!cur.status,
@@ -685,7 +685,7 @@ class Component extends DCLogic {
     return {
       accent, heroTiles,
       lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
-      lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.ratio || '4 / 5', lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
+      lbTone: lbCur.tone || '#EED9DD', lbRatio: (lbCur.src && lbCur.isVideo) ? '16 / 9' : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
       lbSrc: lbCur.src || '', lbHasImg: !!lbCur.src && !!lbCur.isImage, lbHasVid: !!lbCur.src && !!lbCur.isVideo,
       lbTitle: lbIsBa ? baCat.label + ' 사례 ' + (baPos + 1) : (lbCur.title || ''),

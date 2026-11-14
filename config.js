@@ -55,7 +55,13 @@ window.PORTFOLIO_CONFIG = {
   worksMediaA: [],  // 성형 파일 목록
   worksMediaB: [],  // 페이셜 파일 목록
   worksMediaC: [],  // 텍스쳐 파일 목록
-  worksMediaD: [],  // 뽀잉눈 파일 목록
+  worksMediaD: [  // 뽀잉눈 파일 목록
+    "media/boing/boing-02.mp4",
+    "media/boing/boing-03.mp4",
+    "media/boing/boing-04.mp4",
+    "media/boing/boing-05.mp4",
+    "media/boing/boing-06.mp4",
+  ],
 
   /* ──────── 분양 아바타 (04) ────────
      개수를 늘렸다면 sale5Name … 처럼 번호를 이어서 적어요.
