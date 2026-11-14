@@ -47,6 +47,7 @@ window.PORTFOLIO_CONFIG = {
      실제 작업물은 media 폴더에 파일을 올리고 worksMedia 에 주소를 적어요. 넣은 순서대로 카드가 되고,
      .mp4 .webm .mov 파일은 영상 카드, 그 밖의 사진은 이미지 카드로 자동 인식돼요. 이때 개수는 파일 수로 자동 계산돼요.
      예) worksMediaA: ["media/seonghyeong/01.jpg", "media/seonghyeong/02.mp4"],
+     카드 제목·설명은 worksTitlesA / worksDescsA 에 파일과 같은 순서로 적어요. (없으면 기본 문구)
   */
   countA: 16,  // 성형 임시 카드 수 (파일을 넣으면 무시돼요)
   countB: 12,  // 페이셜 임시 카드 수 (파일을 넣으면 무시돼요)
@@ -54,7 +55,57 @@ window.PORTFOLIO_CONFIG = {
   countD: 12,  // 뽀잉눈 임시 카드 수 (파일을 넣으면 무시돼요)
   worksMediaA: [],  // 성형 파일 목록
   worksMediaB: [],  // 페이셜 파일 목록
-  worksMediaC: [],  // 텍스쳐 파일 목록
+  worksMediaC: [  // 텍스쳐 파일 목록
+    "media/texture/texture-01.webp",
+    "media/texture/texture-02.webp",
+    "media/texture/texture-03.webp",
+    "media/texture/texture-04.webp",
+    "media/texture/texture-05.webp",
+    "media/texture/texture-06.webp",
+    "media/texture/texture-07.webp",
+    "media/texture/texture-08.webp",
+    "media/texture/texture-09.webp",
+    "media/texture/texture-10.webp",
+    "media/texture/texture-11.webp",
+    "media/texture/texture-12.webp",
+    "media/texture/texture-13.jpg",
+    "media/texture/texture-14.webp",
+    "media/texture/texture-15.webp",
+  ],
+  worksTitlesC: [  // 텍스쳐 카드 제목 (파일 순서와 같아요)
+    "Milltina",
+    "Milltina",
+    "Airi",
+    "Mayo",
+    "Airi",
+    "Milltina",
+    "Airi",
+    "Airi",
+    "Chocolat",
+    "Mong Eye",
+    "Mayo",
+    "Kumaly",
+    "Shinano",
+    "Shinano",
+    "Shinano",
+  ],
+  worksDescsC: [  // 텍스쳐 카드 한 줄 설명
+    "makeup",
+    "makeup",
+    "makeup + blendshape",
+    "makeup",
+    "makeup",
+    "makeup",
+    "makeup",
+    "AIRI & CHOCOLAT · makeup + eye + animation",
+    "",
+    "10 Avatar",
+    "makeup + blendshape",
+    "HELTY · blendshape + eye + makeup",
+    "makeup + eye + blendshape",
+    "ROLLY · eye + makeup + blendshape",
+    "eye + makeup + animation",
+  ],
   worksMediaD: [  // 뽀잉눈 파일 목록
     "media/boing/boing-02.mp4",
     "media/boing/boing-03.mp4",

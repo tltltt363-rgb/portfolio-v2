@@ -290,6 +290,10 @@ class Component extends DCLogic {
     const cur = catDefs.find((c) => c.id === tab) || catDefs[0];
     const cards = [];
     const curMedia = mediaLists[cur.id] || [];
+    /* 카드 제목·설명: 'worksTitlesA' / 'worksDescsA' 등 (배열, 또는 | 로 구분한 글자) */
+    const textList = (v) => (Array.isArray(v) ? v.map((x) => String(x == null ? '' : x)) : String(v == null ? '' : v).split('|').map((x) => x.trim()));
+    const curTitles = textList(this.props['worksTitles' + cur.id.toUpperCase()]).filter((x, i, arr) => arr.length > 1 || x);
+    const curDescs = textList(this.props['worksDescs' + cur.id.toUpperCase()]);
     for (let i = 0; i < nFor(cur); i++) {
       const type = typeFor(cur, i);
       if (filter !== 'all' && filter !== type) continue;
@@ -300,8 +304,8 @@ class Component extends DCLogic {
         label: type === 'image' ? 'IMAGE' : 'MP4',
         isImage: type === 'image', isGif: false, isVideo: type === 'video',
         src, thumb: src ? src + '#t=0.5' : '', showPlay: type === 'video' && !src, hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
-        title: '[' + (cur.avatar ? '아바타 이름' : '작업물 제목') + ' ' + pad(i + 1) + ']',
-        meta: cur.avatar ? '[짧은 설명]' : '[한 줄 설명]',
+        title: curTitles[i] ? curTitles[i] : '[' + (cur.avatar ? '아바타 이름' : '작업물 제목') + ' ' + pad(i + 1) + ']',
+        meta: curDescs[i] != null && curDescs[i] !== '' ? curDescs[i] : (curTitles.length ? '' : (cur.avatar ? '[짧은 설명]' : '[한 줄 설명]')),
         hasStatus: !!cur.status,
         statusLabel: sold ? '분양완료' : '분양중',
         statusBg: sold ? 'rgba(43,35,39,0.82)' : accent
@@ -697,7 +701,7 @@ class Component extends DCLogic {
     return {
       accent, heroTiles,
       lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
-      lbTone: lbCur.tone || '#EED9DD', lbRatio: (lbCur.src && lbCur.isVideo) ? '16 / 9' : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
+      lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
       lbSrc: lbCur.src || '', lbHasImg: !!lbCur.src && !!lbCur.isImage, lbHasVid: !!lbCur.src && !!lbCur.isVideo,
       lbTitle: lbIsBa ? baCat.label + ' 사례 ' + (baPos + 1) : (lbCur.title || ''),
