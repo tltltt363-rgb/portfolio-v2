@@ -48,6 +48,7 @@ window.PORTFOLIO_CONFIG = {
      .mp4 .webm .mov 파일은 영상 카드, 그 밖의 사진은 이미지 카드로 자동 인식돼요. 이때 개수는 파일 수로 자동 계산돼요.
      예) worksMediaA: ["media/seonghyeong/01.jpg", "media/seonghyeong/02.mp4"],
      카드 제목·설명은 worksTitlesA / worksDescsA 에 파일과 같은 순서로 적어요. (없으면 기본 문구)
+     판매 링크 버튼은 worksLinkA (버튼 글자 worksLinkLabelA, 안내 문구 worksLinkTextA) 로 카테고리마다 달 수 있어요.
   */
   countA: 16,  // 성형 임시 카드 수 (파일을 넣으면 무시돼요)
   countB: 12,  // 페이셜 임시 카드 수 (파일을 넣으면 무시돼요)
@@ -81,6 +82,9 @@ window.PORTFOLIO_CONFIG = {
     "페이셜",
     "페이셜",
   ],
+  worksLinkC: "https://muridayo.booth.pm/",  // 텍스쳐 판매 링크 (비우면 버튼이 안 보여요)
+  worksLinkLabelC: "BOOTH에서 보기",  // 버튼 글자
+  worksLinkTextC: "텍스쳐 작업물은 BOOTH에서 판매하고 있어요",  // 버튼 옆 안내 문구
   worksMediaC: [  // 텍스쳐 파일 목록
     "media/texture/texture-01.webp",
     "media/texture/texture-02.webp",

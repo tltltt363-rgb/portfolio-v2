@@ -11,7 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=10 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
+  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=11 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
 
   ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
     [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
@@ -267,6 +267,17 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 <sc-if value="{{hasCards}}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:16px;">
+<sc-if value="{{hasWorksLink}}" hint-placeholder-val="{{ false }}">
+<div style="box-sizing:border-box;padding:16px 16px 16px 22px;border-radius:20px;background:#F5E8EA;border:1px solid #EFD3DA;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;">
+<span style="display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#2B2327;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+{{worksLinkText}}
+</span>
+<a href="{{worksLink}}" target="_blank" rel="noopener noreferrer" draggable="false" style="height:46px;padding:0 22px;display:flex;align-items:center;gap:8px;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:15px;font-weight:700;box-shadow:0 10px 20px -10px rgba(164,73,91,0.7);">{{worksLinkLabel}}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+</a>
+</div>
+</sc-if>
 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
 <span aria-live="polite" style="font-size:14px;font-weight:600;color:#6E6266;font-variant-numeric:tabular-nums;">{{wPageLabel}}</span>
 <sc-if value="{{wMulti}}" hint-placeholder-val="{{ true }}">
@@ -911,10 +922,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=10"></script>
+<script src="config.js?v=11"></script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=10"></script>
-<script src="js/portfolio.js?v=10"></script>
+<script src="js/dc-runtime.js?v=11"></script>
+<script src="js/portfolio.js?v=11"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
 </body>
 </html>

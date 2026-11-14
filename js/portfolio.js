@@ -289,6 +289,11 @@ class Component extends DCLogic {
     });
     const cur = catDefs.find((c) => c.id === tab) || catDefs[0];
     const cards = [];
+    /* 카테고리 판매 링크: 'worksLinkA' 등 (+ 'worksLinkLabelA', 'worksLinkTextA') */
+    const linkRaw = String(this.props['worksLink' + cur.id.toUpperCase()] ?? '').trim();
+    const worksLink = linkRaw ? (/^https?:\/\//i.test(linkRaw) ? linkRaw : 'https://' + linkRaw) : '';
+    const worksLinkLabel = String(this.props['worksLinkLabel' + cur.id.toUpperCase()] ?? '').trim() || 'BOOTH에서 보기';
+    const worksLinkText = String(this.props['worksLinkText' + cur.id.toUpperCase()] ?? '').trim() || (cur.label + ' 작업물은 BOOTH에서 판매하고 있어요');
     const curMedia = mediaLists[cur.id] || [];
     /* 카드 제목·설명: 'worksTitlesA' / 'worksDescsA' 등 (배열, 또는 | 로 구분한 글자) */
     const textList = (v) => (Array.isArray(v) ? v.map((x) => String(x == null ? '' : x)) : String(v == null ? '' : v).split('|').map((x) => x.trim()));
@@ -724,6 +729,7 @@ class Component extends DCLogic {
         if (hit) set({ sel: { ...sel, [hit.id]: true } });
       },
       chips, cats, cards, hasCards: cards.length > 0, noCards: cards.length === 0, avatars,
+      hasWorksLink: !!worksLink, worksLink, worksLinkLabel, worksLinkText,
       pages, wMulti: wN > 1, wDots, wPageW: wN > 1 ? 'calc(100% - 88px)' : '100%',
       wShowPrev: wN > 1 && wPage > 0, wShowNext: wN > 1 && wPage < wN - 1, wPrev: () => wGo(-1), wNext: () => wGo(1), wScroll,
       wPageLabel: '총 ' + cards.length + '개 · ' + (wPage + 1) + ' / ' + wN + ' 페이지',
