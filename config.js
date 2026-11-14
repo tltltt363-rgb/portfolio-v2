@@ -94,7 +94,7 @@ window.PORTFOLIO_CONFIG = {
     "Mayo",
     "[아바타 이름]",
     "Milltina",
-    "[아바타 이름]",
+    "Shinano & Milltina",
     "Mayo",
     "Milltina",
     "Mayo",
