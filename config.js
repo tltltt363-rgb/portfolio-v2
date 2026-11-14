@@ -55,6 +55,7 @@ window.PORTFOLIO_CONFIG = {
   countD: 12,  // 뽀잉눈 임시 카드 수 (파일을 넣으면 무시돼요)
   worksMediaA: [],  // 성형 파일 목록
   worksMediaB: [  // 페이셜 파일 목록
+    "media/facial/facial-01.mp4",
     "media/facial/facial-02.mp4",
     "media/facial/facial-03.mp4",
     "media/facial/facial-04.mp4",
@@ -63,6 +64,7 @@ window.PORTFOLIO_CONFIG = {
     "media/facial/facial-07.mp4",
   ],
   worksTitlesB: [  // 페이셜 카드 제목
+    "[아바타 이름]",
     "Mayo",
     "Milltina",
     "[아바타 이름]",
@@ -71,6 +73,7 @@ window.PORTFOLIO_CONFIG = {
     "Milltina",
   ],
   worksDescsB: [  // 페이셜 카드 한 줄 설명
+    "페이셜",
     "페이셜",
     "페이셜",
     "페이셜",
