@@ -35,7 +35,7 @@ window.PORTFOLIO_CONFIG = {
      제목에서 // 를 넣으면 줄이 바뀌어요.
   */
   heroEyebrow: "AVATAR PORTFOLIO",  // 제목 위 작은 영어 글자
-  heroTitle: "화면 속 아바타를 // 더 완성도 있게",  // 큰 제목
+  heroTitle: "화면 속 아바타를 // 더 완성도 있게",  // 큰 제목 (// 로 줄바꿈, 마지막 줄은 강조 색)
   heroDesc: "아래 내용을 확인하신 후, 문의는 언제든 편하게 주세요\n\n제 아바타를 만드는것처럼 한분 한분에게 진심을 담아 아바타를 제작합니다.",  // 제목 아래 설명
 
   /* ━━━━━━━━━━ 맨 위 사진 묶음 ━━━━━━━━━━
@@ -46,7 +46,7 @@ window.PORTFOLIO_CONFIG = {
   heroPhotos: [
     { file: "hero-01.webp", label: "BEFORE" },
     { file: "hero-02.webp", label: "AFTER" },
-    { file: "hero-03.webp", label: "" },
+    { file: "hero-04.webp", label: "" },
   ],
 
   /* ━━━━━━━━━━ 장점 (WHY ME) ━━━━━━━━━━
