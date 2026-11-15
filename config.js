@@ -141,7 +141,6 @@ window.PORTFOLIO_CONFIG = {
   baRatio: "4 / 3",  // 사진 비율
 
   baA: [  // 성형 비포·애프터
-    { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-02-after.webp", title: "개인용 Milltina", desc: "개인적 사용", period: "4일", platform: "VRchat" },
     { before: "", after: "", title: "", desc: "", period: "", platform: "" },
   ],
 
