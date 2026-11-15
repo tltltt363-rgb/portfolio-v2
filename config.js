@@ -238,6 +238,7 @@ window.PORTFOLIO_CONFIG = {
     { link: "https://booth.pm/ko/items/5058077", image: "https://booth.pximg.net/8a7426aa-ba62-4ef0-9e7d-2c8ea96e7c9b/i/5058077/a18424fe-a56e-411a-9c47-27c56909593c_base_resized.jpg", name: "Manuka / 마누카", desc: "" },
     { link: "https://booth.pm/ko/items/5650156", image: "https://booth.pximg.net/817e9a9a-020c-4fac-8b21-96f80d6e25cb/i/5650156/b620a7e2-feae-4c1c-a9da-0364bec82400_base_resized.jpg", name: "Sio / 시오", desc: "" },
     { link: "https://booth.pm/ko/items/4667400", image: "https://booth.pximg.net/f420c992-4225-4ce0-b751-3a4acdceaab6/i/4667400/1641b18e-eb97-4cbe-85fd-0f04cd53b46a_base_resized.jpg", name: "Moe / 모에", desc: "" },
+    { link: "https://booth.pm/ko/items/8562330", image: "", name: "", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
