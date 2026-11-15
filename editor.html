@@ -143,6 +143,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
+const EDITOR_VERSION='2026-11-15-3';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -557,6 +558,9 @@ $('pvToggle').onclick=()=>{const pv=$('pv');const on=!pv.classList.contains('sho
 setTimeout(layoutPreview,0);
 
 window.__editor={get cfg(){return cfg;},buildConfig,parseConfig,get pending(){return pending;}};
+/* 편집기가 새 버전으로 바뀌면 알려줘요 (고친 내용은 임시 저장돼 있어서 새로고침해도 남아요) */
+setInterval(async()=>{try{const t=await fetch('editor.html?t='+Date.now(),{cache:'no-store'}).then((r)=>r.text());const m=t.match(/EDITOR_VERSION='([^']+)'/);
+  if(m&&m[1]!==EDITOR_VERSION){if(dirty)await saveDraft();toast('편집기가 새 버전으로 바뀌었어요.',600000,{label:'새로고침',run:()=>location.reload()});}}catch(e){}},120000);
 connUI();
 load().catch((e)=>{$('main').innerHTML='<div class="loading">config.js 를 불러오지 못했어요: '+esc(e.message)+'</div>';});
 })();
