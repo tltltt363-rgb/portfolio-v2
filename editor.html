@@ -105,6 +105,10 @@ textarea.long{min-height:70px}
 .imgbtns{display:flex;flex-direction:column;gap:6px;align-items:stretch;flex:1;min-width:0}
 .imgthumb.sel{border-color:var(--ac);border-style:solid}
 .imgstate{font-size:12px;color:var(--mut)}
+.posin{width:56px;height:32px;border:1px solid var(--line);border-radius:10px;text-align:center;font-weight:700;font-size:13px;background:#fff;padding:0 4px;color:var(--ink)}
+.posin:focus{outline:none;border-color:var(--ac)}
+.wk .posin.no{position:absolute;top:8px;left:8px;width:52px;height:28px;background:rgba(43,35,39,.78);color:#fff;border:0;border-radius:999px;font-size:12px;padding:0 2px}
+.wk .posin.no:focus{background:var(--ac)}
 .loading{padding:60px 0;text-align:center;color:var(--mut)}
 </style>
 </head>
@@ -160,7 +164,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-6';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-7';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -369,7 +373,7 @@ function renderList(f,val,path){
   let h='<div class="field"><label>'+esc(f.label)+' <small>'+arr.length+'개</small></label><div class="list">';
   arr.forEach((it,i)=>{
     const ip=JSON.stringify(path.concat(i));
-    h+='<div class="row"><div class="row-h"><b>'+esc(f.item)+' '+(i+1)+(it&&(it.name||it.title||it.q||it.label)?' · '+esc(it.name||it.title||it.q||it.label):'')+'</b><span class="sp"></span>'+
+    h+='<div class="row"><div class="row-h">'+'<input type="number" class="posin" min="1" max="'+arr.length+'" value="'+(i+1)+'" data-pos="'+esc(JSON.stringify(path.concat(i)))+'" title="번호를 바꾸고 Enter: 그 자리로 옮겨요" aria-label="순서 번호">'+'<b>'+esc(f.item)+' '+(i+1)+(it&&(it.name||it.title||it.q||it.label)?' · '+esc(it.name||it.title||it.q||it.label):'')+'</b><span class="sp"></span>'+
        (i>0?'<button class="ib" data-act="top" data-path="'+esc(ip)+'" title="맨 위로">⤒</button>':'')+'<button class="ib" data-act="up" data-path="'+esc(ip)+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+esc(ip)+'" title="아래로">↓</button><button class="ib" data-act="dup" data-path="'+esc(ip)+'" title="복사해서 추가">⧉</button><button class="ib del" data-act="del" data-path="'+esc(ip)+'" title="삭제">✕</button></div>'+
        '<div class="'+(f.compact?'grid2':'')+'">';
     f.fields.forEach((sf)=>{h+=renderField(sf,it?it[sf.k]:'',path.concat(i,sf.k));});
@@ -392,7 +396,7 @@ function renderWorksGrid(L){
     const path=mediaPath(L,w.file), pend=pending[path];
     const src=viewUrl(path);
     const ip=esc(JSON.stringify(['works'+L,i]));
-    h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<span class="no">'+(i+1)+'</span>'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
+    h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<input type="number" class="posin no" min="1" max="'+list.length+'" value="'+(i+1)+'" data-pos="'+esc(JSON.stringify(['works'+L,i]))+'" title="번호를 바꾸고 Enter: 그 자리로 옮겨요" aria-label="순서 번호">'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
        '<div class="bd"><input type="text" placeholder="제목 (아바타 이름)" data-path="'+esc(JSON.stringify(['works'+L,i,'title']))+'" value="'+esc(w.title)+'"><input type="text" placeholder="한 줄 설명" data-path="'+esc(JSON.stringify(['works'+L,i,'desc']))+'" value="'+esc(w.desc)+'">'+
        '<input type="url" placeholder="구경하기 링크 (비우면 버튼 없음)" data-path="'+esc(JSON.stringify(['works'+L,i,'link']))+'" value="'+esc(w.link||'')+'">'+
        '<span class="fn">'+esc(w.file)+'</span><div class="ops">'+(i>0?'<button class="ib" data-act="top" data-path="'+ip+'" title="맨 앞으로" style="font-size:12px;font-weight:700">맨앞</button>':'')+'<button class="ib" data-act="up" data-path="'+ip+'" title="앞으로">◀</button><button class="ib" data-act="down" data-path="'+ip+'" title="뒤로">▶</button><button class="ib del" data-act="delwork" data-path="'+ip+'" title="빼기">✕</button></div></div></div>';
@@ -432,7 +436,7 @@ function renderBA(sec){
     const ip=esc(JSON.stringify(['ba'+baL,i]));
     const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=viewUrl(fp);
       return '<div class="baslot" data-baslot="'+esc(JSON.stringify(['ba'+baL,i,k]))+'">'+(c[k]?'<img src="'+esc(src)+'" alt="">':'<span class="baempty">＋<br>'+label+' 사진 넣기</span>')+'<span class="balabel'+(k==='after'?' af':'')+'">'+label.toUpperCase()+'</span>'+(c[k]?'<span class="bachange">바꾸기</span>':'')+'</div>';};
-    h+='<div class="row"><div class="row-h"><b>'+CAT[baL]+' 사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
+    h+='<div class="row"><div class="row-h">'+'<input type="number" class="posin" min="1" max="'+list.length+'" value="'+(i+1)+'" data-pos="'+esc(JSON.stringify(['ba'+baL,i]))+'" title="번호를 바꾸고 Enter: 그 자리로 옮겨요" aria-label="순서 번호">'+'<b>'+CAT[baL]+' 사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
       (i>0?'<button class="ib" data-act="top" data-path="'+ip+'" title="맨 위로">⤒</button>':'')+'<button class="ib" data-act="up" data-path="'+ip+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+ip+'" title="아래로">↓</button><button class="ib del" data-act="del" data-path="'+ip+'" title="삭제">✕</button></div>'+
       '<div class="bapair">'+slot('before','Before')+slot('after','After')+'</div>';
     [F('title','제목'),F('desc','설명',{long:1}),F('period','작업 기간',{hint:'예: 7일'}),F('platform','사용 플랫폼',{hint:'예: VRChat · 치지직'})].forEach((sf)=>{h+=renderField(sf,c[sf.k],['ba'+baL,i,sf.k]);});
@@ -497,6 +501,12 @@ document.addEventListener('click',(e)=>{
   setDirty(true);const ed=document.querySelector('.edit'),y=window.scrollY,ey=ed.scrollTop;render();window.scrollTo(0,y);ed.scrollTop=ey;
 });
 document.addEventListener('click',(e)=>{const t=e.target.closest&&e.target.closest('[data-imgslot]');if(!t)return;imgTarget={path:JSON.parse(t.dataset.imgslot),dir:t.dataset.dir,prefix:t.dataset.prefix};$('imgIn').click();});
+document.addEventListener('change',(e)=>{const t=e.target;if(!t.classList||!t.classList.contains('posin')||t.dataset.done)return;t.dataset.done='1';
+  const path=JSON.parse(t.dataset.pos);const idx=path[path.length-1];const arrPath=path.slice(0,-1);const arr=getAt(arrPath);if(!Array.isArray(arr))return;
+  let to=Math.round(Number(t.value))-1;if(!isFinite(to)){t.value=idx+1;return;}to=Math.max(0,Math.min(arr.length-1,to));
+  if(to!==idx){const it=arr.splice(idx,1)[0];arr.splice(to,0,it);setDirty(true);toast((to+1)+'번 자리로 옮겼어요.');}
+  render();});
+document.addEventListener('keydown',(e)=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('posin')){e.preventDefault();e.target.dispatchEvent(new Event('change',{bubbles:true}));}});
 document.addEventListener('change',(e)=>{if(e.target.classList&&e.target.classList.contains('imgurl')){const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;return;}
   if(e.target.id==='imgIn'&&e.target.files[0]&&imgTarget){setFieldImage(imgTarget.path,e.target.files[0],imgTarget.dir,imgTarget.prefix);e.target.value='';}});
 document.addEventListener('click',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(!sl)return;baSlot=JSON.parse(sl.dataset.baslot);$('baIn').click();});
