@@ -275,7 +275,7 @@ window.PORTFOLIO_CONFIG = {
     { link: "https://booth.pm/ko/items/3681787", image: "https://booth.pximg.net/ed52788c-0b3b-4e38-9ded-1e5797daf0ef/i/3681787/2409bb9f-24f3-42dd-8ad6-89a0656f2166_base_resized.jpg", name: "kikyo / 키쿄", desc: "" },
     { link: "https://booth.pm/ko/items/4035411", image: "https://booth.pximg.net/8a7426aa-ba62-4ef0-9e7d-2c8ea96e7c9b/i/4035411/6f839883-1ab0-48fa-bfca-10c73ab7a33d_base_resized.jpg", name: "Selestia / 셀레스티아", desc: "" },
     { link: "https://booth.pm/ko/items/7502898", image: "https://booth.pximg.net/87b70515-e32e-4a2e-bf41-317cf2c2177c/i/7502898/a2c93b99-de64-49f4-a76b-30ff769a5021_base_resized.jpg", name: "Lumina / 루미나", desc: "" },
-    { link: "https://booth.pm/ko/items/8591283", image: "https://booth.pximg.net/c5f07bf0-8b84-476c-8482-585249aba6c1/i/8591283/0c7101c3-21fc-4650-9a52-02dcdac3f510_base_resized.jpg", name: "", desc: "" },
+    { link: "https://booth.pm/ko/items/8591283", image: "https://booth.pximg.net/c5f07bf0-8b84-476c-8482-585249aba6c1/i/8591283/0c7101c3-21fc-4650-9a52-02dcdac3f510_base_resized.jpg", name: "haruka / 하루카", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
