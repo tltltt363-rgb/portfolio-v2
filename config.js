@@ -46,7 +46,7 @@ window.PORTFOLIO_CONFIG = {
   heroPhotos: [
     { file: "hero-01.webp", label: "BEFORE" },
     { file: "hero-02.webp", label: "AFTER" },
-    { file: "", label: "" },
+    { file: "hero-03.webp", label: "" },
   ],
 
   /* ━━━━━━━━━━ 장점 (WHY ME) ━━━━━━━━━━
