@@ -104,6 +104,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-29.webp", title: "Lumina", desc: "성형", link: "" },
     { file: "seonghyeong-30.webp", title: "Shinano", desc: "성형", link: "" },
     { file: "seonghyeong-31.webp", title: "Eku", desc: "성형", link: "" },
+    { file: "seonghyeong-32.webp", title: "col", desc: "성형", link: "" },
   ],
 
   worksB: [  // 페이셜 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
