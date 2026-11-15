@@ -113,8 +113,8 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-38.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-39.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-40.webp", title: "", desc: "성형", link: "" },
-    { file: "seonghyeong-41.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-42.webp", title: "", desc: "성형", link: "" },
+    { file: "seonghyeong-41.webp", title: "", desc: "성형", link: "" },
   ],
 
   worksB: [  // 페이셜 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
