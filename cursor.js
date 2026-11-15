@@ -29,6 +29,7 @@
 
   var move = function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') { hide(); return; }
+    if (e.target && e.target.tagName === 'IFRAME') { hide(); return; }
     make(); x = e.clientX; y = e.clientY; place(); show();
     if (!root.classList.contains('pf-jscur')) root.classList.add('pf-jscur');
   };
@@ -44,6 +45,9 @@
     var w = window.innerWidth, h = window.innerHeight;
     if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= w - 1 || e.clientY >= h - 1) hide();
   }, true);
+  /* 마우스가 다른 iframe(편집기 미리보기, 아트머그 안의 포트폴리오, 문의 창) 위로 가면
+     그쪽 커서가 대신 그려지니까 이쪽 그림은 숨겨요 (커서 두 개 방지) */
+  document.addEventListener('mouseover', function (e) { if (e.target && e.target.tagName === 'IFRAME') hide(); }, true);
   window.addEventListener('blur', hide);
   document.addEventListener('visibilitychange', function () { if (document.hidden) hide(); });
   /* 아트머그처럼 다른 페이지 안(iframe)에 있을 때: 바깥 페이지가 스크롤되면
