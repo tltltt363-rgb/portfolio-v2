@@ -141,7 +141,7 @@ window.PORTFOLIO_CONFIG = {
   baRatio: "4 / 3",  // 사진 비율
 
   baA: [  // 성형 비포·애프터
-    { before: "ba-seonghyeong-01-before.webp", after: "", title: "", desc: "", period: "", platform: "" },
+    { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-01-after.webp", title: "", desc: "", period: "", platform: "" },
   ],
 
   baB: [  // 페이셜 비포·애프터
