@@ -36,7 +36,7 @@ window.PORTFOLIO_CONFIG = {
   */
   heroEyebrow: "AVATAR PORTFOLIO",  // 제목 위 작은 영어 글자
   heroTitle: "화면 속 아바타를 더 완성도 있게",  // 큰 제목
-  heroDesc: "성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.",  // 제목 아래 설명
+  heroDesc: "아래 내용을 확인하신 후, 문의는 언제든 편하게 주세요\n\n제 아바타를 만드는것처럼 한분 한분에게 진심을 담아 아바타를 제작합니다.",  // 제목 아래 설명
 
   /* ━━━━━━━━━━ 장점 (WHY ME) ━━━━━━━━━━
      tag 는 카드 아래 검은 칩이에요. 비워두면 안 보여요.
@@ -47,10 +47,7 @@ window.PORTFOLIO_CONFIG = {
     { title: "빠른 마감", desc: "약속한 날짜 안에 빠르게 완성해서 보내드려요.", tag: "" },
     { title: "예쁜 성형", desc: "작가만의 미감과 디테일로 아바타를 완성도 있게 살려요", tag: "" },
     { title: "중간 시안 공유", desc: "작업 중간에 결과를 보여드리고 의견을 반영해요.", tag: "" },
-    { title: "방송 화면 맞춤", desc: "방송 화면에서 잘 보이도록 표정과 디테일을 챙겨요.", tag: "" },
     { title: "처음이어도 친절하게", desc: "아바타 작업이 처음이거나 잘 모르시는 부분도 친절하게 안내해 드립니다.", tag: "" },
-    { title: "디테일한 마무리", desc: "작은 부분까지 놓치지 않고 세심하게 다듬어 완성도를 높여드립니다.", tag: "" },
-    { title: "편안한 소통", desc: "원하는 방향을 충분히 듣고 의견을 주고받으며 작업합니다.", tag: "" },
   ],
 
   /* ━━━━━━━━━━ 작업물 ━━━━━━━━━━
@@ -144,6 +141,8 @@ window.PORTFOLIO_CONFIG = {
   baRatio: "4 / 3",  // 사진 비율
 
   baA: [  // 성형 비포·애프터
+    { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-02-after.webp", title: "개인용 Milltina", desc: "개인적 사용", period: "4일", platform: "VRchat" },
+    { before: "", after: "", title: "", desc: "", period: "", platform: "" },
   ],
 
   baB: [  // 페이셜 비포·애프터
