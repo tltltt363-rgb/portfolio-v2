@@ -115,6 +115,7 @@ worksA: [
 |---|---|
 | 브랜드 이름 넣기 | `brandName` |
 | 맨 위 제목·설명 | `heroTitle`, `heroDesc` |
+| 맨 위 사진 묶음 (3장) | `heroPhotos` (사진은 `media/hero`) |
 | 장점 카드 | `strengths` |
 | 비포·애프터 사례 | `baA` ~ `baD` (사진은 `media/before-after`) |
 | 작업물 사진·제목 | `worksA` ~ `worksD` |

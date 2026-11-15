@@ -187,7 +187,14 @@ class Component extends DCLogic {
       { col: '1', row: '1 / span 2', tone: '#E6E0E1', rot: '-1.5', label: 'BEFORE', labelBg: 'rgba(43,35,39,0.78)', labelColor: '#FFFFFF', isImage: true, isVideo: false },
       { col: '2', row: '1', tone: '#F3DDE2', rot: '1.2', label: 'AFTER', labelBg: accent, labelColor: '#FFFFFF', isImage: true, isVideo: false },
       { col: '2', row: '2', tone: '#F2E5E1', rot: '-1', label: 'MP4', labelBg: '#FFFFFF', labelColor: '#2B2327', isImage: false, isVideo: true }
-    ];
+    ].map((t, i) => {
+      /* config.js 의 heroPhotos 로 사진을 넣으면 임시 그림 대신 보여줘요 */
+      const src = String((this.props.heroMedia || [])[i] || '').trim();
+      const lbl = (this.props.heroLabels || [])[i];
+      const vid = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src);
+      const label = src ? String(lbl == null ? '' : lbl).trim() : t.label;
+      return { ...t, src, hasImg: !!src && !vid, hasVid: !!src && vid, ph: !src, label, hasLabel: !!label, isImage: !src && t.isImage, isVideo: !src && t.isVideo };
+    });
 
     /* ---------- strengths ---------- */
     const baseStrengths = [
@@ -917,6 +924,12 @@ window.normalizePortfolioConfig = function (cfg) {
     const path = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:|blob:)/.test(f) || f.indexOf('/') >= 0 ? f : dir + f); };
     c['ba' + L] = b.map((x) => Object.assign({}, x, { before: path(x.before), after: path(x.after) }));
   });
+  const hp = arr(c.heroPhotos);
+  if (hp) {
+    const hpath = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:|blob:|data:)/.test(f) || f.indexOf('/') >= 0 ? f : 'media/hero/' + f); };
+    c.heroMedia = hp.map((x) => hpath(x.file));
+    c.heroLabels = hp.map((x) => x.label || '');
+  }
   const sales = arr(c.sales);
   if (sales) { c.countF = Math.max(1, sales.length); sales.forEach((x, i) => { const k = 'sale' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Price'] = x.price ?? ''; c[k + 'Link'] = x.link || ''; c[k + 'Sold'] = !!x.sold; }); }
   const avs = arr(c.avatars);

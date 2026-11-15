@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-12';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-13';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -173,6 +173,8 @@ const SCHEMA=[
  {tab:'기본',sections:[
   {title:'기본',keys:[F('brandName','브랜드 이름',{hint:'비우면 [브랜드명] 으로 보여요',cm:'브랜드 이름 (비우면 [브랜드명] 으로 보여요). 예: "MURI"'}),F('accent','포인트 색',{type:'color',cm:'포인트 색 (색 코드)'})]},
   {title:'맨 위 첫 화면',desc:'제목에서 // 를 넣으면 줄이 바뀌어요.',keys:[F('heroEyebrow','제목 위 작은 영어 글자',{cm:'제목 위 작은 영어 글자'}),F('heroTitle','큰 제목',{hint:'// 로 줄바꿈',cm:'큰 제목'}),F('heroDesc','설명',{long:1,cm:'제목 아래 설명'})]},
+  {title:'맨 위 사진 묶음',desc:'첫 화면 오른쪽 사진 3장이에요. 1번이 왼쪽 큰 칸, 2번이 오른쪽 위, 3번이 오른쪽 아래예요.\nfile: 사진 (media/hero/ 에 올린 파일 이름 또는 사진 주소, .mp4 는 영상)   label: 사진 위 작은 글씨 (비우면 안 보여요)\n사진을 비워두면 그 칸은 임시 그림으로 보여요.',
+   keys:[F('heroPhotos','사진',{type:'list',item:'사진',max:3,fields:[F('file','사진',{type:'image',dir:'media/hero/',prefix:'hero'}),F('label','사진 위 작은 글씨 (예: BEFORE, AFTER)',{hint:'비우면 안 보여요'})]})]},
   {title:'장점 (WHY ME)',desc:'tag 는 카드 아래 검은 칩이에요. 비워두면 안 보여요.\n맨 위 첫 화면의 체크 칩에는 앞의 3개가 나와요.',keys:[F('strengthsTitle','장점 칸 제목',{cm:'장점 칸 제목'}),F('strengths','장점 카드',{type:'list',item:'장점',fields:[F('title','제목'),F('desc','설명',{long:1}),F('tag','태그 (비우면 안 보여요)')]})]}
  ]},
  {tab:'작업물',sections:[
@@ -200,7 +202,7 @@ const SCHEMA=[
   {title:'분양 아바타',desc:'saleReady: false 면 "준비 중" 안내만 보여요. 아래 목록을 채운 뒤 true 로 바꿔요.\nprice 는 "35,000원" 처럼 글자로 적어요. sold: true 면 "분양완료" 로 바뀌어요.',
    keys:[F('saleReady','분양 아바타 공개',{type:'bool',hint:'끄면 "준비 중" 안내만 보여요',cm:'true = 카드 보이기 / false = 준비 중'}),F('saleSoonTitle','준비 중 제목',{cm:'준비 중 제목'}),F('saleSoonText','준비 중 설명',{cm:'준비 중 설명'}),F('saleIntro','분양 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'분양 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),
     F('sales','분양 아바타',{type:'list',item:'분양 아바타',fields:[F('name','이름'),F('desc','소개'),F('price','분양가 (예: 35,000원)'),F('link','판매 링크'),F('sold','분양 완료',{type:'bool'})]})]},
-  {title:'보유 아바타',desc:'link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생기고, 대표 사진을 자동으로 가져와요.\nimage: 대표 사진 (자동으로 가져온 주소 또는 media/avatars/ 에 올린 파일 이름)',keys:[F('avatarsIntro','보유 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'보유 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),F('avatars','보유 아바타',{type:'list',item:'아바타',fields:[F('link','아바타 링크',{hint:'링크를 넣으면 대표 사진을 자동으로 가져와요'}),F('image','대표 사진',{type:'image',dir:'media/avatars/',prefix:'avatar'}),F('name','이름'),F('desc','소개')]})]}
+  {title:'보유 아바타',desc:'link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생기고, 대표 사진을 자동으로 가져와요.\nimage: 대표 사진 (자동으로 가져온 주소 또는 media/avatars/ 에 올린 파일 이름)',keys:[F('avatarsIntro','보유 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'보유 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),F('avatars','보유 아바타',{type:'list',item:'아바타',fields:[F('link','아바타 링크',{hint:'링크를 넣으면 대표 사진을 자동으로 가져와요'}),F('image','대표 사진',{type:'image',dir:'media/avatars/',prefix:'avatar',fetch:1}),F('name','이름'),F('desc','소개')]})]}
  ]},
  {tab:'진행·주의사항',sections:[
   {title:'진행 과정',desc:'chip 은 단계 아래 작은 회색 칩이에요. 마지막 단계는 진한 색으로 표시돼요.',keys:[F('processSteps','진행 단계',{type:'list',item:'단계',fields:[F('title','제목'),F('desc','설명'),F('chip','작은 칩')]}),F('processFacts','아래 분홍 칸',{type:'list',item:'칸',fields:[F('label','이름'),F('value','내용')],cm:'진행 과정 아래 분홍 칸들'})]},
@@ -222,7 +224,7 @@ const RAW='https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/'+BRANCH+'/';
 const isVidPath=(p)=>/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(p);
 const viewUrl=(p)=>{p=String(p||'');if(!p)return '';const l=localUrl(p);if(l)return l;if(/^(https?:|blob:|data:)/.test(p)||isVidPath(p))return p;return RAW+p.replace(/^\.?\//,'');};
 let repoFiles=new Set();
-async function loadRepoFiles(){if(!token)return;for(const dir of Object.values(FOLDERS).concat([BA_DIR,'media/avatars/'])){try{const r=await gh(dir.replace(/\/$/,''));if(r.ok){(await r.json()).forEach((x)=>repoFiles.add(x.name));}}catch(e){}}}
+async function loadRepoFiles(){if(!token)return;for(const dir of Object.values(FOLDERS).concat([BA_DIR,'media/avatars/','media/hero/'])){try{const r=await gh(dir.replace(/\/$/,''));if(r.ok){(await r.json()).forEach((x)=>repoFiles.add(x.name));}}catch(e){}}}
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -260,6 +262,7 @@ async function load(){
 }
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
+  if(!Array.isArray(cfg.heroPhotos))cfg.heroPhotos=[{file:'',label:'BEFORE'},{file:'',label:'AFTER'},{file:'',label:''}];
   if(cfg.baRatio==null)cfg.baRatio='4 / 3';
   ['A','B','C','D'].forEach((L)=>{
     if(!Array.isArray(cfg['works'+L])&&Array.isArray(cfg['worksMedia'+L])){
@@ -348,7 +351,7 @@ function renderField(f,val,path){
     const v=String(val||'');const fp=!v?'':(/^(https?:|blob:|data:)/.test(v)||v.indexOf('/')>=0?v:f.dir+v);
     const src=fp?viewUrl(fp):'';
     return '<div class="field"><label>'+esc(f.label)+hint+'</label><div class="imgfield"><div class="imgthumb" data-imgslot="'+p+'" data-dir="'+esc(f.dir)+'" data-prefix="'+esc(f.prefix||'img')+'">'+(src?'<img src="'+esc(src)+'" alt="" referrerpolicy="no-referrer">':'<span class="baempty">＋<br>사진</span>')+'</div>'+
-      '<div class="imgbtns"><input type="url" class="imgurl" data-path="'+p+'" placeholder="사진 주소 붙여넣기 (https://...)" value="'+esc(/^https?:/.test(v)?v:'')+'"><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="imgfetch" data-path="'+p+'">링크에서 가져오기</button><button class="btn sm" data-act="imgpick" data-path="'+p+'">사진 파일 넣기</button>'+(v?'<button class="btn sm" data-act="imgclear" data-path="'+p+'">빼기</button>':'')+'</div><span class="imgstate" data-imgstate="'+p+'">사진 칸을 누른 뒤 Ctrl+V 로 복사한 사진을 붙여넣어도 돼요</span></div></div></div>';
+      '<div class="imgbtns"><input type="url" class="imgurl" data-path="'+p+'" placeholder="사진 주소 붙여넣기 (https://...)" value="'+esc(/^https?:/.test(v)?v:'')+'"><div style="display:flex;gap:6px;flex-wrap:wrap">'+(f.fetch?'<button class="btn sm" data-act="imgfetch" data-path="'+p+'">링크에서 가져오기</button>':'')+'<button class="btn sm" data-act="imgpick" data-path="'+p+'">사진 파일 넣기</button>'+(v?'<button class="btn sm" data-act="imgclear" data-path="'+p+'">빼기</button>':'')+'</div><span class="imgstate" data-imgstate="'+p+'">사진 칸을 누른 뒤 Ctrl+V 로 복사한 사진을 붙여넣어도 돼요</span></div></div></div>';
   }
   if(f.type==='bool')return '<div class="field"><label class="toggle"><input type="checkbox" data-path="'+p+'" data-type="bool"'+(val?' checked':'')+'>'+esc(f.label)+'</label>'+(f.hint?'<span style="font-size:12px;color:var(--mut)">'+esc(f.hint)+'</span>':'')+'</div>';
   if(f.type==='number'){const n=Number(val)||0;return '<div class="field"><label>'+esc(f.label)+hint+'</label><input type="number" inputmode="numeric" data-path="'+p+'" data-type="number" value="'+esc(val==null?'':val)+'">'+(/가격|원/.test(f.label)?'<span class="won" data-won="'+p+'">'+n.toLocaleString('ko-KR')+'원</span>':'')+'</div>';}
@@ -368,7 +371,7 @@ function renderList(f,val,path){
     f.fields.forEach((sf)=>{h+=renderField(sf,it?it[sf.k]:'',path.concat(i,sf.k));});
     h+='</div></div>';
   });
-  return h+'</div><button class="btn sm add" data-act="add" data-path="'+esc(JSON.stringify(path))+'">+ '+esc(f.item)+' 추가</button></div>';
+  return h+'</div>'+(f.max&&arr.length>=f.max?'':'<button class="btn sm add" data-act="add" data-path="'+esc(JSON.stringify(path))+'">+ '+esc(f.item)+' 추가</button>')+'</div>';
 }
 const isVid=(f)=>/\.(mp4|webm|mov|m4v)$/i.test(f);
 function mediaPath(L,file){file=String(file||'');return file.indexOf('/')>=0||/^https?:/.test(file)?file:FOLDERS[L]+file;}
@@ -529,7 +532,7 @@ async function setFieldImage(path,file,dir,prefix){
   try{toast('사진 준비 중…',8000);
     const blob=/gif$/i.test(file.type)?file:await toWebp(file);const ext=/gif$/i.test(file.type)?'gif':'webp';
     const used=new Set();repoFiles.forEach((x)=>used.add(x));Object.keys(pending).concat(Object.keys(uploaded)).forEach((x)=>used.add(x.split('/').pop()));
-    (cfg.avatars||[]).forEach((a)=>used.add(String(a.image||'').split('/').pop()));
+    (cfg.avatars||[]).forEach((a)=>used.add(String(a.image||'').split('/').pop()));(cfg.heroPhotos||[]).forEach((a)=>used.add(String(a.file||'').split('/').pop()));
     let n=1,name;do{name=prefix+'-'+String(n).padStart(2,'0')+'.'+ext;n++;}while(used.has(name));
     pending[dir+name]={b64:bytesToB64(new Uint8Array(await blob.arrayBuffer())),url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
     setAt(path,name);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;toast('넣었어요.');
@@ -714,6 +717,7 @@ function previewCfg(){
   ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{if(w.file)w.file=viewUrl(mediaPath(L,w.file));delete w._orig;}));
   ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{if(x[k])x[k]=viewUrl(baPath(x[k]));});}));
   if(Array.isArray(c.heroMedia))c.heroMedia=c.heroMedia.map(viewUrl);
+  (c.heroPhotos||[]).forEach((x)=>{const v=String(x.file||'');if(v&&!/^(https?:|blob:|data:)/.test(v))x.file=viewUrl(v.indexOf('/')>=0?v:'media/hero/'+v);});
   (c.avatars||[]).forEach((a)=>{const v=String(a.image||'');if(v&&!/^(https?:|blob:|data:)/.test(v))a.image=viewUrl(v.indexOf('/')>=0?v:'media/avatars/'+v);});
   return c;
 }

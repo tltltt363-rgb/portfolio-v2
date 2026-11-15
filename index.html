@@ -98,8 +98,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px;">
 <sc-for list="{{heroTiles}}" as="t" hint-placeholder-count="3">
 <div style="grid-column:{{t.col}};grid-row:{{t.row}};position:relative;box-sizing:border-box;border:6px solid #FFFFFF;border-radius:24px;overflow:hidden;background-color:{{t.tone}};box-shadow:0 3px 6px rgba(80,40,55,0.1),0 22px 36px -14px rgba(80,40,55,0.38);transform:rotate({{t.rot}}deg);">
-<div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
-<span style="position:absolute;top:12px;left:12px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:{{t.labelBg}};color:{{t.labelColor}};font-size:12px;font-weight:600;letter-spacing:0.04em;">{{t.label}}</span>
+<sc-if value="{{t.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{t.src}}" alt="" draggable="false" referrerpolicy="no-referrer" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{t.hasVid}}" hint-placeholder-val="{{ false }}"><video src="{{t.src}}" autoplay muted loop playsinline preload="auto" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></video></sc-if>
+<sc-if value="{{t.ph}}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div></sc-if>
+<sc-if value="{{t.hasLabel}}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:12px;left:12px;z-index:1;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:{{t.labelBg}};color:{{t.labelColor}};font-size:12px;font-weight:600;letter-spacing:0.04em;">{{t.label}}</span></sc-if>
 <sc-if value="{{t.isVideo}}" hint-placeholder-val="{{ false }}">
 <div style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;">
 <div style="width:56px;height:56px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#2B2327;box-shadow:0 8px 16px -4px rgba(80,40,55,0.35);">
@@ -975,8 +977,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=42"></script>
-<script src="js/portfolio.js?v=42"></script>
+<script src="js/dc-runtime.js?v=43"></script>
+<script src="js/portfolio.js?v=43"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
