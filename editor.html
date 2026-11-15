@@ -143,7 +143,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-3';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-4';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -259,8 +259,12 @@ async function saveDraft(){
 async function restoreDraft(){
   let d=null;try{d=await idbGet();}catch(e){}
   if(!d)return false;
-  Object.keys(d.changed||{}).forEach((k)=>{cfg[k]=d.changed[k];});
-  (d.removed||[]).forEach((k)=>{delete cfg[k];});
+  /* 이미 사이트에 저장된 것과 같은 값은 빼요 (다른 곳에서 저장된 경우) */
+  const ch={};Object.keys(d.changed||{}).forEach((k)=>{if(JSON.stringify(d.changed[k])!==JSON.stringify(cfg[k]))ch[k]=d.changed[k];});
+  d.changed=ch;d.removed=(d.removed||[]).filter((k)=>k in cfg);
+  if(!Object.keys(ch).length&&!d.removed.length&&!Object.keys(d.files||{}).length){clearDraft();return false;}
+  Object.keys(ch).forEach((k)=>{cfg[k]=ch[k];});
+  d.removed.forEach((k)=>{delete cfg[k];});
   Object.keys(d.files||{}).forEach((p)=>{
     const f=d.files[p];const bin=atob(f.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
     const blob=new Blob([u],{type:f.type||''});pending[p]={b64:f.b64,url:URL.createObjectURL(blob),size:blob.size,type:f.type||''};
