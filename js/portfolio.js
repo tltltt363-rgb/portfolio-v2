@@ -302,7 +302,7 @@ class Component extends DCLogic {
       { id: 'a', label: '성형', base: 'image', n: num(this.props.countA, 16), icon: 'iFace' },
       { id: 'b', label: '페이셜', base: 'video', n: num(this.props.countB, 12), icon: 'iSmile' },
       { id: 'c', label: '텍스쳐', base: 'image', n: num(this.props.countC, 12), icon: 'iBrush' },
-      { id: 'e', label: String(this.props.worksLabelE || '텍스쳐 비포·애프터'), base: 'image', n: num(this.props.countE, 4), icon: 'iBrush', pair: true },
+      { id: 'e', label: String(this.props.worksLabelE || '텍스쳐 비포·애프터'), base: 'image', n: num(this.props.countE, 4), icon: 'iBrush' },
       { id: 'd', label: '뽀잉눈', base: 'video', n: num(this.props.countD, 12), icon: 'iEye' }
     ].map((c) => ({ ...c, n: Math.min(500, Math.max(1, Math.round(c.n))) }));
     const tab = st.tab || 'a';
@@ -924,15 +924,7 @@ window.normalizePortfolioConfig = function (cfg) {
     if (!w) return;
     const dir = String(c['worksFolder' + L] || folders[L]).replace(/\/?$/, '/');
     const path = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:)?\/\//.test(f) || f.indexOf('/') >= 0 ? f : dir + f); };
-    if (L === 'E') {
-      const rowsE = w.filter((x) => x.before || x.after || x.title);
-      c.worksMediaE = rowsE.map((x) => path(x.after));
-      c.worksBeforeE = rowsE.map((x) => path(x.before));
-      c.worksTitlesE = rowsE.map((x) => x.title || '');
-      c.worksDescsE = rowsE.map((x) => x.desc || '');
-      if (rowsE.length) c.countE = rowsE.length;
-      return;
-    }
+    if (L === 'E') w.forEach((x) => { if (!x.file && (x.after || x.before)) x.file = x.after || x.before; });
     const rows = w.filter((x) => x.file);
     c['worksMedia' + L] = rows.map((x) => path(x.file));
     c['worksTitles' + L] = rows.map((x) => x.title || '');

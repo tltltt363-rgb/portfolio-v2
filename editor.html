@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-1';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-2';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -264,6 +264,7 @@ async function load(){
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
   if(!Array.isArray(cfg.worksE))cfg.worksE=[];
+  cfg.worksE=cfg.worksE.filter((x)=>x&&(x.file||x.after||x.before||x.title)).map((x)=>({file:x.file||x.after||x.before||'',title:x.title||'',desc:x.desc||''}));
   if(!Array.isArray(cfg.heroPhotos))cfg.heroPhotos=[{file:'',label:'BEFORE'},{file:'',label:'AFTER'},{file:'',label:''}];
   if(cfg.baRatio==null)cfg.baRatio='4 / 3';
   ['A','B','C','D'].forEach((L)=>{
@@ -382,7 +383,6 @@ function renderWorks(sec){
   h+=renderField(sec.keys[0],cfg.worksIntro,['worksIntro']);
   h+='<div class="sub">'+['A','B','C','E','D'].map((L)=>'<button class="tab'+(L===worksL?' on':'')+'" data-works="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['works'+L]||[]).length+'</span></button>').join('')+'</div>';
   const L=worksL, list=cfg['works'+L]||[];
-  if(L==='E')return h+renderPairWorks(list);
   h+='<div class="works">';
   list.forEach((w,i)=>{
     const path=mediaPath(L,w.file), pend=pending[path];
@@ -604,7 +604,7 @@ function buildConfig(){
   SCHEMA.forEach((tab)=>tab.sections.forEach((s)=>{
     sec(s.title,s.desc);
     s.keys.forEach((f)=>{
-      if(f.type==='works'){w('');objList(f.k,f.L==='E'?['before','after','title','desc']:['file','title','desc'],CAT[f.L]+(f.L==='E'?' (before/after: media/texture-ba/ 의 파일 이름)':''));return;}
+      if(f.type==='works'){w('');objList(f.k,['file','title','desc'],CAT[f.L]);return;}
       if(f.type==='ba'){w('');objList(f.k,['before','after','title','desc','period','platform'],CAT[f.L]+' 비포·애프터');return;}
       if(f.hidden){kv(f.k,f.cm);return;}
       if(f.opt){if(cfg[f.k]!==undefined&&cfg[f.k]!=='')kv(f.k,f.label);else done.add(f.k);return;}
