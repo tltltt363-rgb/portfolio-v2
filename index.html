@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="52">
+<meta name="pf-build" content="53">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -40,7 +40,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 @keyframes pfFloatSoft{0%,100%{translate:0 0}50%{translate:0 -6px}}
 .pf-float{animation:pfFloat 6s ease-in-out infinite;will-change:translate}
 .pf-float-soft{animation:pfFloatSoft 7s ease-in-out infinite;will-change:translate}
-@media (prefers-reduced-motion:reduce){.pf-float,.pf-float-soft{animation:none}}
+@keyframes pfFloatTiny{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media (prefers-reduced-motion:reduce){.pf-float,.pf-float-soft{animation-name:pfFloatTiny;animation-duration:8s !important}}
 @keyframes evPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,0.85),0 8px 18px -6px rgba(43,35,39,0.45)}70%{box-shadow:0 0 0 14px rgba(255,255,255,0),0 8px 18px -6px rgba(43,35,39,0.45)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 8px 18px -6px rgba(43,35,39,0.45)}}
 .ev-pulse{animation:evPulse 1.8s ease-out infinite}
 .ev-btn{transition:transform .15s ease}.ev-btn:hover{transform:translateY(-1px)}
@@ -994,8 +995,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=52"></script>
-<script src="js/portfolio.js?v=52"></script>
+<script src="js/dc-runtime.js?v=53"></script>
+<script src="js/portfolio.js?v=53"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
