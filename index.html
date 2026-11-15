@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="48">
+<meta name="pf-build" content="49">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -989,8 +989,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=48"></script>
-<script src="js/portfolio.js?v=48"></script>
+<script src="js/dc-runtime.js?v=49"></script>
+<script src="js/portfolio.js?v=49"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
@@ -1028,6 +1028,26 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
   window.parent.postMessage({ type: 'pf-ready' }, location.origin);
 })();
 </script>
+<script>
+/* 영상·사진 저장 막기: 우클릭 메뉴, 끌어서 저장, 영상 다운로드 버튼, 화면 속 화면(PIP)을 막아요 */
+(function () {
+  var app = document.getElementById('app');
+  function guard(root) {
+    (root.querySelectorAll ? root.querySelectorAll('video') : []).forEach(function (v) {
+      if (v.dataset.guarded) return; v.dataset.guarded = '1';
+      v.setAttribute('controlslist', 'nodownload noplaybackrate noremoteplayback');
+      v.setAttribute('disablepictureinpicture', '');
+      v.setAttribute('disableremoteplayback', '');
+      try { v.disablePictureInPicture = true; } catch (e) {}
+    });
+  }
+  function isMedia(t) { return t && (t.tagName === 'VIDEO' || t.tagName === 'IMG' || (t.closest && t.closest('.zoomable, #lightbox'))); }
+  document.addEventListener('contextmenu', function (e) { if (isMedia(e.target)) e.preventDefault(); }, true);
+  document.addEventListener('dragstart', function (e) { if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) e.preventDefault(); }, true);
+  if (app) { guard(app); new MutationObserver(function () { guard(app); }).observe(app, { childList: true, subtree: true }); }
+})();
+</script>
+<style>#app video, #app img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }</style>
 <script>
 /* 브라우저에 예전 사이트가 남아 있으면 한 번 새로 불러와요 */
 (function () {
