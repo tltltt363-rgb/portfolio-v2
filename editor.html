@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>포트폴리오 편집기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{--ac:#A4495B;--ink:#2B2327;--mut:#6E6266;--line:#EAD3D9;--bg:#F8F2F1;--soft:#F5E8EA}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:12px clamp(14px,3vw,32px);flex-wrap:wrap}
+.top h1{margin:0;font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
+.top h1 i{width:10px;height:10px;border-radius:50%;background:var(--ac);display:inline-block}
+.top .sp{flex:1}
+.status{font-size:13px;color:var(--mut)}
+.status.dirty{color:var(--ac);font-weight:700}
+a.btn{text-decoration:none;color:inherit}
+.btn{height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 8px 16px -8px rgba(164,73,91,.7)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.sm{height:34px;padding:0 12px;font-size:13px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:12px clamp(14px,3vw,32px) 0;max-width:1180px;margin:0 auto}
+.tab{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600}
+.tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:16px clamp(14px,3vw,32px) 120px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:18px}
+.card .hint{margin:0 0 14px;color:var(--mut);font-size:13px;line-height:1.6;white-space:pre-line}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field>label{font-size:13px;font-weight:700}
+.field>label small{font-weight:500;color:var(--mut);margin-left:6px}
+input[type=text],input[type=number],input[type=url],textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#FCF8F8;outline:none}
+input:focus,textarea:focus{border-color:var(--ac);background:#fff}
+textarea{min-height:70px;resize:vertical;line-height:1.5}
+.won{font-size:12px;color:var(--ac);font-weight:700}
+.toggle{display:inline-flex;align-items:center;gap:10px;font-weight:600}
+.toggle input{width:20px;height:20px;accent-color:var(--ac)}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{border:1px solid var(--line);border-radius:16px;padding:14px;background:#FFFCFC}
+.row-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.row-h b{font-size:13px;color:var(--ac)}
+.row-h .sp{flex:1}
+.ib{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;line-height:1}
+.ib.del{color:#C0262D}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px}
+.add{margin-top:10px}
+.sub{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.works{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.wk{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.wk .th{position:relative;aspect-ratio:1/1;background:#F3E6E9}
+.wk .th img,.wk .th video{width:100%;height:100%;object-fit:cover;display:block}
+.wk .no{position:absolute;top:8px;left:8px;background:rgba(43,35,39,.75);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px}
+.wk .new{position:absolute;top:8px;right:8px;background:var(--ac);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:3px 8px}
+.wk .bd{padding:10px;display:flex;flex-direction:column;gap:6px}
+.wk .bd input{padding:8px 10px;font-size:14px}
+.wk .fn{font-size:11px;color:var(--mut);word-break:break-all}
+.wk .ops{display:flex;gap:6px;justify-content:space-between}
+.drop{border:2px dashed #D9B8C1;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:190px;color:var(--ac);font-weight:700;background:#FFF8F9;cursor:pointer;text-align:center;padding:12px}
+.drop small{color:var(--mut);font-weight:500}
+.drop.over{background:#F7DCE3}
+.modal{position:fixed;inset:0;background:rgba(43,35,39,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.on{display:flex}
+.box{background:#fff;border-radius:24px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:24px}
+.box h3{margin:0 0 8px;font-size:20px}
+.box ol{padding-left:20px;line-height:1.8;margin:8px 0 16px}
+.box code{background:var(--soft);padding:1px 6px;border-radius:6px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;z-index:60;display:none;max-width:90vw;text-align:center;line-height:1.5}
+.toast.on{display:block}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--soft);color:var(--ac)}
+.pill.ok{background:#E3F2EA;color:#1F6146}
+@media (max-width:600px){.works{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.wk .bd input{font-size:13px;padding:7px 8px}.top{gap:8px}}
+.loading{padding:60px 0;text-align:center;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1><i></i>포트폴리오 편집기</h1>
+  <span id="conn" class="pill">연결 안 됨</span>
+  <span class="sp"></span>
+  <span id="status" class="status"></span>
+  <a class="btn" href="./" target="_blank" rel="noopener">사이트 보기 ↗</a>
+  <button id="connBtn" class="btn">GitHub 연결</button>
+  <button id="saveBtn" class="btn pri" disabled>저장하기</button>
+</div>
+<nav class="tabs" id="tabs"></nav>
+<main id="main"><div class="loading">불러오는 중…</div></main>
+
+<div class="modal" id="connModal">
+  <div class="box">
+    <h3>GitHub 연결하기 (처음 한 번만)</h3>
+    <p style="margin:0;color:var(--mut);line-height:1.6">편집기가 저장소에 직접 저장하려면 <b>연결 키(토큰)</b>가 필요해요. 이 키는 <b>이 브라우저에만</b> 저장되고 다른 곳으로 보내지지 않아요. 채팅이나 다른 사람에게는 절대 보내지 마세요.</p>
+    <ol>
+      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">여기를 눌러 키 만들기 화면</a>을 열어요. (GitHub 로그인 필요)</li>
+      <li><b>Token name</b>: 아무 이름 (예: <code>포트폴리오 편집기</code>)</li>
+      <li><b>Expiration</b>: 원하는 기간 (끝나면 새로 만들면 돼요)</li>
+      <li><b>Repository access</b>: <code>Only select repositories</code> → <code>portfolio-v2</code> 선택</li>
+      <li><b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b> 를 <code>Read and write</code> 로</li>
+      <li>맨 아래 <b>Generate token</b> → 나온 키(<code>github_pat_</code>로 시작)를 복사해서 아래에 붙여넣어요.</li>
+    </ol>
+    <div class="field"><label>연결 키</label><input id="tokenInput" type="text" placeholder="github_pat_..." autocomplete="off" spellcheck="false"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn" id="tokenForget">연결 끊기</button>
+      <button class="btn" id="tokenCancel">닫기</button>
+      <button class="btn pri" id="tokenSave">연결하기</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
+const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
+const TOKEN_KEY='pf-editor-token';
+const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
+const CAT={A:'성형',B:'페이셜',C:'텍스쳐',D:'뽀잉눈'};
+
+/* ── 설정 항목 정의: 화면(탭)과 config.js 저장 순서를 함께 정해요 ── */
+const F=(k,label,o)=>Object.assign({k,label},o||{});
+const SCHEMA=[
+ {tab:'기본',sections:[
+  {title:'기본',keys:[F('brandName','브랜드 이름',{hint:'비우면 [브랜드명] 으로 보여요',cm:'브랜드 이름 (비우면 [브랜드명] 으로 보여요). 예: "MURI"'}),F('accent','포인트 색',{type:'color',cm:'포인트 색 (색 코드)'})]},
+  {title:'맨 위 첫 화면',desc:'제목에서 // 를 넣으면 줄이 바뀌어요.',keys:[F('heroEyebrow','제목 위 작은 영어 글자',{cm:'제목 위 작은 영어 글자'}),F('heroTitle','큰 제목',{hint:'// 로 줄바꿈',cm:'큰 제목'}),F('heroDesc','설명',{long:1,cm:'제목 아래 설명'})]},
+  {title:'장점 (WHY ME)',desc:'tag 는 카드 아래 검은 칩이에요. 비워두면 안 보여요.\n맨 위 첫 화면의 체크 칩에는 앞의 3개가 나와요.',keys:[F('strengths','장점 카드',{type:'list',item:'장점',fields:[F('title','제목'),F('desc','설명',{long:1}),F('tag','태그 (비우면 안 보여요)')]})]}
+ ]},
+ {tab:'작업물',sections:[
+  {title:'작업물',works:true,desc:'file: 파일 이름 — 각 카테고리 폴더에 올린 파일 이름만 적으면 돼요.\n   성형 → media/seonghyeong/   페이셜 → media/facial/\n   텍스쳐 → media/texture/     뽀잉눈 → media/boing/\n   (파일 올리기: 편집기의 "사진·영상 추가" 또는 GitHub "Add file → Upload files")\ntitle: 카드 제목 (아바타 이름)   desc: 카드 아래 한 줄 설명\n.mp4 .webm .mov 는 영상(자동 재생), 나머지는 사진으로 보여요.\n목록에 적은 순서대로 카드가 되고, 6개씩 한 페이지예요.',
+   keys:[F('worksIntro','작업물 제목 아래 한 줄 설명',{hint:'비우면 안 보여요',cm:'작업물 제목 아래 한 줄 설명 (비우면 안 보여요)'}),
+    F('worksA','성형',{type:'works',L:'A'}),F('worksLinkA','성형 판매 링크',{opt:1}),F('worksLinkLabelA','버튼 글자',{opt:1}),F('worksLinkTextA','버튼 옆 안내 문구',{opt:1}),
+    F('worksB','페이셜',{type:'works',L:'B'}),F('worksLinkB','페이셜 판매 링크',{opt:1}),F('worksLinkLabelB','버튼 글자',{opt:1}),F('worksLinkTextB','버튼 옆 안내 문구',{opt:1}),
+    F('worksC','텍스쳐',{type:'works',L:'C'}),F('worksLinkC','텍스쳐 판매 링크',{opt:1}),F('worksLinkLabelC','버튼 글자',{opt:1}),F('worksLinkTextC','버튼 옆 안내 문구',{opt:1}),
+    F('worksD','뽀잉눈',{type:'works',L:'D'}),F('worksLinkD','뽀잉눈 판매 링크',{opt:1}),F('worksLinkLabelD','버튼 글자',{opt:1}),F('worksLinkTextD','버튼 옆 안내 문구',{opt:1})]}
+ ]},
+ {tab:'가격',sections:[
+  {title:'가격 계산기 · 이벤트',keys:[F('eventText','이벤트 안내',{hint:'비우면 이벤트 배너가 안 보여요',cm:'이벤트 안내 (비우면 이벤트 배너가 안 보여요)'})]},
+  {title:'가격 계산기 · 세트 상품',desc:'items: 포함 작업을 + 로 나눠 적어요. 개별 작업 이름이 들어 있으면 그 작업이 "세트 포함"으로 잠겨요.\nnote: 추가 안내 (// 를 넣으면 줄이 바뀌어요, 비우면 안 보여요)\nbestSet: 추천 표시할 세트 번호 (0이면 없음)',
+   keys:[F('bestSet','추천 세트 번호',{type:'number',hint:'0이면 없음',cm:'추천 세트 번호'}),F('sets','세트 상품',{type:'list',item:'세트',fields:[F('name','이름'),F('items','포함 작업',{hint:'+ 로 나눠 적어요'}),F('price','가격 (원)',{type:'number'}),F('note','추가 안내',{long:1,hint:'비우면 안 보여요'}),F('desc','한 줄 설명',{hint:'비우면 안 보여요'})]})]},
+  {title:'가격 계산기 · 개별 작업',desc:'group: 분류 (같은 분류끼리 한 상자로 묶여요. 같은 분류는 붙여서 적어 주세요)\nname: 이름   desc: 이름 아래 작은 설명 (비우면 안 보여요)   price: 가격 (원, 0이면 "가격 문의")',
+   keys:[F('items','개별 작업',{type:'list',item:'작업',compact:1,fields:[F('group','분류'),F('name','이름'),F('desc','작은 설명'),F('price','가격 (원, 0이면 가격 문의)',{type:'number'})]})]},
+  {title:'가격 계산기 · 추가 옵션',keys:[F('dl3Name','마감 옵션 1 이름',{cm:'마감 옵션 1 이름'}),F('dl3Pct','마감 옵션 1 추가 비율 (%)',{type:'number',cm:'마감 옵션 1 추가 비율 (%)'}),F('dl1Name','마감 옵션 2 이름',{cm:'마감 옵션 2 이름'}),F('dl1Pct','마감 옵션 2 추가 비율 (%)',{type:'number',cm:'마감 옵션 2 추가 비율 (%)'}),F('revisionFree','무료 수정 횟수',{type:'number',cm:'무료 수정 횟수 (0이면 안내 안 보여요)'}),F('revisionPrice','수정 1회 추가 가격 (원)',{type:'number',cm:'수정 1회 추가 가격 (원)'})]}
+ ]},
+ {tab:'아바타',sections:[
+  {title:'분양 아바타',desc:'saleReady: false 면 "준비 중" 안내만 보여요. 아래 목록을 채운 뒤 true 로 바꿔요.\nprice 는 "35,000원" 처럼 글자로 적어요. sold: true 면 "분양완료" 로 바뀌어요.',
+   keys:[F('saleReady','분양 아바타 공개',{type:'bool',hint:'끄면 "준비 중" 안내만 보여요',cm:'true = 카드 보이기 / false = 준비 중'}),F('saleSoonTitle','준비 중 제목',{cm:'준비 중 제목'}),F('saleSoonText','준비 중 설명',{cm:'준비 중 설명'}),F('saleIntro','분양 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'분양 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),
+    F('sales','분양 아바타',{type:'list',item:'분양 아바타',fields:[F('name','이름'),F('desc','소개'),F('price','분양가 (예: 35,000원)'),F('link','판매 링크'),F('sold','분양 완료',{type:'bool'})]})]},
+  {title:'보유 아바타',desc:'link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.',keys:[F('avatarsIntro','보유 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'보유 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),F('avatars','보유 아바타',{type:'list',item:'아바타',fields:[F('name','이름'),F('desc','소개'),F('link','아바타 링크')]})]},
+  {title:'비포·애프터',desc:'카테고리별 사례 개수예요.',keys:[F('baCountA','성형 사례 수',{type:'number',cm:'성형 사례 수'}),F('baCountB','페이셜 사례 수',{type:'number',cm:'페이셜 사례 수'}),F('baCountC','텍스쳐 사례 수',{type:'number',cm:'텍스쳐 사례 수'}),F('baCountD','뽀잉눈 사례 수',{type:'number',cm:'뽀잉눈 사례 수'})]}
+ ]},
+ {tab:'진행·주의사항',sections:[
+  {title:'진행 과정',desc:'chip 은 단계 아래 작은 회색 칩이에요. 마지막 단계는 진한 색으로 표시돼요.',keys:[F('processSteps','진행 단계',{type:'list',item:'단계',fields:[F('title','제목'),F('desc','설명'),F('chip','작은 칩')]}),F('processFacts','아래 분홍 칸',{type:'list',item:'칸',fields:[F('label','이름'),F('value','내용')],cm:'진행 과정 아래 분홍 칸들'})]},
+  {title:'주의사항',desc:'title: 굵은 첫 줄. **글자** 처럼 별표 두 개로 감싸면 강조돼요. 끝에 (괄호) 를 쓰면 회색으로 보여요.\ntag: 적으면 빨간 칸으로 강조돼요 (예: "필독"). 비우면 일반 칸이에요.\nitems: 아래 작은 점 목록이에요.',
+   keys:[F('notices','주의사항',{type:'list',item:'주의사항',fields:[F('tag','강조 태그 (예: 필독, 비우면 일반)'),F('title','굵은 첫 줄',{long:1}),F('items','아래 점 목록',{type:'strings'})]}),F('impossible','불가능 작업',{type:'strings',cm:'불가능 작업 (끝에 (괄호) 를 쓰면 회색으로 보여요)'}),F('deadlineText','작업 기한 (큰 글자)',{cm:'작업 기한 (큰 글자)'}),F('deadlineNote','작업 기한 아래 설명',{long:1,cm:'작업 기한 아래 설명'})]},
+  {title:'자주 묻는 질문',desc:'q: 질문, a: 답변. 줄을 복사하면 질문이 늘어나요.',keys:[F('faqs','자주 묻는 질문',{type:'list',item:'질문',fields:[F('q','질문'),F('a','답변',{long:1})]})]}
+ ]}
+];
+
+/* ── 상태 ── */
+let cfg=null, tabIdx=0, worksL='A', dirty=false, saving=false;
+let pending={}; /* path -> {b64, url, size} */
+let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
+const $=(id)=>document.getElementById(id);
+const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg,ms){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
+function setDirty(v){dirty=v;const s=$('status');const n=Object.keys(pending).length;s.textContent=v?('저장 안 한 변경 있음'+(n?' · 새 파일 '+n+'개':'')):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
+function connUI(){const c=$('conn');if(token){c.textContent='GitHub 연결됨';c.className='pill ok';$('connBtn').textContent='연결 설정';}else{c.textContent='연결 안 됨';c.className='pill';$('connBtn').textContent='GitHub 연결';}}
+window.addEventListener('beforeunload',(e)=>{if(dirty){e.preventDefault();e.returnValue='';}});
+
+/* ── 불러오기 ── */
+function parseConfig(text){const w={};new Function('window',text)(w);if(!w.PORTFOLIO_CONFIG)throw new Error('config 없음');return w.PORTFOLIO_CONFIG;}
+const b64ToText=(b64)=>new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g,'')),(c)=>c.charCodeAt(0)));
+const textToB64=(text)=>bytesToB64(new TextEncoder().encode(text));
+function bytesToB64(bytes){let s='';const CH=0x8000;for(let i=0;i<bytes.length;i+=CH)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH));return btoa(s);}
+async function gh(path,opt){
+  const r=await fetch(API+path.split('/').map(encodeURIComponent).join('/')+(opt&&opt.method==='PUT'?'':'?ref='+BRANCH),Object.assign({headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}},opt||{}));
+  return r;
+}
+async function load(){
+  let text=null;
+  if(token){try{const r=await gh('config.js');if(r.ok){const j=await r.json();text=b64ToText(j.content);}else if(r.status===401){toast('연결 키가 만료됐거나 잘못됐어요. 다시 연결해 주세요.',4000);}}catch(e){}}
+  if(text==null){const r=await fetch('config.js?t='+Date.now(),{cache:'no-store'});text=await r.text();}
+  cfg=parseConfig(text);
+  normalizeOld();
+  render();
+}
+/* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
+function normalizeOld(){
+  ['A','B','C','D'].forEach((L)=>{
+    if(!Array.isArray(cfg['works'+L])&&Array.isArray(cfg['worksMedia'+L])){
+      const t=cfg['worksTitles'+L]||[],d=cfg['worksDescs'+L]||[];
+      cfg['works'+L]=cfg['worksMedia'+L].map((m,i)=>({file:String(m).split('/').pop(),title:t[i]||'',desc:d[i]||''}));
+      delete cfg['worksMedia'+L];delete cfg['worksTitles'+L];delete cfg['worksDescs'+L];
+    }
+    if(!Array.isArray(cfg['works'+L]))cfg['works'+L]=[];
+  });
+}
+
+/* ── 그리기 ── */
+function render(){
+  $('tabs').innerHTML=SCHEMA.map((t,i)=>'<button class="tab'+(i===tabIdx?' on':'')+'" data-tab="'+i+'">'+esc(t.tab)+'</button>').join('');
+  const t=SCHEMA[tabIdx];
+  let h='';
+  t.sections.forEach((sec)=>{
+    h+='<section class="card"><h2>'+esc(sec.title)+'</h2>'+(sec.desc&&!sec.works?'<p class="hint">'+esc(sec.desc)+'</p>':'');
+    if(sec.works){h+=renderWorks(sec);}
+    else sec.keys.forEach((f)=>{h+=renderField(f,cfg[f.k],[f.k]);});
+    h+='</section>';
+  });
+  $('main').innerHTML=h;
+}
+function renderField(f,val,path){
+  const p=esc(JSON.stringify(path));
+  const hint=f.hint?'<small>'+esc(f.hint)+'</small>':'';
+  if(f.type==='list')return renderList(f,val,path);
+  if(f.type==='strings'){
+    const arr=Array.isArray(val)?val:[];
+    let h='<div class="field"><label>'+esc(f.label)+hint+'</label><div class="list">';
+    arr.forEach((s,i)=>{const ip=JSON.stringify(path.concat(i));h+='<div style="display:flex;gap:6px;align-items:center"><input type="text" data-path="'+esc(ip)+'" value="'+esc(s)+'"><button class="ib" data-act="up" data-path="'+esc(ip)+'" title="위로">↑</button><button class="ib del" data-act="del" data-path="'+esc(ip)+'" title="삭제">✕</button></div>';});
+    return h+'</div><button class="btn sm add" data-act="addstr" data-path="'+p+'">+ 줄 추가</button></div>';
+  }
+  if(f.type==='bool')return '<div class="field"><label class="toggle"><input type="checkbox" data-path="'+p+'" data-type="bool"'+(val?' checked':'')+'>'+esc(f.label)+'</label>'+(f.hint?'<span style="font-size:12px;color:var(--mut)">'+esc(f.hint)+'</span>':'')+'</div>';
+  if(f.type==='number'){const n=Number(val)||0;return '<div class="field"><label>'+esc(f.label)+hint+'</label><input type="number" inputmode="numeric" data-path="'+p+'" data-type="number" value="'+esc(val==null?'':val)+'">'+(/가격|원/.test(f.label)?'<span class="won" data-won="'+p+'">'+n.toLocaleString('ko-KR')+'원</span>':'')+'</div>';}
+  if(f.type==='color')return '<div class="field"><label>'+esc(f.label)+hint+'</label><div style="display:flex;gap:8px;align-items:center"><input type="color" data-path="'+p+'" value="'+esc(val||'#A4495B')+'" style="width:52px;height:42px;border:0;background:none;padding:0"><input type="text" data-path="'+p+'" value="'+esc(val||'')+'" style="max-width:160px"></div></div>';
+  const long=f.long||(typeof val==='string'&&val.length>50);
+  return '<div class="field"><label>'+esc(f.label)+hint+'</label>'+(long?'<textarea data-path="'+p+'">'+esc(val)+'</textarea>':'<input type="text" data-path="'+p+'" value="'+esc(val==null?'':val)+'">')+'</div>';
+}
+function renderList(f,val,path){
+  const arr=Array.isArray(val)?val:[];
+  let h='<div class="field"><label>'+esc(f.label)+' <small>'+arr.length+'개</small></label><div class="list">';
+  arr.forEach((it,i)=>{
+    const ip=JSON.stringify(path.concat(i));
+    h+='<div class="row"><div class="row-h"><b>'+esc(f.item)+' '+(i+1)+(it&&(it.name||it.title||it.q||it.label)?' · '+esc(it.name||it.title||it.q||it.label):'')+'</b><span class="sp"></span>'+
+       '<button class="ib" data-act="up" data-path="'+esc(ip)+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+esc(ip)+'" title="아래로">↓</button><button class="ib" data-act="dup" data-path="'+esc(ip)+'" title="복사해서 추가">⧉</button><button class="ib del" data-act="del" data-path="'+esc(ip)+'" title="삭제">✕</button></div>'+
+       '<div class="'+(f.compact?'grid2':'')+'">';
+    f.fields.forEach((sf)=>{h+=renderField(sf,it?it[sf.k]:'',path.concat(i,sf.k));});
+    h+='</div></div>';
+  });
+  return h+'</div><button class="btn sm add" data-act="add" data-path="'+esc(JSON.stringify(path))+'">+ '+esc(f.item)+' 추가</button></div>';
+}
+const isVid=(f)=>/\.(mp4|webm|mov|m4v)$/i.test(f);
+function mediaPath(L,file){file=String(file||'');return file.indexOf('/')>=0||/^https?:/.test(file)?file:FOLDERS[L]+file;}
+function renderWorks(sec){
+  let h='<p class="hint">카테고리를 고르고, 사진 아래 칸에 제목·설명을 적어요. ◀ ▶ 로 순서를 바꾸고 ✕ 로 빼요.\n새 사진·영상은 "사진·영상 추가"를 눌러 올리면 자동으로 알맞은 크기(webp)로 바뀌어요.</p>';
+  h+=renderField(sec.keys[0],cfg.worksIntro,['worksIntro']);
+  h+='<div class="sub">'+['A','B','C','D'].map((L)=>'<button class="tab'+(L===worksL?' on':'')+'" data-works="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['works'+L]||[]).length+'</span></button>').join('')+'</div>';
+  const L=worksL, list=cfg['works'+L]||[];
+  h+='<div class="works">';
+  list.forEach((w,i)=>{
+    const path=mediaPath(L,w.file), pend=pending[path];
+    const src=pend?pend.url:path;
+    const ip=esc(JSON.stringify(['works'+L,i]));
+    h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<span class="no">'+(i+1)+'</span>'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
+       '<div class="bd"><input type="text" placeholder="제목 (아바타 이름)" data-path="'+esc(JSON.stringify(['works'+L,i,'title']))+'" value="'+esc(w.title)+'"><input type="text" placeholder="한 줄 설명" data-path="'+esc(JSON.stringify(['works'+L,i,'desc']))+'" value="'+esc(w.desc)+'">'+
+       '<span class="fn">'+esc(w.file)+'</span><div class="ops"><button class="ib" data-act="up" data-path="'+ip+'" title="앞으로">◀</button><button class="ib" data-act="down" data-path="'+ip+'" title="뒤로">▶</button><button class="ib del" data-act="delwork" data-path="'+ip+'" title="빼기">✕</button></div></div></div>';
+  });
+  h+='<label class="drop" id="drop"><span style="font-size:30px">＋</span>사진·영상 추가<small>여러 개를 한 번에 골라도 돼요<br>여기로 끌어다 놓아도 돼요</small><input type="file" id="fileIn" accept="image/*,video/mp4,video/webm,video/quicktime" multiple hidden></label>';
+  h+='</div>';
+  const ks=['worksLink','worksLinkLabel','worksLinkText'];
+  h+='<div class="row" style="margin-top:16px"><div class="row-h"><b>'+CAT[L]+' 판매 링크 버튼</b><span class="sp"></span><small style="color:var(--mut)">링크를 비우면 버튼이 안 보여요</small></div><div class="grid2">'+
+     renderField(F(ks[0]+L,'판매 링크 (예: BOOTH 주소)'),cfg[ks[0]+L],[ks[0]+L])+renderField(F(ks[1]+L,'버튼 글자'),cfg[ks[1]+L],[ks[1]+L])+renderField(F(ks[2]+L,'버튼 옆 안내 문구'),cfg[ks[2]+L],[ks[2]+L])+'</div></div>';
+  return h;
+}
+
+/* ── 값 바꾸기 ── */
+function getAt(path){let o=cfg;for(let i=0;i<path.length;i++){if(o==null)return undefined;o=o[path[i]];}return o;}
+function setAt(path,v){let o=cfg;for(let i=0;i<path.length-1;i++){if(o[path[i]]==null)o[path[i]]=typeof path[i+1]==='number'?[]:{};o=o[path[i]];}o[path[path.length-1]]=v;}
+function blankLike(f){const o={};(f.fields||[]).forEach((sf)=>{o[sf.k]=sf.type==='number'?0:sf.type==='bool'?false:sf.type==='strings'?[]:'';});return o;}
+function findField(path){
+  for(const t of SCHEMA)for(const s of t.sections)for(const f of s.keys)if(f.k===path[0]){
+    let cur=f;for(let i=1;i<path.length;i++){if(typeof path[i]==='number')continue;cur=(cur.fields||[]).find((x)=>x.k===path[i])||cur;}return cur;}
+  return null;
+}
+document.addEventListener('input',(e)=>{
+  const el=e.target;if(!el.dataset||!el.dataset.path)return;
+  const path=JSON.parse(el.dataset.path);let v;
+  if(el.dataset.type==='bool')v=el.checked;
+  else if(el.dataset.type==='number'){v=el.value===''?0:Number(el.value);const w=document.querySelector('[data-won="'+CSS.escape(el.dataset.path)+'"]');if(w)w.textContent=(Number(v)||0).toLocaleString('ko-KR')+'원';}
+  else v=el.value;
+  setAt(path,v);setDirty(true);
+  if(el.type==='color'){const t=el.parentNode.querySelector('input[type=text]');if(t)t.value=v;}
+});
+document.addEventListener('change',(e)=>{const el=e.target;if(el.dataset&&el.dataset.type==='bool'){setAt(JSON.parse(el.dataset.path),el.checked);setDirty(true);}
+  if(el.id==='fileIn'){addFiles(el.files);el.value='';}});
+document.addEventListener('click',(e)=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.tab!=null){tabIdx=+b.dataset.tab;render();window.scrollTo(0,0);return;}
+  if(b.dataset.works){worksL=b.dataset.works;render();return;}
+  const act=b.dataset.act;if(!act)return;
+  const path=JSON.parse(b.dataset.path);
+  if(act==='add'||act==='addstr'){const arr=getAt(path)||[];const f=findField(path);arr.push(act==='addstr'?'':blankLike(f));setAt(path,arr);}
+  else{
+    const idx=path[path.length-1], arrPath=path.slice(0,-1), arr=getAt(arrPath);
+    if(act==='up'&&idx>0){[arr[idx-1],arr[idx]]=[arr[idx],arr[idx-1]];}
+    else if(act==='down'&&idx<arr.length-1){[arr[idx+1],arr[idx]]=[arr[idx],arr[idx+1]];}
+    else if(act==='dup'){arr.splice(idx+1,0,JSON.parse(JSON.stringify(arr[idx])));}
+    else if(act==='del'||act==='delwork'){
+      if(!confirm('이 항목을 뺄까요? (저장하기 전까지는 되돌릴 수 있어요: 페이지를 새로고침)'))return;
+      const rm=arr.splice(idx,1)[0];
+      if(act==='delwork'&&rm){const p=mediaPath(arrPath[0].slice(-1),rm.file);if(pending[p]){URL.revokeObjectURL(pending[p].url);delete pending[p];}}
+    }
+  }
+  setDirty(true);const y=window.scrollY;render();window.scrollTo(0,y);
+});
+document.addEventListener('dragover',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d){e.preventDefault();d.classList.add('over');}});
+document.addEventListener('dragleave',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d)d.classList.remove('over');});
+document.addEventListener('drop',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d){e.preventDefault();d.classList.remove('over');addFiles(e.dataTransfer.files);}});
+
+/* ── 새 파일: 사진은 2000px webp 로 줄여요 ── */
+function nextName(L,ext){
+  const prefix=FOLDERS[L].split('/').filter(Boolean).pop();
+  const used=new Set((cfg['works'+L]||[]).map((w)=>w.file));
+  let max=0;(cfg['works'+L]||[]).forEach((w)=>{const m=String(w.file).match(/-(\d+)\.\w+$/);if(m)max=Math.max(max,+m[1]);});
+  let n=max+1,name;do{name=prefix+'-'+String(n).padStart(2,'0')+'.'+ext;n++;}while(used.has(name));
+  return name;
+}
+function toWebp(file){return new Promise((res,rej)=>{
+  const img=new Image();const url=URL.createObjectURL(file);
+  img.onload=()=>{const M=2000;let w=img.naturalWidth,h=img.naturalHeight;const s=Math.min(1,M/Math.max(w,h));w=Math.round(w*s);h=Math.round(h*s);
+    const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);
+    c.toBlob((b)=>b?res(b):rej(new Error('변환 실패')),'image/webp',0.88);};
+  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('이미지를 열 수 없어요'));};img.src=url;});}
+async function addFiles(files){
+  const L=worksL;const list=Array.from(files||[]).sort((a,b)=>a.name.localeCompare(b.name,'ko',{numeric:true}));
+  if(!list.length)return;
+  toast('파일 '+list.length+'개 준비 중…',8000);
+  for(const f of list){
+    try{
+      let blob,ext;
+      if(f.type.startsWith('video/')){blob=f;ext=(f.name.split('.').pop()||'mp4').toLowerCase();if(f.size>45*1024*1024){toast(f.name+' 은(는) 너무 커요 (45MB 이하만 가능). 영상을 줄여서 올려 주세요.',5000);continue;}}
+      else if(/gif$/i.test(f.type)){blob=f;ext='gif';}
+      else{blob=await toWebp(f);ext='webp';}
+      const name=nextName(L,ext);
+      const b64=bytesToB64(new Uint8Array(await blob.arrayBuffer()));
+      const path=FOLDERS[L]+name;
+      pending[path]={b64,url:URL.createObjectURL(blob),size:blob.size};
+      const base=f.name.replace(/\.[^.]+$/,'');
+      cfg['works'+L].push({file:name,title:'',desc:(cfg['works'+L][0]||{}).desc||CAT[L],_orig:base});
+    }catch(err){toast(f.name+': '+err.message,4000);}
+  }
+  setDirty(true);render();toast('추가했어요. 제목을 적고 "저장하기"를 눌러 주세요.');
+}
+
+/* ── config.js 만들기 (설명 주석 포함) ── */
+const J=(v)=>JSON.stringify(v);
+function buildConfig(){
+  const out=[];const w=(s)=>out.push(s);const done=new Set();
+  w(HEADER);
+  const kv=(k,cm)=>{if(cfg[k]===undefined)return;done.add(k);w('  '+k+': '+J(cfg[k])+','+(cm?'  // '+cm:''));};
+  const objList=(k,keys,cm)=>{done.add(k);const arr=Array.isArray(cfg[k])?cfg[k]:[];w('  '+k+': ['+(cm?'  // '+cm:''));
+    arr.forEach((it)=>{const parts=keys.map((kk)=>kk+': '+J(it[kk]==null?(kk==='price'?0:''):it[kk]));w('    { '+parts.join(', ')+' },');});w('  ],');};
+  const sec=(t,d)=>{w('');w('  /* ━━━━━━━━━━ '+t+' ━━━━━━━━━━');String(d||'').split('\n').forEach((x)=>{if(x)w('     '+x);});w('  */');};
+  SCHEMA.forEach((tab)=>tab.sections.forEach((s)=>{
+    sec(s.title,s.desc);
+    s.keys.forEach((f)=>{
+      if(f.type==='works'){w('');objList(f.k,['file','title','desc'],CAT[f.L]);return;}
+      if(f.opt){if(cfg[f.k]!==undefined&&cfg[f.k]!=='')kv(f.k,f.label);else done.add(f.k);return;}
+      if(f.type==='list'&&f.k==='notices'){done.add('notices');w('  notices: [');(cfg.notices||[]).forEach((n)=>{w('    {');w('      tag: '+J(n.tag||'')+',');w('      title: '+J(n.title||'')+',');w('      items: [');(n.items||[]).forEach((x)=>w('        '+J(x)+','));w('      ],');w('    },');});w('  ],');return;}
+      if(f.type==='list'){objList(f.k,f.fields.map((x)=>x.k),f.cm);return;}
+      if(f.type==='strings'){done.add(f.k);w('  '+f.k+': ['+(f.cm?'  // '+f.cm:''));(cfg[f.k]||[]).forEach((x)=>w('    '+J(x)+','));w('  ],');return;}
+      kv(f.k,f.cm||f.label);
+    });
+  }));
+  const rest=Object.keys(cfg).filter((k)=>!done.has(k)&&cfg[k]!==undefined);
+  if(rest.length){sec('기타');rest.forEach((k)=>w('  '+k+': '+JSON.stringify(cfg[k])+','));}
+  w('};');w('');
+  return out.join('\n');
+}
+const HEADER=['/*',
+' * ════════════════════════════════════════════════════════════════',
+' *  config.js — 포트폴리오 내용을 고치는 파일이에요',
+' * ════════════════════════════════════════════════════════════════',
+' *',
+' *  가장 쉬운 방법: 사이트 주소 뒤에 /editor.html 을 붙여서 편집기로 고쳐요.',
+' *    https://'+OWNER+'.github.io/'+REPO+'/editor.html',
+' *',
+' *  직접 고치는 법 (GitHub 웹사이트에서)',
+' *    1. 이 파일을 열고 오른쪽 위 연필(✏️) 버튼을 눌러요.',
+' *    2. 원하는 값을 고쳐요.',
+' *    3. 오른쪽 위 초록색 "Commit changes..." → 다시 "Commit changes" 를 눌러요.',
+' *    4. 1~2분 뒤 사이트를 새로고침하면 바뀐 내용이 보여요.',
+' *',
+' *  적는 규칙',
+' *    - 글자는 따옴표 안에:      "기본 성형 세트"',
+' *    - 숫자는 따옴표 없이:      380000',
+' *    - 켜기/끄기:              true / false',
+' *    - 목록 [ ... ] 안의 한 줄 { ... } 이 카드 하나예요.',
+' *      줄을 복사해서 붙여넣으면 추가, 줄을 지우면 삭제돼요. 순서를 바꾸면 화면 순서도 바뀌어요.',
+' *    - 줄 끝의 쉼표(,)는 지우지 마세요.',
+' *    - // 뒤는 설명이라 화면에 안 나와요.',
+' *',
+' *  고친 뒤 사이트가 하얗게 나오면 따옴표나 쉼표가 빠진 거예요.',
+' *  GitHub에서 이 파일의 "History" 를 눌러 바로 전 버전과 비교해 보세요.',
+' */',
+'window.PORTFOLIO_CONFIG = {'].join('\n');
+
+/* ── 저장 ── */
+async function putFile(path,b64,message){
+  let sha;const g=await gh(path);if(g.ok){sha=(await g.json()).sha;}else if(g.status!==404){throw new Error(await errText(g));}
+  const r=await gh(path,{method:'PUT',body:JSON.stringify({message,content:b64,branch:BRANCH,sha})});
+  if(!r.ok)throw new Error(await errText(r));
+}
+async function errText(r){let m='';try{m=(await r.json()).message||'';}catch(e){}
+  if(r.status===401)return '연결 키가 만료됐거나 잘못됐어요. "연결 설정"에서 다시 연결해 주세요.';
+  if(r.status===403||r.status===404)return '저장 권한이 없어요. 키를 만들 때 portfolio-v2 를 고르고 Contents 를 Read and write 로 했는지 확인해 주세요.';
+  if(r.status===409||r.status===422)return '다른 곳에서 먼저 바뀐 내용이 있어요. 새로고침 후 다시 해 주세요. ('+m+')';
+  return '저장 실패 ('+r.status+') '+m;}
+async function save(){
+  if(!token){openConn();return;}
+  let text;
+  try{
+    ['A','B','C','D'].forEach((L)=>(cfg['works'+L]||[]).forEach((x)=>delete x._orig));
+    text=buildConfig();parseConfig(text);
+  }catch(e){toast('저장할 내용을 만드는 중 문제가 생겼어요: '+e.message,5000);return;}
+  saving=true;$('saveBtn').disabled=true;$('saveBtn').textContent='저장 중…';
+  try{
+    const files=Object.keys(pending);
+    for(let i=0;i<files.length;i++){toast('사진·영상 올리는 중 '+(i+1)+' / '+files.length,60000);await putFile(files[i],pending[files[i]].b64,'편집기: '+files[i].split('/').pop()+' 추가');}
+    toast('내용 저장 중…',60000);
+    await putFile('config.js',textToB64(text),'편집기로 내용 수정');
+    Object.values(pending).forEach((p)=>URL.revokeObjectURL(p.url));pending={};
+    setDirty(false);render();
+    toast('저장 완료! 1~2분 뒤 사이트를 새로고침하면 보여요.',5000);
+  }catch(e){toast(e.message,7000);}
+  finally{saving=false;$('saveBtn').textContent='저장하기';$('saveBtn').disabled=!dirty;}
+}
+
+/* ── 연결 ── */
+function openConn(){$('tokenInput').value=token?'••••••••(연결됨)':'';$('connModal').classList.add('on');}
+$('connBtn').onclick=openConn;
+$('tokenCancel').onclick=()=>$('connModal').classList.remove('on');
+$('tokenForget').onclick=()=>{token='';try{localStorage.removeItem(TOKEN_KEY);}catch(e){}connUI();$('connModal').classList.remove('on');toast('연결을 끊었어요.');};
+$('tokenSave').onclick=async()=>{
+  const v=$('tokenInput').value.trim();if(!v||v.indexOf('•')>=0){$('connModal').classList.remove('on');return;}
+  const old=token;token=v;
+  try{const r=await gh('config.js');if(!r.ok)throw new Error(await errText(r));
+    try{localStorage.setItem(TOKEN_KEY,token);}catch(e){}connUI();$('connModal').classList.remove('on');toast('연결됐어요!');}
+  catch(e){token=old;toast(e.message,6000);}
+};
+$('saveBtn').onclick=save;
+document.addEventListener('keydown',(e)=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(dirty&&!saving)save();}});
+
+window.__editor={get cfg(){return cfg;},buildConfig,parseConfig,get pending(){return pending;}};
+connUI();
+load().catch((e)=>{$('main').innerHTML='<div class="loading">config.js 를 불러오지 못했어요: '+esc(e.message)+'</div>';});
+})();
+</script>
+</body>
+</html>

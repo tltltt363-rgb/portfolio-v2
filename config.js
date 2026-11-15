@@ -3,7 +3,10 @@
  *  config.js — 포트폴리오 내용을 고치는 파일이에요
  * ════════════════════════════════════════════════════════════════
  *
- *  고치는 법 (GitHub 웹사이트에서)
+ *  가장 쉬운 방법: 사이트 주소 뒤에 /editor.html 을 붙여서 편집기로 고쳐요.
+ *    https://tltltt363-rgb.github.io/portfolio-v2/editor.html
+ *
+ *  직접 고치는 법 (GitHub 웹사이트에서)
  *    1. 이 파일을 열고 오른쪽 위 연필(✏️) 버튼을 눌러요.
  *    2. 원하는 값을 고쳐요.
  *    3. 오른쪽 위 초록색 "Commit changes..." → 다시 "Commit changes" 를 눌러요.
@@ -22,7 +25,6 @@
  *  GitHub에서 이 파일의 "History" 를 눌러 바로 전 버전과 비교해 보세요.
  */
 window.PORTFOLIO_CONFIG = {
-
 
   /* ━━━━━━━━━━ 기본 ━━━━━━━━━━
   */
@@ -47,19 +49,11 @@ window.PORTFOLIO_CONFIG = {
     { title: "방송 화면 맞춤", desc: "방송 화면에서 잘 보이도록 표정과 디테일을 챙겨요.", tag: "" },
   ],
 
-  /* ━━━━━━━━━━ 비포·애프터 ━━━━━━━━━━
-     카테고리별 사례 개수예요.
-  */
-  baCountA: 4,  // 성형 사례 수
-  baCountB: 3,  // 페이셜 사례 수
-  baCountC: 3,  // 텍스쳐 사례 수
-  baCountD: 3,  // 뽀잉눈 사례 수
-
   /* ━━━━━━━━━━ 작업물 ━━━━━━━━━━
      file: 파일 이름 — 각 카테고리 폴더에 올린 파일 이름만 적으면 돼요.
         성형 → media/seonghyeong/   페이셜 → media/facial/
         텍스쳐 → media/texture/     뽀잉눈 → media/boing/
-        (파일 올리기: GitHub에서 그 폴더로 들어가 "Add file → Upload files")
+        (파일 올리기: 편집기의 "사진·영상 추가" 또는 GitHub "Add file → Upload files")
      title: 카드 제목 (아바타 이름)   desc: 카드 아래 한 줄 설명
      .mp4 .webm .mov 는 영상(자동 재생), 나머지는 사진으로 보여요.
      목록에 적은 순서대로 카드가 되고, 6개씩 한 페이지예요.
@@ -124,7 +118,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-14.webp", title: "Shinano", desc: "ROLLY · 아이 텍스쳐 + 메이크업 + 블렌드쉐이프" },
     { file: "texture-15.webp", title: "Shinano", desc: "아이 텍스쳐 + 메이크업 + 애니메이션" },
   ],
-  worksLinkC: "https://muridayo.booth.pm/",  // 텍스쳐 판매 링크 (비우면 버튼이 안 보여요)
+  worksLinkC: "https://muridayo.booth.pm/",  // 텍스쳐 판매 링크
   worksLinkLabelC: "BOOTH에서 보기",  // 버튼 글자
   worksLinkTextC: "텍스쳐 작업물은 BOOTH에서 판매하고 있어요",  // 버튼 옆 안내 문구
 
@@ -134,33 +128,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "boing-04.mp4", title: "", desc: "" },
     { file: "boing-05.mp4", title: "", desc: "" },
     { file: "boing-06.mp4", title: "", desc: "" },
-  ],
-  // 다른 카테고리에도 판매 링크를 달려면 worksLinkA / worksLinkB / worksLinkD 를 같은 방식으로 적어요.
-
-  /* ━━━━━━━━━━ 분양 아바타 ━━━━━━━━━━
-     saleReady: false 면 "준비 중" 안내만 보여요. 아래 목록을 채운 뒤 true 로 바꿔요.
-     price 는 "35,000원" 처럼 글자로 적어요. sold: true 면 "분양완료" 로 바뀌어요.
-  */
-  saleReady: false,  // true = 카드 보이기 / false = 준비 중
-  saleSoonTitle: "분양 아바타는 준비 중이에요",  // 준비 중 제목
-  saleSoonText: "새 분양 아바타를 준비하고 있어요. 조금만 기다려 주세요!",  // 준비 중 설명
-  saleIntro: "[분양 아바타 소개를 한 줄로 적어주세요]",  // 분양 아바타 제목 아래 한 줄 (비우면 안 보여요)
-  sales: [
-    { name: "", desc: "", price: "", link: "", sold: false },
-    { name: "", desc: "", price: "", link: "", sold: false },
-    { name: "", desc: "", price: "", link: "", sold: false },
-    { name: "", desc: "", price: "", link: "", sold: false },
-  ],
-
-  /* ━━━━━━━━━━ 보유 아바타 ━━━━━━━━━━
-     link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.
-  */
-  avatarsIntro: "[보유 아바타 소개를 한 줄로 적어주세요]",  // 보유 아바타 제목 아래 한 줄 (비우면 안 보여요)
-  avatars: [
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
   ],
 
   /* ━━━━━━━━━━ 가격 계산기 · 이벤트 ━━━━━━━━━━
@@ -213,6 +180,40 @@ window.PORTFOLIO_CONFIG = {
   revisionFree: 2,  // 무료 수정 횟수 (0이면 안내 안 보여요)
   revisionPrice: 10000,  // 수정 1회 추가 가격 (원)
 
+  /* ━━━━━━━━━━ 분양 아바타 ━━━━━━━━━━
+     saleReady: false 면 "준비 중" 안내만 보여요. 아래 목록을 채운 뒤 true 로 바꿔요.
+     price 는 "35,000원" 처럼 글자로 적어요. sold: true 면 "분양완료" 로 바뀌어요.
+  */
+  saleReady: false,  // true = 카드 보이기 / false = 준비 중
+  saleSoonTitle: "분양 아바타는 준비 중이에요",  // 준비 중 제목
+  saleSoonText: "새 분양 아바타를 준비하고 있어요. 조금만 기다려 주세요!",  // 준비 중 설명
+  saleIntro: "[분양 아바타 소개를 한 줄로 적어주세요]",  // 분양 아바타 제목 아래 한 줄 (비우면 안 보여요)
+  sales: [
+    { name: "", desc: "", price: "", link: "", sold: false },
+    { name: "", desc: "", price: "", link: "", sold: false },
+    { name: "", desc: "", price: "", link: "", sold: false },
+    { name: "", desc: "", price: "", link: "", sold: false },
+  ],
+
+  /* ━━━━━━━━━━ 보유 아바타 ━━━━━━━━━━
+     link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.
+  */
+  avatarsIntro: "[보유 아바타 소개를 한 줄로 적어주세요]",  // 보유 아바타 제목 아래 한 줄 (비우면 안 보여요)
+  avatars: [
+    { name: "", desc: "", link: "" },
+    { name: "", desc: "", link: "" },
+    { name: "", desc: "", link: "" },
+    { name: "", desc: "", link: "" },
+  ],
+
+  /* ━━━━━━━━━━ 비포·애프터 ━━━━━━━━━━
+     카테고리별 사례 개수예요.
+  */
+  baCountA: 4,  // 성형 사례 수
+  baCountB: 3,  // 페이셜 사례 수
+  baCountC: 3,  // 텍스쳐 사례 수
+  baCountD: 3,  // 뽀잉눈 사례 수
+
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
      chip 은 단계 아래 작은 회색 칩이에요. 마지막 단계는 진한 색으로 표시돼요.
   */
@@ -224,7 +225,6 @@ window.PORTFOLIO_CONFIG = {
     { title: "시안 확인", desc: "중간 결과를 보고 수정을 요청해요.", chip: "수정 요청 가능" },
     { title: "최종 전달", desc: "완성 파일과 적용 방법을 보내드려요.", chip: "파일 + 적용법" },
   ],
-
   processFacts: [  // 진행 과정 아래 분홍 칸들
     { label: "작업 기한", value: "7~14일" },
     { label: "기본 수정 횟수", value: "2회" },
@@ -269,7 +269,6 @@ window.PORTFOLIO_CONFIG = {
       ],
     },
   ],
-
   impossible: [  // 불가능 작업 (끝에 (괄호) 를 쓰면 회색으로 보여요)
     "아바타 100% 풀 모델링 (제로베이스 제작)",
     "저작권 침해 가능성이 있는 캐릭터 도용 요청 (특정 게임 캐릭터)",
