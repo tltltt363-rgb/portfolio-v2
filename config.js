@@ -136,7 +136,7 @@ window.PORTFOLIO_CONFIG = {
 
   worksE: [  // 텍스쳐 비포·애프터
     { file: "texture-ba-01.webp", title: "Milltina makeup", desc: "텍스쳐 비포·애프터" },
-    { file: "texture-ba-09.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-09.webp", title: "Airi", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-02.webp", title: "Milltina makeup&eye", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-03.webp", title: "", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-04.webp", title: "", desc: "텍스쳐 비포·애프터" },
