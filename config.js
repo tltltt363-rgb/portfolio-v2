@@ -182,7 +182,7 @@ window.PORTFOLIO_CONFIG = {
      name: 이름   desc: 이름 아래 작은 설명 (비우면 안 보여요)   price: 가격 (원, 0이면 "가격 문의")
   */
   items: [
-    { group: "초보", name: "파츠 같이 찾기", desc: "어떤 의상·헤어·악세서리를 쓸지 모를 때 함께 골라드려요", price: 0 },
+    { group: "초보", name: "파츠 같이 찾기", desc: "어떤 의상·헤어·악세서리를 쓸지 모를 때 함께 골라드려요", price: 20000 },
     { group: "성형", name: "성형", desc: "유니티, 블렌더", price: 100000 },
     { group: "성형", name: "원화 기반 성형", desc: "", price: 150000 },
     { group: "페이셜", name: "페이셜", desc: "기본 페이셜 · 52가지 ARKit", price: 250000 },
