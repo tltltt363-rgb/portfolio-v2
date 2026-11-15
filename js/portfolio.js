@@ -417,6 +417,7 @@ class Component extends DCLogic {
     const revPrice = num(this.props.revisionPrice, 10000);
     const revFree = Math.max(0, Math.round(num(this.props.revisionFree, 0)));
     const eventText = String(this.props.eventText ?? '').trim();
+    const eventOn = !!eventText && st.event !== false;  // 처음엔 참여로 체크돼 있어요
     const baseItems = [
       { id: 'a', pk: 'priceA', name: '성형', desc: '얼굴형 · 이목구비 쉐이프 수정', price: 80000 },
       { id: 'b', pk: 'priceB', name: '페이셜', desc: '표정 블렌드쉐이프 · 립싱크', price: 120000 },
@@ -610,6 +611,7 @@ class Component extends DCLogic {
     optLines.forEach((o) => quoteLines.push(o.deadline
       ? { tag: '마감', tagBg: '#2B2327', tagColor: '#FFFFFF', name: o.name, sub: '작업비 전체에 붙는 금액이에요', hasSub: true, amount: o.amount }
       : { tag: '옵션', tagBg: '#EFE4E5', tagColor: '#4A3E44', name: o.name, sub: '', hasSub: false, amount: o.amount }));
+    if (eventOn) quoteLines.push({ tag: '이벤트', tagBg: accent, tagColor: '#FFFFFF', name: eventText, sub: '리뷰 작성 후 받을 수 있어요', hasSub: true, amount: '무료' });
     const barSummary = chosenNames.length ? chosenNames[0] + (chosenNames.length > 1 ? ' 외 ' + (chosenNames.length - 1) + '개' : '') + (dl ? ' · ' + dl.name : '') : '';
     const dt = new Date();
     const today = dt.getFullYear() + '.' + pad(dt.getMonth() + 1) + '.' + pad(dt.getDate());
@@ -664,12 +666,13 @@ class Component extends DCLogic {
       '■ 세트 상품 : ' + (chosenSet ? chosenSet.name + (chosenSet.chips.length ? ' (' + chosenSet.chips.join(' + ') + ')' : '') : '없음'),
       '■ 개별 작업 : ' + (extras.length ? extras.map((it) => it.name).join(', ') : '없음'),
       '■ 추가 옵션 : ' + (optList.length ? optList.join(', ') : '없음'),
+    ].concat(eventText ? ['■ 리뷰 이벤트 : ' + (eventOn ? '참여 · ' + eventText : '참여 안 함')] : []).concat([
       '■ 예상 견적 : ' + (hasLines ? won(totalN) + ' (포트폴리오 계산기 기준)' : ''),
       '■ 레퍼런스 : ' + blank(f.ref),
       '■ 요청사항 : ' + blank(f.memo),
       '',
       '주의사항 확인 : ' + (st.agree ? 'O' : 'X')
-    ].join('\n');
+    ]).join('\n');
 
     const finish = (mode) => {
       this.setState({ copied: mode });
@@ -776,6 +779,9 @@ class Component extends DCLogic {
       items, opts, rev,
       revDesc: (revFree > 0 ? revFree + '회 무료 · 추가 ' : '') + '1회당 +' + won(revPrice),
       eventText, hasEvent: !!eventText,
+      eventOn, eventPressed: eventOn ? 'true' : 'false',
+      eventBoxBorder: eventOn ? accent : '#E2CFD3', eventBoxBg: eventOn ? accent : '#FFFFFF',
+      toggleEvent: () => set({ event: !eventOn }),
       revMinus: () => set({ rev: Math.max(0, rev - 1) }),
       revPlus: () => set({ rev: Math.min(10, rev + 1) }),
       itemsShown, itemGroups, itemTotal: items.length, itemsMore: items.length > previewN,
