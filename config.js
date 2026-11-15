@@ -109,11 +109,11 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-27.webp", title: "Shinano", desc: "성형", link: "" },
     { file: "seonghyeong-28.webp", title: "Chocolat", desc: "성형", link: "" },
     { file: "seonghyeong-29.webp", title: "Lumina", desc: "성형", link: "" },
-    { file: "seonghyeong-33.webp", title: "", desc: "성형", link: "" },
+    { file: "seonghyeong-33.webp", title: "S", desc: "성형", link: "" },
     { file: "seonghyeong-30.webp", title: "Shinano", desc: "성형", link: "" },
     { file: "seonghyeong-31.webp", title: "Eku", desc: "성형", link: "" },
     { file: "seonghyeong-42.webp", title: "Milfy", desc: "성형", link: "" },
-    { file: "seonghyeong-34.webp", title: "plum", desc: "성형", link: "" },
+    { file: "seonghyeong-34.webp", title: "Plum", desc: "성형", link: "" },
   ],
 
   worksB: [  // 페이셜 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
