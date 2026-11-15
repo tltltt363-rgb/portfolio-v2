@@ -847,6 +847,7 @@ class Component extends DCLogic {
       ba, onBa: (e) => set({ ba: Number(e.target.value) }),
       baModes, isSlider: baMode === 'slider', isSide: baMode === 'side',
       baCases, baDots, baCaseNo: pad(baPos + 1), baLabel: baCat.label,
+      baShowTabs: caseDefs.length > 1,  /* 카테고리가 하나뿐이면 버튼을 숨겨요 */
       baTitle: baV.title, hasBaTitle: !!baV.title, baDesc: baV.desc, hasBaDesc: !!baV.desc,
       baPeriod: baV.period, hasBaPeriod: !!baV.period, baPlatform: baV.platform, hasBaPlatform: !!baV.platform,
       baBeforeSrc: baV.beforeSrc, baAfterSrc: baV.afterSrc,

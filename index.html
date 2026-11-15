@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="54">
+<meta name="pf-build" content="55">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -171,11 +171,13 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 </div>
 
+<sc-if value="{{baShowTabs}}" hint-placeholder-val="{{ true }}">
 <div role="tablist" aria-label="비교 사례" style="display:flex;flex-wrap:wrap;gap:8px;">
 <sc-for list="{{baCases}}" as="c" hint-placeholder-count="4">
 <button role="tab" aria-selected="{{c.selected}}" onClick="{{c.pick}}" style="height:44px;padding:0 20px;border-radius:999px;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}};font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;">{{c.label}}<span style="font-size:12px;font-weight:600;">{{c.count}}</span></button>
 </sc-for>
 </div>
+</sc-if>
 
 <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:stretch;">
 <div style="flex:999 1 600px;min-width:0;">
@@ -995,8 +997,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=54"></script>
-<script src="js/portfolio.js?v=54"></script>
+<script src="js/dc-runtime.js?v=55"></script>
+<script src="js/portfolio.js?v=55"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
