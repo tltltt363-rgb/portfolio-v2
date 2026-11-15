@@ -152,7 +152,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-7';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-8';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -209,6 +209,12 @@ let pending={}; /* path -> {b64, url, size} */
 let uploaded={}; /* 이번에 올린 파일: 사이트에 반영되기 전까지 미리보기에 이 사진을 써요 */
 let shaCache={}, autoTimer=null, saveAgain=false, lastSaved=0, failCount=0;
 const localUrl=(p)=>(pending[p]&&pending[p].url)||uploaded[p]||'';
+/* 사진은 GitHub 원본 주소로 보여줘요: 저장 즉시 보이고, 사이트 반영(1~2분)을 기다리지 않아요 */
+const RAW='https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/'+BRANCH+'/';
+const isVidPath=(p)=>/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(p);
+const viewUrl=(p)=>{p=String(p||'');if(!p)return '';const l=localUrl(p);if(l)return l;if(/^(https?:|blob:|data:)/.test(p)||isVidPath(p))return p;return RAW+p.replace(/^\.?\//,'');};
+let repoFiles=new Set();
+async function loadRepoFiles(){if(!token)return;for(const dir of Object.values(FOLDERS).concat([BA_DIR])){try{const r=await gh(dir.replace(/\/$/,''));if(r.ok){(await r.json()).forEach((x)=>repoFiles.add(x.name));}}catch(e){}}}
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -238,6 +244,7 @@ async function load(){
   cfg=parseConfig(text);
   normalizeOld();
   base=JSON.parse(JSON.stringify(cfg));
+  loadRepoFiles();
   const restored=await restoreDraft();
   render();
   pushPreview();
@@ -349,7 +356,7 @@ function renderWorks(sec){
   h+='<div class="works">';
   list.forEach((w,i)=>{
     const path=mediaPath(L,w.file), pend=pending[path];
-    const src=localUrl(path)||path;
+    const src=viewUrl(path);
     const ip=esc(JSON.stringify(['works'+L,i]));
     h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<span class="no">'+(i+1)+'</span>'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
        '<div class="bd"><input type="text" placeholder="제목 (아바타 이름)" data-path="'+esc(JSON.stringify(['works'+L,i,'title']))+'" value="'+esc(w.title)+'"><input type="text" placeholder="한 줄 설명" data-path="'+esc(JSON.stringify(['works'+L,i,'desc']))+'" value="'+esc(w.desc)+'">'+
@@ -372,7 +379,7 @@ function renderBA(sec){
   h+='<div class="list">';
   list.forEach((c,i)=>{
     const ip=esc(JSON.stringify(['ba'+baL,i]));
-    const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=localUrl(fp)||fp;
+    const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=viewUrl(fp);
       return '<div class="baslot" data-baslot="'+esc(JSON.stringify(['ba'+baL,i,k]))+'">'+(c[k]?'<img src="'+esc(src)+'" alt="">':'<span class="baempty">＋<br>'+label+' 사진 넣기</span>')+'<span class="balabel'+(k==='after'?' af':'')+'">'+label.toUpperCase()+'</span>'+(c[k]?'<span class="bachange">바꾸기</span>':'')+'</div>';};
     h+='<div class="row"><div class="row-h"><b>'+CAT[baL]+' 사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
       '<button class="ib" data-act="up" data-path="'+ip+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+ip+'" title="아래로">↓</button><button class="ib del" data-act="del" data-path="'+ip+'" title="삭제">✕</button></div>'+
@@ -443,7 +450,7 @@ document.addEventListener('drop',(e)=>{const d=e.target.closest&&e.target.closes
 /* ── 새 파일: 사진은 2000px webp 로 줄여요 ── */
 function nextName(L,ext){
   const prefix=FOLDERS[L].split('/').filter(Boolean).pop();
-  const used=new Set((cfg['works'+L]||[]).map((w)=>w.file));
+  const used=new Set((cfg['works'+L]||[]).map((w)=>w.file));repoFiles.forEach((n)=>used.add(n));Object.keys(pending).concat(Object.keys(uploaded)).forEach((p)=>used.add(p.split('/').pop()));
   let max=0;(cfg['works'+L]||[]).forEach((w)=>{const m=String(w.file).match(/-(\d+)\.\w+$/);if(m)max=Math.max(max,+m[1]);});
   let n=max+1,name;do{name=prefix+'-'+String(n).padStart(2,'0')+'.'+ext;n++;}while(used.has(name));
   return name;
@@ -461,7 +468,7 @@ async function setBaImage(path,file){
     toast('사진 준비 중…',8000);
     const blob=/gif$/i.test(file.type)?file:await toWebp(file);const ext=/gif$/i.test(file.type)?'gif':'webp';
     const L=path[0].slice(-1), idx=path[1], kind=path[2];
-    const used=new Set();['A','B','C','D'].forEach((x)=>(cfg['ba'+x]||[]).forEach((c)=>{used.add(c.before);used.add(c.after);}));Object.keys(pending).forEach((p)=>used.add(p.split('/').pop()));
+    const used=new Set();['A','B','C','D'].forEach((x)=>(cfg['ba'+x]||[]).forEach((c)=>{used.add(c.before);used.add(c.after);}));Object.keys(pending).concat(Object.keys(uploaded)).forEach((p)=>used.add(p.split('/').pop()));repoFiles.forEach((x)=>used.add(x));
     let n=idx+1,name;do{name='ba-'+BA_SLUG[L]+'-'+String(n).padStart(2,'0')+'-'+kind+'.'+ext;n++;}while(used.has(name));
     const old=getAt(path);const oldP=baPath(old);if(old&&pending[oldP]){URL.revokeObjectURL(pending[oldP].url);delete pending[oldP];}
     pending[BA_DIR+name]={b64:bytesToB64(new Uint8Array(await blob.arrayBuffer())),url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
@@ -577,7 +584,7 @@ async function save(auto){
       const f=files[i];if(!pending[f])continue;
       if(files.length>0)st.textContent='사진·영상 올리는 중 '+(i+1)+' / '+files.length;
       await putFile(f,pending[f].b64,'편집기: '+f.split('/').pop()+' 추가');
-      uploaded[f]=pending[f].url;delete pending[f];
+      uploaded[f]=pending[f].url;delete pending[f];repoFiles.add(f.split('/').pop());
     }
     st.textContent='내용 저장 중…';
     const text2=buildConfig();
@@ -585,7 +592,7 @@ async function save(auto){
     lastSaved=Date.now();failCount=0;
     base=JSON.parse(JSON.stringify(cfg));
     if(!saveAgain){clearDraft();dirty=false;$('discardBtn').style.display='none';}
-    const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;
+    const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;pushPreview();
     st.textContent='저장됨 ✓ 내 브라우저에선 바로, 다른 사람에겐 1~2분 뒤 보여요';st.className='status ok';
     if(!auto)toast('저장했어요!',2500);
   }catch(e){dirty=true;failCount++;
@@ -603,7 +610,7 @@ $('tokenSave').onclick=async()=>{
   const v=$('tokenInput').value.trim();if(!v||v.indexOf('•')>=0){$('connModal').classList.remove('on');return;}
   const old=token;token=v;
   try{const r=await gh('config.js');if(!r.ok)throw new Error(await errText(r));
-    try{localStorage.setItem(TOKEN_KEY,token);}catch(e){}connUI();$('connModal').classList.remove('on');toast(dirty?'연결됐어요! 고친 내용을 지금 저장할게요.':'연결됐어요! 이제 고치면 자동으로 저장돼요.',4000);if(dirty)save(true);}
+    try{localStorage.setItem(TOKEN_KEY,token);}catch(e){}connUI();$('connModal').classList.remove('on');toast(dirty?'연결됐어요! 고친 내용을 지금 저장할게요.':'연결됐어요! 이제 고치면 자동으로 저장돼요.',4000);loadRepoFiles();render();pushPreview();if(dirty)save(true);}
   catch(e){token=old;toast(e.message,6000);}
 };
 $('saveBtn').onclick=save;
@@ -623,8 +630,9 @@ let dev=window.innerWidth<700?'mobile':'pc', pvTimer=null;
 document.querySelectorAll('[data-dev]').forEach((x)=>x.classList.toggle('on',x.dataset.dev===dev));
 function previewCfg(){
   const c=JSON.parse(JSON.stringify(cfg||{}));
-  ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{const u=localUrl(mediaPath(L,w.file));if(u)w.file=u;delete w._orig;}));
-  ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{const u=x[k]&&localUrl(baPath(x[k]));if(u)x[k]=u;});}));
+  ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{if(w.file)w.file=viewUrl(mediaPath(L,w.file));delete w._orig;}));
+  ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{if(x[k])x[k]=viewUrl(baPath(x[k]));});}));
+  if(Array.isArray(c.heroMedia))c.heroMedia=c.heroMedia.map(viewUrl);
   return c;
 }
 function pushPreview(){clearTimeout(pvTimer);pvTimer=setTimeout(()=>{const f=$('pvFrame');if(cfg&&f.contentWindow)f.contentWindow.postMessage({type:'pf-config',cfg:previewCfg()},location.origin);},200);}
