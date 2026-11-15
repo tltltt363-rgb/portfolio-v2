@@ -137,7 +137,7 @@ window.PORTFOLIO_CONFIG = {
   worksE: [  // 텍스쳐 비포·애프터
     { file: "texture-ba-01.webp", title: "Milltina makeup", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-09.webp", title: "Airi", desc: "텍스쳐 비포·애프터" },
-    { file: "texture-ba-02.webp", title: "Milltina makeup&eye", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-02.webp", title: "Milltina makeup & eye", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-03.webp", title: "Mayo makeup", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-04.webp", title: "Mayo makeup", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-05.webp", title: "Milltina makeup", desc: "텍스쳐 비포·애프터" },
@@ -146,6 +146,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-ba-08.webp", title: "Airi makeup", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-10.webp", title: "Airi makeup", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-11.webp", title: "Mayo makeup", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-12.webp", title: "Kumaly makeup & eye", desc: "텍스쳐 비포·애프터" },
   ],
 
   worksD: [  // 뽀잉눈
