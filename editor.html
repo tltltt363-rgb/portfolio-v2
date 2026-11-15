@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-10';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-11';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -214,6 +214,7 @@ const SCHEMA=[
 let cfg=null, tabIdx=0, worksL='A', baL='A', baSlot=null, dirty=false, saving=false;
 let pending={}; /* path -> {b64, url, size} */
 let uploaded={}; /* 이번에 올린 파일: 사이트에 반영되기 전까지 미리보기에 이 사진을 써요 */
+let lastKey=0;document.addEventListener('keydown',()=>{lastKey=Date.now();},true);
 let shaCache={}, autoTimer=null, saveAgain=false, lastSaved=0, failCount=0;
 const localUrl=(p)=>(pending[p]&&pending[p].url)||uploaded[p]||'';
 /* 사진은 GitHub 원본 주소로 보여줘요: 저장 즉시 보이고, 사이트 반영(1~2분)을 기다리지 않아요 */
@@ -228,7 +229,7 @@ const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&
 function toast(msg,ms,action){const t=$('toast');t.textContent=msg;
   if(action){const b=document.createElement('button');b.textContent=action.label;b.style.cssText='margin-left:12px;height:32px;padding:0 14px;border-radius:999px;border:0;background:#fff;color:#2B2327;font-weight:700';b.onclick=()=>{t.classList.remove('on');action.run();};t.appendChild(b);}
   t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
-function setDirty(v){dirty=v;if(v&&token){clearTimeout(autoTimer);autoTimer=setTimeout(()=>save(true),2500);}$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?(token?'곧 자동 저장돼요…':('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':''))):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
+function setDirty(v){dirty=v;if(v&&token){clearTimeout(autoTimer);autoTimer=setTimeout(()=>save(true),3000);}$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?(token?'곧 자동 저장돼요…':('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':''))):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
 function connUI(){const c=$('conn');if(token){c.textContent='GitHub 연결됨';c.className='pill ok';$('connBtn').textContent='연결 설정';}else{c.textContent='연결 안 됨';c.className='pill';$('connBtn').textContent='GitHub 연결';}}
 /* 새로고침·닫기 직전에 임시 저장을 한 번 더 해둬요 */
 window.addEventListener('pagehide',()=>{if(dirty)saveDraft();});
@@ -278,7 +279,7 @@ function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);
 async function idbSet(v){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,'draft');tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
 async function idbGet(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readonly');const r=tx.objectStore(STORE).get('draft');r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error);});}
 async function idbDel(){const db=await idb();return new Promise((res)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete('draft');tx.oncomplete=()=>res();tx.onerror=()=>res();});}
-function queueDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,300);}
+function queueDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,800);}
 async function saveDraft(){
   if(!cfg||!base)return;
   const changed={},removed=[];
@@ -309,6 +310,16 @@ function clearDraft(){clearTimeout(draftTimer);idbDel().catch(()=>{});}
 
 /* ── 그리기 ── */
 function render(){
+  /* 다시 그려도 입력 중인 칸과 커서 위치, 스크롤을 그대로 지켜요 */
+  const ae=document.activeElement, ed=document.querySelector('.edit');
+  const keep=ae&&ae.dataset&&ae.dataset.path?{path:ae.dataset.path,tag:ae.tagName,cls:ae.className,s:ae.selectionStart,e:ae.selectionEnd}:null;
+  const ey=ed?ed.scrollTop:0, wy=window.scrollY;
+  renderInner();
+  if(ed)ed.scrollTop=ey;window.scrollTo(0,wy);
+  if(keep){const el=[...document.querySelectorAll('[data-path]')].find((x)=>x.dataset.path===keep.path&&x.tagName===keep.tag&&x.className===keep.cls);
+    if(el){el.focus({preventScroll:true});try{if(keep.s!=null)el.setSelectionRange(keep.s,keep.e);}catch(e){}}}
+}
+function renderInner(){
   $('tabs').innerHTML=SCHEMA.map((t,i)=>'<button class="tab'+(i===tabIdx?' on':'')+'" data-tab="'+i+'">'+esc(t.tab)+'</button>').join('');
   const t=SCHEMA[tabIdx];
   let h='';
@@ -655,7 +666,7 @@ async function save(auto){
     lastSaved=Date.now();failCount=0;
     base=JSON.parse(JSON.stringify(cfg));
     if(!saveAgain){clearDraft();dirty=false;$('discardBtn').style.display='none';}
-    const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;pushPreview();
+    if(Object.keys(uploaded).length&&!document.activeElement.dataset?.path)render();
     st.textContent='저장됨 ✓ 내 브라우저에선 바로, 다른 사람에겐 1~2분 뒤 보여요';st.className='status ok';
     if(!auto)toast('저장했어요!',2500);
   }catch(e){dirty=true;failCount++;
@@ -699,7 +710,7 @@ function previewCfg(){
   (c.avatars||[]).forEach((a)=>{const v=String(a.image||'');if(v&&!/^(https?:|blob:|data:)/.test(v))a.image=viewUrl(v.indexOf('/')>=0?v:'media/avatars/'+v);});
   return c;
 }
-function pushPreview(){clearTimeout(pvTimer);pvTimer=setTimeout(()=>{const f=$('pvFrame');if(cfg&&f.contentWindow)f.contentWindow.postMessage({type:'pf-config',cfg:previewCfg()},location.origin);},200);}
+function pushPreview(){clearTimeout(pvTimer);pvTimer=setTimeout(()=>{if(document.activeElement&&/TEXTAREA|INPUT/.test(document.activeElement.tagName)&&Date.now()-lastKey<350){pushPreview();return;}const f=$('pvFrame');if(cfg&&f.contentWindow)f.contentWindow.postMessage({type:'pf-config',cfg:previewCfg()},location.origin);},200);}
 function pvScroll(id){const f=$('pvFrame');if(f.contentWindow)f.contentWindow.postMessage({type:'pf-scroll',id},location.origin);}
 function layoutPreview(){
   document.documentElement.style.setProperty('--topH',document.querySelector('.top').offsetHeight+'px');
