@@ -946,11 +946,53 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </template>
 
 <!-- config.js 는 열 때마다 새로 불러와요. 고친 내용이 GitHub에 올라가면(1~2분) 새로고침만 하면 보여요. -->
-<script>document.write('<script src="config.js?t=' + Date.now() + '"><\/script>');</script>
+<script>
+(function () {
+  var tok = null; try { tok = localStorage.getItem('pf-editor-token'); } catch (e) {}
+  var preview = /[?&]preview\b/.test(location.search);
+  if (tok && !preview && window.fetch && window.TextDecoder) {
+    /* 편집기가 연결된 내 브라우저: GitHub에서 가장 최신 내용을 바로 읽어요 (사이트 반영 1~2분을 안 기다려도 돼요) */
+    window.__pfOwner = true;
+    window.__pfConfigReady = fetch('https://api.github.com/repos/tltltt363-rgb/portfolio-v2/contents/config.js?ref=main', {
+      headers: { Authorization: 'Bearer ' + tok, Accept: 'application/vnd.github+json' }, cache: 'no-store'
+    }).then(function (r) { if (!r.ok) throw new Error('api'); return r.json(); })
+      .then(function (j) {
+        var b = atob(String(j.content).replace(/\s/g, '')), u = new Uint8Array(b.length);
+        for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+        new Function('window', new TextDecoder().decode(u))(window);
+        if (!window.PORTFOLIO_CONFIG) throw new Error('cfg');
+      })
+      .catch(function () {
+        window.__pfOwner = false;
+        return new Promise(function (res) { var s = document.createElement('script'); s.src = 'config.js?t=' + Date.now(); s.onload = res; s.onerror = res; document.head.appendChild(s); });
+      });
+  } else {
+    document.write('<script src="config.js?t=' + Date.now() + '"><\/script>');
+  }
+})();
+</script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=40"></script>
-<script src="js/portfolio.js?v=40"></script>
-<script>window.mountPortfolio(window.PortfolioComponent, window.normalizePortfolioConfig(window.PORTFOLIO_CONFIG));</script>
+<script src="js/dc-runtime.js?v=41"></script>
+<script src="js/portfolio.js?v=41"></script>
+<script>
+(function () {
+  /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
+  var RAW = 'https://raw.githubusercontent.com/tltltt363-rgb/portfolio-v2/main/';
+  function raw(p) { p = String(p || ''); return (!p || /^(https?:|blob:|data:)/.test(p) || /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(p)) ? p : RAW + p.replace(/^\.?\//, ''); }
+  function go() {
+    var c = window.normalizePortfolioConfig(window.PORTFOLIO_CONFIG || {});
+    if (window.__pfOwner) {
+      ['A', 'B', 'C', 'D'].forEach(function (L) {
+        if (Array.isArray(c['worksMedia' + L])) c['worksMedia' + L] = c['worksMedia' + L].map(raw);
+        if (Array.isArray(c['ba' + L])) c['ba' + L] = c['ba' + L].map(function (x) { return Object.assign({}, x, { before: raw(x.before), after: raw(x.after) }); });
+      });
+      if (Array.isArray(c.heroMedia)) c.heroMedia = c.heroMedia.map(raw);
+    }
+    window.mountPortfolio(window.PortfolioComponent, c);
+  }
+  if (window.__pfConfigReady) window.__pfConfigReady.then(go, go); else go();
+})();
+</script>
 <script>
 /* 편집기(editor.html) 미리보기 연결 — 일반 방문자에게는 아무 일도 안 해요 */
 (function () {

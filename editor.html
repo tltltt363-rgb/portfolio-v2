@@ -18,6 +18,7 @@ button{cursor:pointer}
 .top .sp{flex:1}
 .status{font-size:13px;color:var(--mut)}
 .status.dirty{color:var(--ac);font-weight:700}
+.status.ok{color:#1F6146;font-weight:700}
 a.btn{text-decoration:none;color:inherit}
 .btn{height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 8px 16px -8px rgba(164,73,91,.7)}
@@ -128,7 +129,7 @@ textarea.long{min-height:70px}
 <div class="modal" id="connModal">
   <div class="box">
     <h3>GitHub 연결하기 (처음 한 번만)</h3>
-    <p style="margin:0;color:var(--mut);line-height:1.6">편집기가 저장소에 직접 저장하려면 <b>연결 키(토큰)</b>가 필요해요. 이 키는 <b>이 브라우저에만</b> 저장되고 다른 곳으로 보내지지 않아요. 채팅이나 다른 사람에게는 절대 보내지 마세요.</p>
+    <p style="margin:0;color:var(--mut);line-height:1.6">연결하면 고치는 내용(사진 포함)이 <b>자동으로 저장</b>돼요. 그러려면 <b>연결 키(토큰)</b>가 필요해요. 이 키는 <b>이 브라우저에만</b> 저장되고 다른 곳으로 보내지지 않아요. 채팅이나 다른 사람에게는 절대 보내지 마세요.</p>
     <ol>
       <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">여기를 눌러 키 만들기 화면</a>을 열어요. (GitHub 로그인 필요)</li>
       <li><b>Token name</b>: 아무 이름 (예: <code>포트폴리오 편집기</code>)</li>
@@ -151,7 +152,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-5';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-6';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -205,13 +206,16 @@ const SCHEMA=[
 /* ── 상태 ── */
 let cfg=null, tabIdx=0, worksL='A', baL='A', baSlot=null, dirty=false, saving=false;
 let pending={}; /* path -> {b64, url, size} */
+let uploaded={}; /* 이번에 올린 파일: 사이트에 반영되기 전까지 미리보기에 이 사진을 써요 */
+let shaCache={}, autoTimer=null, saveAgain=false, lastSaved=0;
+const localUrl=(p)=>(pending[p]&&pending[p].url)||uploaded[p]||'';
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(msg,ms,action){const t=$('toast');t.textContent=msg;
   if(action){const b=document.createElement('button');b.textContent=action.label;b.style.cssText='margin-left:12px;height:32px;padding:0 14px;border-radius:999px;border:0;background:#fff;color:#2B2327;font-weight:700';b.onclick=()=>{t.classList.remove('on');action.run();};t.appendChild(b);}
   t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
-function setDirty(v){dirty=v;$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':'')):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
+function setDirty(v){dirty=v;if(v&&token){clearTimeout(autoTimer);autoTimer=setTimeout(()=>save(true),2500);}$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?(token?'곧 자동 저장돼요…':('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':''))):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
 function connUI(){const c=$('conn');if(token){c.textContent='GitHub 연결됨';c.className='pill ok';$('connBtn').textContent='연결 설정';}else{c.textContent='연결 안 됨';c.className='pill';$('connBtn').textContent='GitHub 연결';}}
 /* 새로고침·닫기 직전에 임시 저장을 한 번 더 해둬요 */
 window.addEventListener('pagehide',()=>{if(dirty)saveDraft();});
@@ -237,7 +241,7 @@ async function load(){
   const restored=await restoreDraft();
   render();
   pushPreview();
-  if(restored){setDirty(true);toast('저장 안 한 변경 내용을 다시 불러왔어요. 사이트에 올리려면 "저장하기"를 눌러 주세요.',5000);}
+  if(restored){setDirty(true);toast(token?'저장 안 됐던 내용을 불러왔어요. 곧 자동 저장돼요.':'저장 안 한 변경 내용을 다시 불러왔어요. 사이트에 올리려면 GitHub 연결 후 저장해 주세요.',5000);}
 }
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
@@ -345,7 +349,7 @@ function renderWorks(sec){
   h+='<div class="works">';
   list.forEach((w,i)=>{
     const path=mediaPath(L,w.file), pend=pending[path];
-    const src=pend?pend.url:path;
+    const src=localUrl(path)||path;
     const ip=esc(JSON.stringify(['works'+L,i]));
     h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<span class="no">'+(i+1)+'</span>'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
        '<div class="bd"><input type="text" placeholder="제목 (아바타 이름)" data-path="'+esc(JSON.stringify(['works'+L,i,'title']))+'" value="'+esc(w.title)+'"><input type="text" placeholder="한 줄 설명" data-path="'+esc(JSON.stringify(['works'+L,i,'desc']))+'" value="'+esc(w.desc)+'">'+
@@ -368,7 +372,7 @@ function renderBA(sec){
   h+='<div class="list">';
   list.forEach((c,i)=>{
     const ip=esc(JSON.stringify(['ba'+baL,i]));
-    const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=pend?pend.url:fp;
+    const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=localUrl(fp)||fp;
       return '<div class="baslot" data-baslot="'+esc(JSON.stringify(['ba'+baL,i,k]))+'">'+(c[k]?'<img src="'+esc(src)+'" alt="">':'<span class="baempty">＋<br>'+label+' 사진 넣기</span>')+'<span class="balabel'+(k==='after'?' af':'')+'">'+label.toUpperCase()+'</span>'+(c[k]?'<span class="bachange">바꾸기</span>':'')+'</div>';};
     h+='<div class="row"><div class="row-h"><b>'+CAT[baL]+' 사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
       '<button class="ib" data-act="up" data-path="'+ip+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+ip+'" title="아래로">↓</button><button class="ib del" data-act="del" data-path="'+ip+'" title="삭제">✕</button></div>'+
@@ -541,35 +545,51 @@ const HEADER=['/*',
 'window.PORTFOLIO_CONFIG = {'].join('\n');
 
 /* ── 저장 ── */
+async function fetchSha(path){const g=await gh(path);if(g.ok)return (await g.json()).sha;if(g.status===404)return undefined;throw new Error(await errText(g));}
 async function putFile(path,b64,message){
-  let sha;const g=await gh(path);if(g.ok){sha=(await g.json()).sha;}else if(g.status!==404){throw new Error(await errText(g));}
-  const r=await gh(path,{method:'PUT',body:JSON.stringify({message,content:b64,branch:BRANCH,sha})});
-  if(!r.ok)throw new Error(await errText(r));
+  for(let attempt=0;attempt<2;attempt++){
+    const sha=(attempt===0&&shaCache[path])?shaCache[path]:await fetchSha(path);
+    const r=await gh(path,{method:'PUT',body:JSON.stringify({message,content:b64,branch:BRANCH,sha})});
+    if(r.ok){try{const j=await r.json();if(j&&j.content&&j.content.sha)shaCache[path]=j.content.sha;}catch(e){}return;}
+    if((r.status===409||r.status===422)&&attempt===0){delete shaCache[path];continue;}
+    throw new Error(await errText(r));
+  }
 }
 async function errText(r){let m='';try{m=(await r.json()).message||'';}catch(e){}
   if(r.status===401)return '연결 키가 만료됐거나 잘못됐어요. "연결 설정"에서 다시 연결해 주세요.';
   if(r.status===403||r.status===404)return '저장 권한이 없어요. 키를 만들 때 portfolio-v2 를 고르고 Contents 를 Read and write 로 했는지 확인해 주세요.';
   if(r.status===409||r.status===422)return '다른 곳에서 먼저 바뀐 내용이 있어요. 새로고침 후 다시 해 주세요. ('+m+')';
   return '저장 실패 ('+r.status+') '+m;}
-async function save(){
-  if(!token){openConn();return;}
+async function save(auto){
+  if(!token){if(!auto)openConn();return;}
+  clearTimeout(autoTimer);
+  if(saving){saveAgain=true;return;}
   let text;
   try{
     ['A','B','C','D'].forEach((L)=>(cfg['works'+L]||[]).forEach((x)=>delete x._orig));
     text=buildConfig();parseConfig(text);
   }catch(e){toast('저장할 내용을 만드는 중 문제가 생겼어요: '+e.message,5000);return;}
-  saving=true;$('saveBtn').disabled=true;$('saveBtn').textContent='저장 중…';
+  saving=true;saveAgain=false;$('saveBtn').disabled=true;$('saveBtn').textContent='저장 중…';
+  const st=$('status');st.textContent='자동 저장 중…';st.className='status';
   try{
     const files=Object.keys(pending);
-    for(let i=0;i<files.length;i++){toast('사진·영상 올리는 중 '+(i+1)+' / '+files.length,60000);await putFile(files[i],pending[files[i]].b64,'편집기: '+files[i].split('/').pop()+' 추가');}
-    toast('내용 저장 중…',60000);
-    await putFile('config.js',textToB64(text),'편집기로 내용 수정');
-    Object.values(pending).forEach((p)=>URL.revokeObjectURL(p.url));pending={};
-    base=JSON.parse(JSON.stringify(cfg));clearDraft();
-    setDirty(false);render();
-    toast('저장 완료! 1~2분 뒤 사이트를 새로고침하면 보여요.',5000);
-  }catch(e){toast(e.message,7000);}
-  finally{saving=false;$('saveBtn').textContent='저장하기';$('saveBtn').disabled=!dirty;}
+    for(let i=0;i<files.length;i++){
+      const f=files[i];if(!pending[f])continue;
+      if(files.length>0)st.textContent='사진·영상 올리는 중 '+(i+1)+' / '+files.length;
+      await putFile(f,pending[f].b64,'편집기: '+f.split('/').pop()+' 추가');
+      uploaded[f]=pending[f].url;delete pending[f];
+    }
+    st.textContent='내용 저장 중…';
+    const text2=buildConfig();
+    await putFile('config.js',textToB64(text2),'편집기로 내용 수정');
+    lastSaved=Date.now();
+    base=JSON.parse(JSON.stringify(cfg));
+    if(!saveAgain){clearDraft();dirty=false;$('discardBtn').style.display='none';}
+    const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;
+    st.textContent='저장됨 ✓ 내 브라우저에선 바로, 다른 사람에겐 1~2분 뒤 보여요';st.className='status ok';
+    if(!auto)toast('저장했어요!',2500);
+  }catch(e){toast(e.message,7000);st.textContent='저장 실패 — 다시 시도해 주세요';st.className='status dirty';dirty=true;}
+  finally{saving=false;$('saveBtn').textContent='저장하기';$('saveBtn').disabled=!dirty;if(saveAgain){saveAgain=false;save(true);}}
 }
 
 /* ── 연결 ── */
@@ -581,7 +601,7 @@ $('tokenSave').onclick=async()=>{
   const v=$('tokenInput').value.trim();if(!v||v.indexOf('•')>=0){$('connModal').classList.remove('on');return;}
   const old=token;token=v;
   try{const r=await gh('config.js');if(!r.ok)throw new Error(await errText(r));
-    try{localStorage.setItem(TOKEN_KEY,token);}catch(e){}connUI();$('connModal').classList.remove('on');toast('연결됐어요!');}
+    try{localStorage.setItem(TOKEN_KEY,token);}catch(e){}connUI();$('connModal').classList.remove('on');toast(dirty?'연결됐어요! 고친 내용을 지금 저장할게요.':'연결됐어요! 이제 고치면 자동으로 저장돼요.',4000);if(dirty)save(true);}
   catch(e){token=old;toast(e.message,6000);}
 };
 $('saveBtn').onclick=save;
@@ -601,8 +621,8 @@ let dev=window.innerWidth<700?'mobile':'pc', pvTimer=null;
 document.querySelectorAll('[data-dev]').forEach((x)=>x.classList.toggle('on',x.dataset.dev===dev));
 function previewCfg(){
   const c=JSON.parse(JSON.stringify(cfg||{}));
-  ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{const p=mediaPath(L,w.file);if(pending[p])w.file=pending[p].url;delete w._orig;}));
-  ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{const p=baPath(x[k]);if(x[k]&&pending[p])x[k]=pending[p].url;});}));
+  ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{const u=localUrl(mediaPath(L,w.file));if(u)w.file=u;delete w._orig;}));
+  ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{const u=x[k]&&localUrl(baPath(x[k]));if(u)x[k]=u;});}));
   return c;
 }
 function pushPreview(){clearTimeout(pvTimer);pvTimer=setTimeout(()=>{const f=$('pvFrame');if(cfg&&f.contentWindow)f.contentWindow.postMessage({type:'pf-config',cfg:previewCfg()},location.origin);},200);}
