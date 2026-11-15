@@ -738,7 +738,7 @@ class Component extends DCLogic {
     };
 
     return {
-      accent, heroTiles,
+      accent, heroTiles, strengths, heroStrengths,
       lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
       lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
