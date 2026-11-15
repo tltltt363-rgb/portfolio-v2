@@ -74,6 +74,7 @@ window.PORTFOLIO_CONFIG = {
 
   worksA: [  // 성형 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
     { file: "seonghyeong-32.webp", title: "Chocolat", desc: "성형", link: "" },
+    { file: "seonghyeong-35.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-02.webp", title: "Mayo", desc: "성형", link: "" },
     { file: "seonghyeong-03.webp", title: "Salt", desc: "성형", link: "" },
     { file: "seonghyeong-04.webp", title: "Mayo", desc: "성형", link: "" },
@@ -108,7 +109,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-31.webp", title: "Eku", desc: "성형", link: "" },
     { file: "seonghyeong-42.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-34.webp", title: "", desc: "성형", link: "" },
-    { file: "seonghyeong-35.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-36.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-37.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-38.webp", title: "", desc: "성형", link: "" },
