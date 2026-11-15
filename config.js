@@ -143,7 +143,7 @@ window.PORTFOLIO_CONFIG = {
   baA: [  // 성형 비포·애프터
     { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-02-after.webp", title: "개인용 Milltina", desc: "개인용 밀티나", period: "4일~5일", platform: "VRchat" },
     { before: "ba-seonghyeong-03-before.webp", after: "ba-seonghyeong-04-after.webp", title: "개인용 Mayo", desc: "개인용 마요", period: "7일", platform: "VRchat" },
-    { before: "ba-seonghyeong-04-before.webp", after: "ba-seonghyeong-05-after.webp", title: "", desc: "", period: "", platform: "" },
+    { before: "ba-seonghyeong-04-before.webp", after: "ba-seonghyeong-05-after.webp", title: "salt", desc: "", period: "", platform: "" },
   ],
 
   baB: [  // 페이셜 비포·애프터
