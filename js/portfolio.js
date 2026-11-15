@@ -165,7 +165,7 @@ class Component extends DCLogic {
     });
     const impossible = (Array.isArray(P.impossible) ? P.impossible : []).filter(Boolean).map((t) => { const sp = splitNote(t); return { main: sp.main, note: sp.note, hasNote: !!sp.note }; });
     return {
-      brandLabel, footerBrand: brandLabel, strengthsTitle: brandLabel + '에게 맡기면 좋은 점',
+      brandLabel, footerBrand: brandLabel, strengthsTitle: txt('strengthsTitle', '') || (brandLabel + '에게 맡기면 좋은 점'),
       heroEyebrow: txt('heroEyebrow', 'STREAMING AVATAR PORTFOLIO'),
       heroLines: heroLines.map((t, i) => ({ t, br: i < heroLines.length - 1 })),
       heroDesc: txt('heroDesc', '성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.'),

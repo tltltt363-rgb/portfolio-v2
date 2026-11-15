@@ -153,7 +153,7 @@ const SCHEMA=[
  {tab:'기본',sections:[
   {title:'기본',keys:[F('brandName','브랜드 이름',{hint:'비우면 [브랜드명] 으로 보여요',cm:'브랜드 이름 (비우면 [브랜드명] 으로 보여요). 예: "MURI"'}),F('accent','포인트 색',{type:'color',cm:'포인트 색 (색 코드)'})]},
   {title:'맨 위 첫 화면',desc:'제목에서 // 를 넣으면 줄이 바뀌어요.',keys:[F('heroEyebrow','제목 위 작은 영어 글자',{cm:'제목 위 작은 영어 글자'}),F('heroTitle','큰 제목',{hint:'// 로 줄바꿈',cm:'큰 제목'}),F('heroDesc','설명',{long:1,cm:'제목 아래 설명'})]},
-  {title:'장점 (WHY ME)',desc:'tag 는 카드 아래 검은 칩이에요. 비워두면 안 보여요.\n맨 위 첫 화면의 체크 칩에는 앞의 3개가 나와요.',keys:[F('strengths','장점 카드',{type:'list',item:'장점',fields:[F('title','제목'),F('desc','설명',{long:1}),F('tag','태그 (비우면 안 보여요)')]})]}
+  {title:'장점 (WHY ME)',desc:'tag 는 카드 아래 검은 칩이에요. 비워두면 안 보여요.\n맨 위 첫 화면의 체크 칩에는 앞의 3개가 나와요.',keys:[F('strengthsTitle','장점 칸 제목',{cm:'장점 칸 제목'}),F('strengths','장점 카드',{type:'list',item:'장점',fields:[F('title','제목'),F('desc','설명',{long:1}),F('tag','태그 (비우면 안 보여요)')]})]}
  ]},
  {tab:'작업물',sections:[
   {title:'작업물',works:true,desc:'file: 파일 이름 — 각 카테고리 폴더에 올린 파일 이름만 적으면 돼요.\n   성형 → media/seonghyeong/   페이셜 → media/facial/\n   텍스쳐 → media/texture/     뽀잉눈 → media/boing/\n   (파일 올리기: 편집기의 "사진·영상 추가" 또는 GitHub "Add file → Upload files")\ntitle: 카드 제목 (아바타 이름)   desc: 카드 아래 한 줄 설명\n.mp4 .webm .mov 는 영상(자동 재생), 나머지는 사진으로 보여요.\n목록에 적은 순서대로 카드가 되고, 6개씩 한 페이지예요.',
