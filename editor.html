@@ -159,13 +159,13 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-13';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-1';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
-const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
+const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
 const BA_DIR='media/before-after/';
 const BA_SLUG={A:'seonghyeong',B:'facial',C:'texture',D:'boing'};
-const CAT={A:'성형',B:'페이셜',C:'텍스쳐',D:'뽀잉눈'};
+const CAT={A:'성형',B:'페이셜',C:'텍스쳐',D:'뽀잉눈',E:'텍스쳐 비포·애프터'};
 
 /* ── 설정 항목 정의: 화면(탭)과 config.js 저장 순서를 함께 정해요 ── */
 const F=(k,label,o)=>Object.assign({k,label},o||{});
@@ -183,6 +183,7 @@ const SCHEMA=[
     F('worksA','성형',{type:'works',L:'A'}),F('worksLinkA','성형 판매 링크',{opt:1}),F('worksLinkLabelA','버튼 글자',{opt:1}),F('worksLinkTextA','버튼 옆 안내 문구',{opt:1}),
     F('worksB','페이셜',{type:'works',L:'B'}),F('worksLinkB','페이셜 판매 링크',{opt:1}),F('worksLinkLabelB','버튼 글자',{opt:1}),F('worksLinkTextB','버튼 옆 안내 문구',{opt:1}),
     F('worksC','텍스쳐',{type:'works',L:'C'}),F('worksLinkC','텍스쳐 판매 링크',{opt:1}),F('worksLinkLabelC','버튼 글자',{opt:1}),F('worksLinkTextC','버튼 옆 안내 문구',{opt:1}),
+    F('worksE','텍스쳐 비포·애프터',{type:'works',L:'E'}),
     F('worksD','뽀잉눈',{type:'works',L:'D'}),F('worksLinkD','뽀잉눈 판매 링크',{opt:1}),F('worksLinkLabelD','버튼 글자',{opt:1}),F('worksLinkTextD','버튼 옆 안내 문구',{opt:1})]}
  ]},
  {tab:'비포·애프터',sections:[
@@ -262,6 +263,7 @@ async function load(){
 }
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
+  if(!Array.isArray(cfg.worksE))cfg.worksE=[];
   if(!Array.isArray(cfg.heroPhotos))cfg.heroPhotos=[{file:'',label:'BEFORE'},{file:'',label:'AFTER'},{file:'',label:''}];
   if(cfg.baRatio==null)cfg.baRatio='4 / 3';
   ['A','B','C','D'].forEach((L)=>{
@@ -378,8 +380,9 @@ function mediaPath(L,file){file=String(file||'');return file.indexOf('/')>=0||/^
 function renderWorks(sec){
   let h='<p class="hint">카테고리를 고르고, 사진 아래 칸에 제목·설명을 적어요. ◀ ▶ 로 순서를 바꾸고 ✕ 로 빼요.\n새 사진·영상은 "사진·영상 추가"를 눌러 올리면 자동으로 알맞은 크기(webp)로 바뀌어요.</p>';
   h+=renderField(sec.keys[0],cfg.worksIntro,['worksIntro']);
-  h+='<div class="sub">'+['A','B','C','D'].map((L)=>'<button class="tab'+(L===worksL?' on':'')+'" data-works="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['works'+L]||[]).length+'</span></button>').join('')+'</div>';
+  h+='<div class="sub">'+['A','B','C','E','D'].map((L)=>'<button class="tab'+(L===worksL?' on':'')+'" data-works="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['works'+L]||[]).length+'</span></button>').join('')+'</div>';
   const L=worksL, list=cfg['works'+L]||[];
+  if(L==='E')return h+renderPairWorks(list);
   h+='<div class="works">';
   list.forEach((w,i)=>{
     const path=mediaPath(L,w.file), pend=pending[path];
@@ -398,6 +401,20 @@ function renderWorks(sec){
 }
 
 function baPath(f){f=String(f||'');return !f?'':(f.indexOf('/')>=0||/^https?:/.test(f)?f:BA_DIR+f);}
+function renderPairWorks(list){
+  let h='<p class="hint">사례마다 작업 전(BEFORE)·작업 후(AFTER) 사진을 넣어요. 사이트 카드에는 왼쪽 반은 BEFORE, 오른쪽 반은 AFTER로 나뉘어 보이고, 누르면 크게 나란히 보여요.</p><div class="list">';
+  list.forEach((c,i)=>{
+    const ip=esc(JSON.stringify(['worksE',i]));
+    const slot=(k,label)=>{const fp=c[k]?mediaPath('E',c[k]):'';const src=fp?viewUrl(fp):'';
+      return '<div class="baslot" data-baslot="'+esc(JSON.stringify(['worksE',i,k]))+'">'+(src?'<img src="'+esc(src)+'" alt="">':'<span class="baempty">＋<br>'+label+' 사진 넣기</span>')+'<span class="balabel'+(k==='after'?' af':'')+'">'+label.toUpperCase()+'</span>'+(src?'<span class="bachange">바꾸기</span>':'')+'</div>';};
+    h+='<div class="row"><div class="row-h"><b>사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
+      '<button class="ib" data-act="up" data-path="'+ip+'" title="앞으로">↑</button><button class="ib" data-act="down" data-path="'+ip+'" title="뒤로">↓</button><button class="ib del" data-act="del" data-path="'+ip+'" title="빼기">✕</button></div>'+
+      '<div class="bapair">'+slot('before','Before')+slot('after','After')+'</div>';
+    [F('title','제목 (아바타 이름)'),F('desc','한 줄 설명')].forEach((sf)=>{h+=renderField(sf,c[sf.k],['worksE',i,sf.k]);});
+    h+='</div>';
+  });
+  return h+'</div><button class="btn sm add" data-act="addpair">+ 텍스쳐 비포·애프터 사례 추가</button><input type="file" id="baIn" accept="image/*" hidden>';
+}
 function renderBA(sec){
   let h='<p class="hint">카테고리를 고르고 사례를 추가해요. 사진 칸을 누르거나 사진을 끌어다 놓으면 들어가요.\n사례를 하나라도 넣으면 사이트의 임시 칸은 사라지고, 사례가 없는 카테고리는 숨겨져요.</p>';
   h+=renderField(sec.keys[0],cfg.baRatio,['baRatio']);
@@ -452,6 +469,7 @@ document.addEventListener('click',(e)=>{
   if(act==='imgfetch'){autoImage(path,true);return;}
   if(act==='imgpick'){const sl=document.querySelector('[data-imgslot="'+CSS.escape(JSON.stringify(path))+'"]');imgTarget={path,dir:sl.dataset.dir,prefix:sl.dataset.prefix};$('imgIn').click();return;}
   if(act==='imgclear'){setAt(path,'');}
+  else if(act==='addpair'){const arr=cfg.worksE||[];arr.push({before:'',after:'',title:'',desc:CAT.C});cfg.worksE=arr;}
   else if(act==='addba'){const arr=cfg['ba'+baL]||[];arr.push({before:'',after:'',title:'',desc:'',period:'',platform:''});cfg['ba'+baL]=arr;}
   else if(act==='add'||act==='addstr'){const arr=getAt(path)||[];const f=findField(path);arr.push(act==='addstr'?'':blankLike(f));setAt(path,arr);}
   else{
@@ -464,7 +482,7 @@ document.addEventListener('click',(e)=>{
       const rm=arr.splice(idx,1)[0];
       let pend=null,pendPath=null;
       if(act==='delwork'&&rm){pendPath=mediaPath(arrPath[0].slice(-1),rm.file);if(pending[pendPath]){pend=pending[pendPath];delete pending[pendPath];}}
-      let baPend={};if(/^ba[A-D]$/.test(String(arrPath[0]))&&rm){['before','after'].forEach((k)=>{const fp=baPath(rm[k]);if(rm[k]&&pending[fp]){baPend[fp]=pending[fp];delete pending[fp];}});}
+      let baPend={};if(/^(ba[A-D]|worksE)$/.test(String(arrPath[0]))&&rm){['before','after'].forEach((k)=>{const fp=arrPath[0]==='worksE'?mediaPath('E',rm[k]):baPath(rm[k]);if(rm[k]&&pending[fp]){baPend[fp]=pending[fp];delete pending[fp];}});}
       setTimeout(()=>toast('뺐어요.',6000,{label:'되돌리기',run:()=>{const a=getAt(arrPath)||[];a.splice(Math.min(idx,a.length),0,rm);setAt(arrPath,a);if(pend)pending[pendPath]=pend;Object.assign(pending,baPend);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;}}),0);
     }
   }
@@ -544,11 +562,12 @@ async function setBaImage(path,file){
   try{
     toast('사진 준비 중…',8000);
     const blob=/gif$/i.test(file.type)?file:await toWebp(file);const ext=/gif$/i.test(file.type)?'gif':'webp';
-    const L=path[0].slice(-1), idx=path[1], kind=path[2];
+    const L=path[0].slice(-1), idx=path[1], kind=path[2], isW=path[0]==='worksE', dir=isW?FOLDERS.E:BA_DIR;
     const used=new Set();['A','B','C','D'].forEach((x)=>(cfg['ba'+x]||[]).forEach((c)=>{used.add(c.before);used.add(c.after);}));Object.keys(pending).concat(Object.keys(uploaded)).forEach((p)=>used.add(p.split('/').pop()));repoFiles.forEach((x)=>used.add(x));
-    let n=idx+1,name;do{name='ba-'+BA_SLUG[L]+'-'+String(n).padStart(2,'0')+'-'+kind+'.'+ext;n++;}while(used.has(name));
-    const old=getAt(path);const oldP=baPath(old);if(old&&pending[oldP]){URL.revokeObjectURL(pending[oldP].url);delete pending[oldP];}
-    pending[BA_DIR+name]={b64:bytesToB64(new Uint8Array(await blob.arrayBuffer())),url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
+    (cfg.worksE||[]).forEach((c)=>{used.add(c.before);used.add(c.after);});
+    let n=idx+1,name;do{name=(isW?'texture-ba':'ba-'+BA_SLUG[L])+'-'+String(n).padStart(2,'0')+'-'+kind+'.'+ext;n++;}while(used.has(name));
+    const old=getAt(path);const oldP=isW?mediaPath('E',old):baPath(old);if(old&&pending[oldP]){URL.revokeObjectURL(pending[oldP].url);delete pending[oldP];}
+    pending[dir+name]={b64:bytesToB64(new Uint8Array(await blob.arrayBuffer())),url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
     setAt(path,name);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;toast('넣었어요. 다 고친 뒤 "저장하기"를 눌러 주세요.');
   }catch(err){toast(err.message,4000);}
 }
@@ -585,7 +604,7 @@ function buildConfig(){
   SCHEMA.forEach((tab)=>tab.sections.forEach((s)=>{
     sec(s.title,s.desc);
     s.keys.forEach((f)=>{
-      if(f.type==='works'){w('');objList(f.k,['file','title','desc'],CAT[f.L]);return;}
+      if(f.type==='works'){w('');objList(f.k,f.L==='E'?['before','after','title','desc']:['file','title','desc'],CAT[f.L]+(f.L==='E'?' (before/after: media/texture-ba/ 의 파일 이름)':''));return;}
       if(f.type==='ba'){w('');objList(f.k,['before','after','title','desc','period','platform'],CAT[f.L]+' 비포·애프터');return;}
       if(f.hidden){kv(f.k,f.cm);return;}
       if(f.opt){if(cfg[f.k]!==undefined&&cfg[f.k]!=='')kv(f.k,f.label);else done.add(f.k);return;}
@@ -715,6 +734,7 @@ document.querySelectorAll('[data-dev]').forEach((x)=>x.classList.toggle('on',x.d
 function previewCfg(){
   const c=JSON.parse(JSON.stringify(cfg||{}));
   ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{if(w.file)w.file=viewUrl(mediaPath(L,w.file));delete w._orig;}));
+  (c.worksE||[]).forEach((x)=>{['before','after'].forEach((k)=>{if(x[k])x[k]=viewUrl(mediaPath('E',x[k]));});});
   ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{if(x[k])x[k]=viewUrl(baPath(x[k]));});}));
   if(Array.isArray(c.heroMedia))c.heroMedia=c.heroMedia.map(viewUrl);
   (c.heroPhotos||[]).forEach((x)=>{const v=String(x.file||'');if(v&&!/^(https?:|blob:|data:)/.test(v))x.file=viewUrl(v.indexOf('/')>=0?v:'media/hero/'+v);});

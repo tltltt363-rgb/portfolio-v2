@@ -302,6 +302,7 @@ class Component extends DCLogic {
       { id: 'a', label: '성형', base: 'image', n: num(this.props.countA, 16), icon: 'iFace' },
       { id: 'b', label: '페이셜', base: 'video', n: num(this.props.countB, 12), icon: 'iSmile' },
       { id: 'c', label: '텍스쳐', base: 'image', n: num(this.props.countC, 12), icon: 'iBrush' },
+      { id: 'e', label: String(this.props.worksLabelE || '텍스쳐 비포·애프터'), base: 'image', n: num(this.props.countE, 4), icon: 'iBrush', pair: true },
       { id: 'd', label: '뽀잉눈', base: 'video', n: num(this.props.countD, 12), icon: 'iEye' }
     ].map((c) => ({ ...c, n: Math.min(500, Math.max(1, Math.round(c.n))) }));
     const tab = st.tab || 'a';
@@ -309,7 +310,7 @@ class Component extends DCLogic {
     const tones = ['#EED9DD', '#F2E5E1', '#E8DADF', '#F0E3E5', '#E9D5D9', '#EDE2DF'];
     const pad = (n) => (n < 10 ? '0' : '') + n;
     /* 영상 카드 번호: Tweaks 'worksVideoA' 등. 쉼표로 구분, 1-5처럼 범위도 가능. 나머지는 이미지 */
-    const videoDefaults = { a: '3, 6, 9, 12, 15', b: '1, 2, 4, 5, 7, 8, 10, 11', c: '3, 6, 9, 12', d: '1, 2, 4, 5, 7, 8, 10, 11' };
+    const videoDefaults = { a: '3, 6, 9, 12, 15', b: '1, 2, 4, 5, 7, 8, 10, 11', c: '3, 6, 9, 12', d: '1, 2, 4, 5, 7, 8, 10, 11', e: '' };
     const parseNums = (str) => {
       const set2 = {};
       String(str || '').split(/[,\s]+/).forEach((tk) => {
@@ -321,13 +322,15 @@ class Component extends DCLogic {
       return set2;
     };
     const videoSets = {};
-    ['a', 'b', 'c', 'd'].forEach((id) => { videoSets[id] = parseNums(videoDefaults[id]); });
+    ['a', 'b', 'c', 'd', 'e'].forEach((id) => { videoSets[id] = parseNums(videoDefaults[id]); });
     /* 작업물 파일: Tweaks 'worksMediaA' 등에 파일 주소를 넣으면 넣은 순서대로 카드가 되고,
        영상 파일(.mp4 .webm .mov .m4v 또는 주소 끝 #video)은 영상 카드, 나머지는 이미지 카드로 자동 인식 */
     const isVideoUrl = (u) => /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /#video$/i.test(u);
     const mediaLists = {};
-    ['a', 'b', 'c', 'd'].forEach((id) => {
-      mediaLists[id] = String(this.props['worksMedia' + id.toUpperCase()] ?? '').split(/[\s,]+/).map((u) => u.trim()).filter((u) => u.length > 0);
+    ['a', 'b', 'c', 'd', 'e'].forEach((id) => {
+      const raw = this.props['worksMedia' + id.toUpperCase()];
+      if (id === 'e' && Array.isArray(raw)) { mediaLists[id] = raw.map((u) => String(u || '').trim()); return; }
+      mediaLists[id] = (Array.isArray(raw) ? raw.join(' ') : String(raw ?? '')).split(/[\s,]+/).map((u) => u.trim()).filter((u) => u.length > 0);
     });
     const typeFor = (c, i) => {
       const ml = mediaLists[c.id];
@@ -352,6 +355,7 @@ class Component extends DCLogic {
       };
     });
     const cur = catDefs.find((c) => c.id === tab) || catDefs[0];
+    const catCols = String(catDefs.length);
     const cards = [];
     /* 카테고리 판매 링크: 'worksLinkA' 등 (+ 'worksLinkLabelA', 'worksLinkTextA') */
     const linkRaw = String(this.props['worksLink' + cur.id.toUpperCase()] ?? '').trim();
@@ -359,6 +363,7 @@ class Component extends DCLogic {
     const worksLinkLabel = String(this.props['worksLinkLabel' + cur.id.toUpperCase()] ?? '').trim() || 'BOOTH에서 보기';
     const worksLinkText = String(this.props['worksLinkText' + cur.id.toUpperCase()] ?? '').trim() || (cur.label + ' 작업물은 BOOTH에서 판매하고 있어요');
     const curMedia = mediaLists[cur.id] || [];
+    const curBefore = cur.pair && Array.isArray(this.props['worksBefore' + cur.id.toUpperCase()]) ? this.props['worksBefore' + cur.id.toUpperCase()] : [];
     /* 카드 제목·설명: 'worksTitlesA' / 'worksDescsA' 등 (배열, 또는 | 로 구분한 글자) */
     const textList = (v) => (Array.isArray(v) ? v.map((x) => String(x == null ? '' : x)) : String(v == null ? '' : v).split('|').map((x) => x.trim()));
     const curTitles = textList(this.props['worksTitles' + cur.id.toUpperCase()]).filter((x, i, arr) => arr.length > 1 || x);
@@ -368,11 +373,14 @@ class Component extends DCLogic {
       if (filter !== 'all' && filter !== type) continue;
       const sold = cur.status && i === 1;
       const src = curMedia[i] ? curMedia[i].replace(/#video$/i, '') : '';
+      const pBefore = cur.pair ? String(curBefore[i] || '').trim() : '';
+      const isPair = !!cur.pair;
       cards.push({
+        isPair, notPair: !isPair, pairBefore: pBefore, pairAfter: src, pairHasBefore: !!pBefore, pairHasAfter: !!src,
         tone: tones[i % tones.length],
-        label: type === 'image' ? 'IMAGE' : 'MP4',
+        label: isPair ? 'BEFORE · AFTER' : (type === 'image' ? 'IMAGE' : 'MP4'),
         isImage: type === 'image', isGif: false, isVideo: type === 'video',
-        src, thumb: src ? src + '#t=0.5' : '', showPlay: type === 'video' && !src, hasImg: !!src && type === 'image', hasVid: !!src && type === 'video', phImage: !src && type === 'image',
+        src, thumb: src ? src + '#t=0.5' : '', showPlay: !isPair && type === 'video' && !src, hasImg: !isPair && !!src && type === 'image', hasVid: !isPair && !!src && type === 'video', phImage: !isPair && !src && type === 'image',
         title: curTitles[i] ? curTitles[i] : '[' + (cur.avatar ? '아바타 이름' : '작업물 제목') + ' ' + pad(i + 1) + ']',
         meta: curDescs[i] != null && curDescs[i] !== '' ? curDescs[i] : (curTitles.length ? '' : (cur.avatar ? '[짧은 설명]' : '[한 줄 설명]')),
         hasStatus: !!cur.status,
@@ -792,13 +800,15 @@ class Component extends DCLogic {
     /* ---------- lightbox ---------- */
     const lb = st.lb || null;
     let lbList = [];
-    if (lb && lb.kind === 'works') lbList = cards.map((c) => ({ tone: c.tone, label: c.label, isImage: c.isImage, isGif: c.isGif, isVideo: c.isVideo, isAvatar: false, title: c.title, meta: c.meta, ratio: '4 / 5', src: c.src }));
+    if (lb && lb.kind === 'works') lbList = cards.map((c) => ({ tone: c.tone, label: c.label, isImage: c.isImage, isGif: c.isGif, isVideo: c.isVideo, isAvatar: false, title: c.title, meta: c.meta, ratio: '4 / 5', src: c.src, isPair: c.isPair, before: c.pairBefore, after: c.pairAfter }));
     if (lb && lb.kind === 'sales') lbList = sales.map((a) => ({ tone: a.tone, label: a.statusLabel, isImage: false, isGif: false, isVideo: false, isAvatar: true, title: a.name, meta: a.desc + ' · ' + a.price, ratio: '3 / 4' }));
     if (lb && lb.kind === 'avatars') lbList = avatars.map((a) => ({ tone: a.tone, label: a.no, isImage: a.hasImage, isGif: false, isVideo: false, isAvatar: !a.hasImage, title: a.name, meta: a.desc, ratio: '3 / 4', src: a.image }));
     const lbIsBa = !!lb && lb.kind === 'ba';
     const lbN = lbList.length;
     const lbI = lbN && lb ? ((lb.i % lbN) + lbN) % lbN : 0;
     const lbCur = lbList[lbI] || {};
+    const lbPair = !lbIsBa && !!lbCur.isPair;
+    const lbPB = lbIsBa ? baV.beforeSrc : (lbCur.before || ''), lbPA = lbIsBa ? baV.afterSrc : (lbCur.after || '');
     const lbClose = () => set({ lb: null });
     const lbGo = (dir) => {
       if (lbIsBa) { goCase(baPos + dir); return; }
@@ -811,12 +821,14 @@ class Component extends DCLogic {
     };
 
     return {
+      catCols,
       accent, heroTiles, strengths, heroStrengths, ...this.textVals(accent),
       saleReady: !(this.props.saleReady === false || this.props.saleReady === 'false'),
       saleSoon: this.props.saleReady === false || this.props.saleReady === 'false',
       saleSoonTitle: String(this.props.saleSoonTitle ?? '').trim() || '분양 아바타는 준비 중이에요',
       saleSoonText: String(this.props.saleSoonText ?? '').trim(),
-      lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
+      lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa: lbIsBa || lbPair, lbIsSingle: !lbIsBa && !lbPair,
+      lbBaBeforeSrc: lbPB, lbBaAfterSrc: lbPA, lbBaHasBefore: !!lbPB, lbBaNoBefore: !lbPB, lbBaHasAfter: !!lbPA, lbBaNoAfter: !lbPA, lbBaRatio: lbIsBa ? (baAnyReal ? String(this.props.baRatio || '4 / 3') : '4 / 5') : '1 / 1',
       lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
       lbSrc: lbCur.src || '', lbHasImg: !!lbCur.src && !!lbCur.isImage, lbHasVid: !!lbCur.src && !!lbCur.isVideo,
@@ -906,12 +918,21 @@ window.normalizePortfolioConfig = function (cfg) {
   const arr = (v) => (Array.isArray(v) ? v.filter((x) => x && typeof x === 'object') : null);
   const str = arr(c.strengths);
   if (str) { c.strengthCount = str.length; str.forEach((x, i) => { const k = 'str' + (i + 1); c[k + 'Title'] = x.title || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Tag'] = x.tag || ''; }); }
-  const folders = { A: 'media/seonghyeong/', B: 'media/facial/', C: 'media/texture/', D: 'media/boing/' };
-  ['A', 'B', 'C', 'D'].forEach((L) => {
+  const folders = { A: 'media/seonghyeong/', B: 'media/facial/', C: 'media/texture/', D: 'media/boing/', E: 'media/texture-ba/' };
+  ['A', 'B', 'C', 'D', 'E'].forEach((L) => {
     const w = arr(c['works' + L]);
     if (!w) return;
     const dir = String(c['worksFolder' + L] || folders[L]).replace(/\/?$/, '/');
     const path = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:)?\/\//.test(f) || f.indexOf('/') >= 0 ? f : dir + f); };
+    if (L === 'E') {
+      const rowsE = w.filter((x) => x.before || x.after || x.title);
+      c.worksMediaE = rowsE.map((x) => path(x.after));
+      c.worksBeforeE = rowsE.map((x) => path(x.before));
+      c.worksTitlesE = rowsE.map((x) => x.title || '');
+      c.worksDescsE = rowsE.map((x) => x.desc || '');
+      if (rowsE.length) c.countE = rowsE.length;
+      return;
+    }
     const rows = w.filter((x) => x.file);
     c['worksMedia' + L] = rows.map((x) => path(x.file));
     c['worksTitles' + L] = rows.map((x) => x.title || '');

@@ -256,7 +256,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </sc-for>
 </div>
 </div>
-<div role="tablist" aria-label="작업 카테고리" class="cat-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;">
+<div role="tablist" aria-label="작업 카테고리" class="cat-grid" style="display:grid;grid-template-columns:repeat({{catCols}},minmax(0,1fr));gap:12px;">
 <sc-for list="{{cats}}" as="c" hint-placeholder-count="4">
 <button role="tab" aria-selected="{{c.selected}}" onClick="{{c.pick}}" style="min-height:84px;box-sizing:border-box;padding:14px 18px;border-radius:20px;border:2px solid {{c.border}};background:{{c.bg}};color:{{c.color}};display:flex;align-items:center;gap:14px;text-align:left;box-shadow:{{c.shadow}};transition:background-color 0.2s ease,box-shadow 0.2s ease;">
 <span style="flex-shrink:0;width:48px;height:48px;border-radius:14px;background:{{c.iconBg}};color:{{c.iconColor}};display:flex;align-items:center;justify-content:center;">
@@ -312,7 +312,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div>
 <sc-if value="{{card.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{card.src}}" alt="{{card.title}}" draggable="false" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
 <sc-if value="{{card.hasVid}}" hint-placeholder-val="{{ false }}"><video src="{{card.src}}" autoplay muted loop playsinline preload="auto" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></video></sc-if>
-<span style="position:absolute;top:14px;left:14px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:12px;font-weight:600;">{{card.label}}</span>
+<sc-if value="{{card.isPair}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;left:0;bottom:0;width:50%;overflow:hidden;background:#E6E0E1;"><sc-if value="{{card.pairHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{card.pairBefore}}" alt="작업 전" draggable="false" loading="lazy" style="position:absolute;top:0;left:0;width:200%;height:100%;object-fit:cover;"></sc-if></div>
+<div style="position:absolute;top:0;right:0;bottom:0;width:50%;overflow:hidden;background:#F3DDE2;"><sc-if value="{{card.pairHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{card.pairAfter}}" alt="작업 후" draggable="false" loading="lazy" style="position:absolute;top:0;right:0;width:200%;height:100%;object-fit:cover;"></sc-if></div>
+<span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#FFFFFF;box-shadow:0 0 8px rgba(0,0,0,0.25);"></span>
+<span aria-hidden="true" style="position:absolute;top:14px;left:14px;height:22px;padding:0 8px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:11px;font-weight:700;letter-spacing:0.06em;">BEFORE</span>
+<span aria-hidden="true" style="position:absolute;top:14px;right:14px;height:22px;padding:0 8px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:11px;font-weight:700;letter-spacing:0.06em;">AFTER</span>
+</sc-if>
+<sc-if value="{{card.notPair}}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:14px;left:14px;height:26px;padding:0 10px;display:flex;align-items:center;border-radius:999px;background:#FFFFFF;color:#2B2327;font-size:12px;font-weight:600;">{{card.label}}</span></sc-if>
 <sc-if value="{{card.hasStatus}}" hint-placeholder-val="{{ false }}">
 <span style="position:absolute;top:14px;right:14px;height:26px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{card.statusBg}};color:#FFFFFF;font-size:12px;font-weight:600;">{{card.statusLabel}}</span>
 </sc-if>
@@ -882,14 +889,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 
 <sc-if value="{{lbIsBa}}" hint-placeholder-val="{{ false }}">
 <div style="width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
-<div style="position:relative;max-height:68vh;aspect-ratio:{{baSideRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbBefore}};display:flex;align-items:center;justify-content:center;">
-<sc-if value="{{baHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{baBeforeSrc}}" alt="작업 전" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
-<sc-if value="{{baNoBefore}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg></sc-if>
+<div style="position:relative;max-height:68vh;aspect-ratio:{{lbBaRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbBefore}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{lbBaHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{lbBaBeforeSrc}}" alt="작업 전" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
+<sc-if value="{{lbBaNoBefore}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
 </div>
-<div style="position:relative;max-height:68vh;aspect-ratio:{{baSideRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbAfter}};display:flex;align-items:center;justify-content:center;">
-<sc-if value="{{baHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{baAfterSrc}}" alt="작업 후" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
-<sc-if value="{{baNoAfter}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg></sc-if>
+<div style="position:relative;max-height:68vh;aspect-ratio:{{lbBaRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbAfter}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{lbBaHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{lbBaAfterSrc}}" alt="작업 후" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
+<sc-if value="{{lbBaNoAfter}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
 </div>
 </div>
@@ -977,8 +984,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=43"></script>
-<script src="js/portfolio.js?v=43"></script>
+<script src="js/dc-runtime.js?v=45"></script>
+<script src="js/portfolio.js?v=45"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
@@ -987,7 +994,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
   function go() {
     var c = window.normalizePortfolioConfig(window.PORTFOLIO_CONFIG || {});
     if (window.__pfOwner) {
-      ['A', 'B', 'C', 'D'].forEach(function (L) {
+      if (Array.isArray(c.worksBeforeE)) c.worksBeforeE = c.worksBeforeE.map(raw);
+      ['A', 'B', 'C', 'D', 'E'].forEach(function (L) {
         if (Array.isArray(c['worksMedia' + L])) c['worksMedia' + L] = c['worksMedia' + L].map(raw);
         if (Array.isArray(c['ba' + L])) c['ba' + L] = c['ba' + L].map(function (x) { return Object.assign({}, x, { before: raw(x.before), after: raw(x.after) }); });
       });
