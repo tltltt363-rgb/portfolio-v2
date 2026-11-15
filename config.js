@@ -105,6 +105,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-29.webp", title: "Lumina", desc: "성형", link: "" },
     { file: "seonghyeong-30.webp", title: "Shinano", desc: "성형", link: "" },
     { file: "seonghyeong-31.webp", title: "Eku", desc: "성형", link: "" },
+    { file: "seonghyeong-42.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-33.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-34.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-35.webp", title: "", desc: "성형", link: "" },
@@ -113,7 +114,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-38.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-39.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-40.webp", title: "", desc: "성형", link: "" },
-    { file: "seonghyeong-42.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-41.webp", title: "", desc: "성형", link: "" },
   ],
 
