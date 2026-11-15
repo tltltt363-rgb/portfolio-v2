@@ -128,7 +128,7 @@ textarea.long{min-height:70px}
   <div class="pv-bar"><b style="color:var(--ink)">미리보기</b><span>고치면 바로 바뀌어요 · 사이트를 누르면 그 칸으로 이동해요</span><span class="sp"></span>
     <div class="seg"><button data-dev="pc" class="on">PC</button><button data-dev="mobile">모바일</button></div>
     <button class="btn sm" id="pvReload" title="미리보기 새로고침">↻</button></div>
-  <div class="pv-stage" id="stage"><iframe id="pvFrame" title="사이트 미리보기" src="index.html?preview=1"></iframe></div>
+  <div class="pv-stage" id="stage"><iframe id="pvFrame" title="사이트 미리보기"></iframe></div>
 </div>
 </div>
 
@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-2';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-3';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -757,8 +757,10 @@ window.addEventListener('message',(e)=>{
   if(e.data.type==='pf-section'&&SEC_TAB[e.data.id]!=null&&SEC_TAB[e.data.id]!==tabIdx){tabIdx=SEC_TAB[e.data.id];render();document.querySelector('.edit').scrollTop=0;window.scrollTo(0,0);}
 });
 document.querySelectorAll('[data-dev]').forEach((b)=>b.addEventListener('click',()=>{dev=b.dataset.dev;document.querySelectorAll('[data-dev]').forEach((x)=>x.classList.toggle('on',x===b));layoutPreview();}));
-$('pvReload').onclick=()=>{$('pvFrame').contentWindow.location.reload();};
+$('pvReload').onclick=()=>{$('pvFrame').src='index.html?preview=1&t='+Date.now();};
 $('pvToggle').onclick=()=>{const pv=$('pv');const on=!pv.classList.contains('show');pv.classList.toggle('show',on);$('pvToggle').textContent=on?'편집으로':'미리보기';if(on){layoutPreview();pushPreview();}};
+/* 미리보기는 항상 최신 사이트로 열어요 (예전 화면이 남아 있지 않게) */
+$('pvFrame').src='index.html?preview=1&t='+Date.now();
 setTimeout(layoutPreview,0);
 
 window.__editor={get cfg(){return cfg;},buildConfig,parseConfig,get pending(){return pending;}};

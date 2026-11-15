@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="pf-build" content="47">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -984,8 +985,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=46"></script>
-<script src="js/portfolio.js?v=46"></script>
+<script src="js/dc-runtime.js?v=47"></script>
+<script src="js/portfolio.js?v=47"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
@@ -1021,6 +1022,22 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
     if (sec) window.parent.postMessage({ type: 'pf-section', id: sec.id }, location.origin);
   }, true);
   window.parent.postMessage({ type: 'pf-ready' }, location.origin);
+})();
+</script>
+<script>
+/* 브라우저에 예전 사이트가 남아 있으면 한 번 새로 불러와요 */
+(function () {
+  try {
+    var mine = (document.querySelector('meta[name="pf-build"]') || {}).content;
+    fetch('index.html?b=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (t) {
+      var m = t.match(/name="pf-build" content="(\d+)"/);
+      if (!m || m[1] === mine) return;
+      var key = 'pf-reloaded-' + m[1];
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+      var u = new URL(location.href); u.searchParams.set('b', m[1]); location.replace(u.toString());
+    }).catch(function () {});
+  } catch (e) {}
 })();
 </script>
 </body>
