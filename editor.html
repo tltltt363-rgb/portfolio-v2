@@ -152,7 +152,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-6';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-7';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -207,7 +207,7 @@ const SCHEMA=[
 let cfg=null, tabIdx=0, worksL='A', baL='A', baSlot=null, dirty=false, saving=false;
 let pending={}; /* path -> {b64, url, size} */
 let uploaded={}; /* 이번에 올린 파일: 사이트에 반영되기 전까지 미리보기에 이 사진을 써요 */
-let shaCache={}, autoTimer=null, saveAgain=false, lastSaved=0;
+let shaCache={}, autoTimer=null, saveAgain=false, lastSaved=0, failCount=0;
 const localUrl=(p)=>(pending[p]&&pending[p].url)||uploaded[p]||'';
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
@@ -227,7 +227,7 @@ const b64ToText=(b64)=>new TextDecoder().decode(Uint8Array.from(atob(b64.replace
 const textToB64=(text)=>bytesToB64(new TextEncoder().encode(text));
 function bytesToB64(bytes){let s='';const CH=0x8000;for(let i=0;i<bytes.length;i+=CH)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH));return btoa(s);}
 async function gh(path,opt){
-  const r=await fetch(API+path.split('/').map(encodeURIComponent).join('/')+(opt&&opt.method==='PUT'?'':'?ref='+BRANCH),Object.assign({headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}},opt||{}));
+  const r=await fetch(API+path.split('/').map(encodeURIComponent).join('/')+(opt&&opt.method==='PUT'?'':'?ref='+BRANCH),Object.assign({cache:'no-store',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}},opt||{}));
   return r;
 }
 async function load(){
@@ -582,13 +582,15 @@ async function save(auto){
     st.textContent='내용 저장 중…';
     const text2=buildConfig();
     await putFile('config.js',textToB64(text2),'편집기로 내용 수정');
-    lastSaved=Date.now();
+    lastSaved=Date.now();failCount=0;
     base=JSON.parse(JSON.stringify(cfg));
     if(!saveAgain){clearDraft();dirty=false;$('discardBtn').style.display='none';}
     const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;
     st.textContent='저장됨 ✓ 내 브라우저에선 바로, 다른 사람에겐 1~2분 뒤 보여요';st.className='status ok';
     if(!auto)toast('저장했어요!',2500);
-  }catch(e){toast(e.message,7000);st.textContent='저장 실패 — 다시 시도해 주세요';st.className='status dirty';dirty=true;}
+  }catch(e){dirty=true;failCount++;
+    if(failCount<=3&&!/연결 키|권한/.test(e.message)){st.textContent='저장이 잠깐 막혔어요. 다시 시도하는 중… ('+failCount+'/3)';st.className='status dirty';clearTimeout(autoTimer);autoTimer=setTimeout(()=>save(true),3000*failCount);}
+    else{toast(e.message,7000);st.textContent='저장 실패 — 저장하기를 다시 눌러 주세요';st.className='status dirty';}}
   finally{saving=false;$('saveBtn').textContent='저장하기';$('saveBtn').disabled=!dirty;if(saveAgain){saveAgain=false;save(true);}}
 }
 
