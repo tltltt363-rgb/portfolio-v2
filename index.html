@@ -11,7 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=33 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
+  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=34 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
 
   ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
     [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
@@ -746,6 +746,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <input id="f-ref" type="text" value="{{fRef}}" onChange="{{onRef}}" placeholder="이미지·영상 링크를 붙여넣어 주세요" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;">
+<label for="f-parts" style="font-size:14px;font-weight:600;">파츠 링크</label>
+<input id="f-parts" type="text" value="{{fParts}}" onChange="{{onParts}}" placeholder="의상·헤어 등 사용할 파츠 링크를 붙여넣어 주세요" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;">
 <label for="f-memo" style="font-size:14px;font-weight:600;">요청사항</label>
 <textarea id="f-memo" rows="3" value="{{fMemo}}" onChange="{{onMemo}}" placeholder="원하는 분위기, 꼭 살리고 싶은 부분 등" style="box-sizing:border-box;padding:12px 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;line-height:1.6;color:#2B2327;resize:vertical;"></textarea>
 </div>
@@ -963,10 +967,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=33"></script>
+<script src="config.js?v=34"></script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=33"></script>
-<script src="js/portfolio.js?v=33"></script>
+<script src="js/dc-runtime.js?v=34"></script>
+<script src="js/portfolio.js?v=34"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
 </body>
 </html>

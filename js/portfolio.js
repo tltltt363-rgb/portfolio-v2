@@ -668,6 +668,7 @@ class Component extends DCLogic {
     ].concat(eventText ? ['■ 리뷰 이벤트 : ' + (eventOn ? '참여 · ' + eventText : '참여 안 함')] : []).concat([
       '■ 예상 견적 : ' + (hasLines ? won(totalN) + ' (포트폴리오 계산기 기준)' : ''),
       '■ 레퍼런스 : ' + blank(f.ref),
+      '■ 파츠 링크 : ' + blank(f.parts),
       '■ 요청사항 : ' + blank(f.memo),
       '',
       '주의사항 확인 : ' + (st.agree ? 'O' : 'X')
@@ -801,8 +802,8 @@ class Component extends DCLogic {
       listLabel: won(listN), hasSave: saveN > 0, saveLabel: '-' + won(saveN), saveShort: won(saveN),
       resetCalc: () => set({ sel: {}, set: null, deadline: null, rev: 0 }),
       steps,
-      fNick: f.nick || '', fContact: f.contact || '', fRef: f.ref || '', fMemo: f.memo || '',
-      onNick: setF('nick'), onContact: setF('contact'), onRef: setF('ref'), onMemo: setF('memo'),
+      fNick: f.nick || '', fContact: f.contact || '', fRef: f.ref || '', fParts: f.parts || '', fMemo: f.memo || '',
+      onNick: setF('nick'), onContact: setF('contact'), onRef: setF('ref'), onParts: setF('parts'), onMemo: setF('memo'),
       fAgree: !!st.agree, onAgree: (e) => set({ agree: !!e.target.checked }),
       noSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); },
       platforms, quoteSummary, inquiryText, copy,
