@@ -49,7 +49,8 @@ main{padding:10px 16px 120px}
 .field>label small{font-weight:500;color:var(--mut);margin-left:6px}
 input[type=text],input[type=number],input[type=url],textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#FCF8F8;outline:none}
 input:focus,textarea:focus{border-color:var(--ac);background:#fff}
-textarea{min-height:70px;resize:vertical;line-height:1.5}
+textarea{min-height:44px;resize:vertical;line-height:1.5;overflow:hidden}
+textarea.long{min-height:70px}
 .won{font-size:12px;color:var(--ac);font-weight:700}
 .toggle{display:inline-flex;align-items:center;gap:10px;font-weight:600}
 .toggle input{width:20px;height:20px;accent-color:var(--ac)}
@@ -238,7 +239,9 @@ function render(){
     h+='</section>';
   });
   $('main').innerHTML=h;
+  document.querySelectorAll('textarea.grow').forEach(grow);
 }
+function grow(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px';}
 function renderField(f,val,path){
   const p=esc(JSON.stringify(path));
   const hint=f.hint?'<small>'+esc(f.hint)+'</small>':'';
@@ -246,14 +249,15 @@ function renderField(f,val,path){
   if(f.type==='strings'){
     const arr=Array.isArray(val)?val:[];
     let h='<div class="field"><label>'+esc(f.label)+hint+'</label><div class="list">';
-    arr.forEach((s,i)=>{const ip=JSON.stringify(path.concat(i));h+='<div style="display:flex;gap:6px;align-items:center"><input type="text" data-path="'+esc(ip)+'" value="'+esc(s)+'"><button class="ib" data-act="up" data-path="'+esc(ip)+'" title="위로">↑</button><button class="ib del" data-act="del" data-path="'+esc(ip)+'" title="삭제">✕</button></div>';});
+    arr.forEach((s,i)=>{const ip=JSON.stringify(path.concat(i));h+='<div style="display:flex;gap:6px;align-items:flex-start"><textarea rows="1" class="grow" data-path="'+esc(ip)+'">'+esc(s)+'</textarea><button class="ib" data-act="up" data-path="'+esc(ip)+'" title="위로">↑</button><button class="ib del" data-act="del" data-path="'+esc(ip)+'" title="삭제">✕</button></div>';});
     return h+'</div><button class="btn sm add" data-act="addstr" data-path="'+p+'">+ 줄 추가</button></div>';
   }
   if(f.type==='bool')return '<div class="field"><label class="toggle"><input type="checkbox" data-path="'+p+'" data-type="bool"'+(val?' checked':'')+'>'+esc(f.label)+'</label>'+(f.hint?'<span style="font-size:12px;color:var(--mut)">'+esc(f.hint)+'</span>':'')+'</div>';
   if(f.type==='number'){const n=Number(val)||0;return '<div class="field"><label>'+esc(f.label)+hint+'</label><input type="number" inputmode="numeric" data-path="'+p+'" data-type="number" value="'+esc(val==null?'':val)+'">'+(/가격|원/.test(f.label)?'<span class="won" data-won="'+p+'">'+n.toLocaleString('ko-KR')+'원</span>':'')+'</div>';}
   if(f.type==='color')return '<div class="field"><label>'+esc(f.label)+hint+'</label><div style="display:flex;gap:8px;align-items:center"><input type="color" data-path="'+p+'" value="'+esc(val||'#A4495B')+'" style="width:52px;height:42px;border:0;background:none;padding:0"><input type="text" data-path="'+p+'" value="'+esc(val||'')+'" style="max-width:160px"></div></div>';
-  const long=f.long||(typeof val==='string'&&val.length>50);
-  return '<div class="field"><label>'+esc(f.label)+hint+'</label>'+(long?'<textarea data-path="'+p+'">'+esc(val)+'</textarea>':'<input type="text" data-path="'+p+'" value="'+esc(val==null?'':val)+'">')+'</div>';
+  /* 링크·파일 이름 말고는 모두 여러 줄 칸: 엔터로 줄을 나누면 사이트에서도 줄이 나뉘어요 */
+  const oneLine=/link|Link|file|url/.test(String(f.k));
+  return '<div class="field"><label>'+esc(f.label)+hint+'</label>'+(oneLine?'<input type="text" data-path="'+p+'" value="'+esc(val==null?'':val)+'">':'<textarea rows="1" class="grow'+(f.long?' long':'')+'" data-path="'+p+'">'+esc(val==null?'':val)+'</textarea>')+'</div>';
 }
 function renderList(f,val,path){
   const arr=Array.isArray(val)?val:[];
@@ -308,6 +312,7 @@ document.addEventListener('input',(e)=>{
   else if(el.dataset.type==='number'){v=el.value===''?0:Number(el.value);const w=document.querySelector('[data-won="'+CSS.escape(el.dataset.path)+'"]');if(w)w.textContent=(Number(v)||0).toLocaleString('ko-KR')+'원';}
   else v=el.value;
   setAt(path,v);setDirty(true);
+  if(el.tagName==='TEXTAREA')grow(el);
   if(el.type==='color'){const t=el.parentNode.querySelector('input[type=text]');if(t)t.value=v;}
 });
 document.addEventListener('change',(e)=>{const el=e.target;if(el.dataset&&el.dataset.type==='bool'){setAt(JSON.parse(el.dataset.path),el.checked);setDirty(true);}

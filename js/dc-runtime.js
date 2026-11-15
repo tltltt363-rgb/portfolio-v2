@@ -83,6 +83,28 @@
     return o;
   }
 
+  /* 글자 칸: 값 안의 줄바꿈(엔터)을 화면에서도 줄바꿈으로 보여줘요 */
+  function interpText(str, scope, key) {
+    var parts = [], last = 0, hasBr = false;
+    str.replace(ANY, function (m, p, off) {
+      parts.push(str.slice(last, off));
+      var v = lookup(scope, p);
+      v = v == null ? '' : String(v);
+      if (v.indexOf('\n') < 0) parts.push(v);
+      else {
+        hasBr = true;
+        v.split(/\r?\n/).forEach(function (seg, i) {
+          if (i) parts.push(h('br', { key: key + '-br' + off + '-' + i }));
+          parts.push(seg);
+        });
+      }
+      last = off + m.length;
+      return m;
+    });
+    parts.push(str.slice(last));
+    return hasBr ? parts : parts.join('');
+  }
+
   /* 템플릿 DOM → 가벼운 설명 트리 */
   function compile(node) {
     if (node.nodeType === 3) {
@@ -119,7 +141,7 @@
     return out;
   }
   function renderOne(n, scope, key) {
-    if (n.k === 't') return n.dyn ? interp(n.v, scope) : n.v;
+    if (n.k === 't') return n.dyn ? interpText(n.v, scope, key) : n.v;
     if (n.k === 'if') return valueOf(n.v, scope) ? renderList(n.c, scope, key) : null;
     if (n.k === 'for') {
       var list = valueOf(n.list, scope), out = [];
