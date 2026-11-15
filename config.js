@@ -136,6 +136,7 @@ window.PORTFOLIO_CONFIG = {
 
   worksE: [  // 텍스쳐 비포·애프터
     { file: "texture-ba-01.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-02.webp", title: "", desc: "텍스쳐 비포·애프터" },
   ],
 
   worksD: [  // 뽀잉눈
