@@ -164,7 +164,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-8';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-9';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -198,8 +198,8 @@ const SCHEMA=[
  ]},
  {tab:'가격',sections:[
   {title:'가격 계산기 · 이벤트',keys:[F('eventText','이벤트 안내',{hint:'비우면 이벤트 배너가 안 보여요',cm:'이벤트 안내 (비우면 이벤트 배너가 안 보여요)'})]},
-  {title:'가격 계산기 · 세트 상품',desc:'items: 포함 작업을 + 로 나눠 적어요. 개별 작업 이름이 들어 있으면 그 작업이 "세트 포함"으로 잠겨요.\nnote: 추가 안내 (// 를 넣으면 줄이 바뀌어요, 비우면 안 보여요)\nbestSet: 추천 표시할 세트 번호 (0이면 없음)',
-   keys:[F('bestSet','추천 세트 번호',{type:'number',hint:'0이면 없음',cm:'추천 세트 번호'}),F('sets','세트 상품',{type:'list',item:'세트',fields:[F('name','이름'),F('items','포함 작업',{hint:'+ 로 나눠 적어요'}),F('price','가격 (원)',{type:'number'}),F('note','추가 안내',{long:1,hint:'비우면 안 보여요'}),F('desc','한 줄 설명',{hint:'비우면 안 보여요'})]})]},
+  {title:'가격 계산기 · 세트 상품',desc:'items: 포함 작업을 + 로 나눠 적어요. 개별 작업 이름이 들어 있으면 그 작업이 "세트 포함"으로 잠겨요.\nnote: 추가 안내 (// 를 넣으면 줄이 바뀌어요, 비우면 안 보여요)\nbestSet: 추천 표시할 세트 번호 (여러 개는 \"1, 3\" 처럼, 비우면 없음)',
+   keys:[F('bestSet','추천 세트 번호',{hint:'여러 개는 1, 3 처럼 쉼표로 · 비우면 없음',cm:'추천 세트 번호 (여러 개는 "1, 3")'}),F('sets','세트 상품',{type:'list',item:'세트',fields:[F('name','이름'),F('items','포함 작업',{hint:'+ 로 나눠 적어요'}),F('price','가격 (원)',{type:'number'}),F('note','추가 안내',{long:1,hint:'비우면 안 보여요'}),F('desc','한 줄 설명',{hint:'비우면 안 보여요'})]})]},
   {title:'가격 계산기 · 개별 작업',desc:'group: 분류 (같은 분류끼리 한 상자로 묶여요. 같은 분류는 붙여서 적어 주세요)\nname: 이름   desc: 이름 아래 작은 설명 (비우면 안 보여요)   price: 가격 (원, 0이면 "가격 문의")',
    keys:[F('items','개별 작업',{type:'list',item:'작업',compact:1,fields:[F('group','분류'),F('name','이름'),F('desc','작은 설명'),F('price','가격 (원, 0이면 가격 문의)',{type:'number'})]})]},
   {title:'가격 계산기 · 추가 옵션',keys:[F('dl3Name','마감 옵션 1 이름',{cm:'마감 옵션 1 이름'}),F('dl3Pct','마감 옵션 1 추가 비율 (%)',{type:'number',cm:'마감 옵션 1 추가 비율 (%)'}),F('dl1Name','마감 옵션 2 이름',{cm:'마감 옵션 2 이름'}),F('dl1Pct','마감 옵션 2 추가 비율 (%)',{type:'number',cm:'마감 옵션 2 추가 비율 (%)'}),F('revisionFree','무료 수정 횟수',{type:'number',cm:'무료 수정 횟수 (0이면 안내 안 보여요)'}),F('revisionPrice','수정 1회 추가 가격 (원)',{type:'number',cm:'수정 1회 추가 가격 (원)'})]}

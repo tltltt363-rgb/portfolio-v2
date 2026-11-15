@@ -544,7 +544,8 @@ class Component extends DCLogic {
       return { chips, linked };
     };
     const setN = Math.min(500, Math.max(0, Math.round(num(this.props.setCount, 4))));
-    const bestSet = Math.round(num(this.props.bestSet, 0));
+    /* 추천 세트: 1 또는 "1, 3" 처럼 여러 개 */
+    const bestSets = String(this.props.bestSet == null ? '' : this.props.bestSet).split(/[^0-9]+/).map(Number).filter((n) => n > 0);
     const setDefs = [];
     for (let i = 0; i < setN; i++) {
       const k = 'set' + (i + 1);
@@ -573,7 +574,7 @@ class Component extends DCLogic {
       return {
         name: s2.name, desc: s2.desc, hasDesc: !!s2.desc, note: s2.note, hasNote: !!s2.note,
         inc: s2.chips.length ? s2.chips.map((t) => ({ name: t })) : [{ name: '[포함 작업]' }],
-        best: bestSet === s2.i + 1,
+        best: bestSets.indexOf(s2.i + 1) >= 0,
         hasSave: s2.save > 0,
         origLabel: won(s2.orig),
         pctLabel: (s2.orig > 0 ? Math.round(s2.save / s2.orig * 100) : 0) + '% 할인',
