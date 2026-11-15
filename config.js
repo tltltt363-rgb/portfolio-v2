@@ -245,7 +245,7 @@ window.PORTFOLIO_CONFIG = {
     { link: "https://booth.pm/ko/items/7328764", image: "https://booth.pximg.net/7d1d1238-0c5a-4d1b-a4d4-fcbc42bebca8/i/7328764/68d88751-994d-4dd3-8e54-5be5bcb51fdf_base_resized.jpg", name: "Eku / 이쿠", desc: "" },
     { link: "https://booth.pm/ko/items/3681787", image: "https://booth.pximg.net/ed52788c-0b3b-4e38-9ded-1e5797daf0ef/i/3681787/2409bb9f-24f3-42dd-8ad6-89a0656f2166_base_resized.jpg", name: "kikyo / 키쿄", desc: "" },
     { link: "https://booth.pm/ko/items/4035411", image: "https://booth.pximg.net/8a7426aa-ba62-4ef0-9e7d-2c8ea96e7c9b/i/4035411/6f839883-1ab0-48fa-bfca-10c73ab7a33d_base_resized.jpg", name: "Selestia / 셀레스티아", desc: "" },
-    { link: "https://booth.pm/ko/items/7502898", image: "https://booth.pximg.net/87b70515-e32e-4a2e-bf41-317cf2c2177c/i/7502898/a2c93b99-de64-49f4-a76b-30ff769a5021_base_resized.jpg", name: "Lumina", desc: "" },
+    { link: "https://booth.pm/ko/items/7502898", image: "https://booth.pximg.net/87b70515-e32e-4a2e-bf41-317cf2c2177c/i/7502898/a2c93b99-de64-49f4-a76b-30ff769a5021_base_resized.jpg", name: "Lumina / ", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
