@@ -417,7 +417,7 @@ class Component extends DCLogic {
     const revPrice = num(this.props.revisionPrice, 10000);
     const revFree = Math.max(0, Math.round(num(this.props.revisionFree, 0)));
     const eventText = String(this.props.eventText ?? '').trim();
-    const eventOn = !!eventText && st.event !== false;  // 처음엔 참여로 체크돼 있어요
+    const eventOn = !!eventText && !!st.event;  // 처음엔 체크 해제돼 있어요
     const baseItems = [
       { id: 'a', pk: 'priceA', name: '성형', desc: '얼굴형 · 이목구비 쉐이프 수정', price: 80000 },
       { id: 'b', pk: 'priceB', name: '페이셜', desc: '표정 블렌드쉐이프 · 립싱크', price: 120000 },
@@ -780,7 +780,9 @@ class Component extends DCLogic {
       revDesc: (revFree > 0 ? revFree + '회 무료 · 추가 ' : '') + '1회당 +' + won(revPrice),
       eventText, hasEvent: !!eventText,
       eventOn, eventPressed: eventOn ? 'true' : 'false',
-      eventBoxBorder: eventOn ? accent : '#E2CFD3', eventBoxBg: eventOn ? accent : '#FFFFFF',
+      eventBoxBorder: eventOn ? '#FFFFFF' : accent, eventBoxBg: eventOn ? '#FFFFFF' : '#FFFFFF', eventCheckColor: accent,
+      eventBtnBg: eventOn ? '#2B2327' : '#FFFFFF', eventBtnColor: eventOn ? '#FFFFFF' : accent,
+      eventBtnClass: eventOn ? 'ev-btn' : 'ev-btn ev-pulse', eventBtnLabel: eventOn ? '이벤트 참여 중' : '이벤트 참여하기',
       toggleEvent: () => set({ event: !eventOn }),
       revMinus: () => set({ rev: Math.max(0, rev - 1) }),
       revPlus: () => set({ rev: Math.min(10, rev + 1) }),
