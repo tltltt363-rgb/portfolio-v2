@@ -167,7 +167,7 @@ class Component extends DCLogic {
     return {
       brandLabel, footerBrand: brandLabel, strengthsTitle: txt('strengthsTitle', '') || (brandLabel + '에게 맡기면 좋은 점'),
       heroEyebrow: txt('heroEyebrow', 'STREAMING AVATAR PORTFOLIO'),
-      heroLines: heroLines.map((t, i) => ({ t, br: i < heroLines.length - 1 })),
+      heroLines: heroLines.map((t, i) => { const em = heroLines.length > 1 && i === heroLines.length - 1; return { t, br: i < heroLines.length - 1, em, plain: !em }; }),
       heroDesc: txt('heroDesc', '성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.'),
       worksIntro: wi.v, hasWorksIntro: wi.has, saleIntro: si.v, hasSaleIntro: si.has, avatarsIntro: ai.v, hasAvatarsIntro: ai.has,
       processFacts: facts, notices2, hasNotices: notices2.length > 0, impossible, hasImpossible: impossible.length > 0,
