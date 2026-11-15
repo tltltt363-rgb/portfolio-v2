@@ -85,6 +85,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-39.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-07.webp", title: "Milltina", desc: "성형", link: "" },
     { file: "seonghyeong-08.webp", title: "Mayo", desc: "성형", link: "" },
+    { file: "seonghyeong-38.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-09.webp", title: "Milltina", desc: "성형", link: "" },
     { file: "seonghyeong-10.webp", title: "Mayo", desc: "성형", link: "" },
     { file: "seonghyeong-11.webp", title: "Milltina", desc: "성형", link: "" },
@@ -113,7 +114,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-34.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-36.webp", title: "", desc: "성형", link: "" },
     { file: "seonghyeong-37.webp", title: "", desc: "성형", link: "" },
-    { file: "seonghyeong-38.webp", title: "", desc: "성형", link: "" },
   ],
 
   worksB: [  // 페이셜 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
