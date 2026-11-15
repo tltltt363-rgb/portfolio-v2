@@ -101,7 +101,8 @@ textarea.long{min-height:70px}
 .imgfield{display:flex;gap:12px;align-items:flex-start}
 .imgthumb{flex-shrink:0;width:110px;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:#F3E6E9;border:2px dashed #D9B8C1;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
 .imgthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.imgbtns{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.imgbtns{display:flex;flex-direction:column;gap:6px;align-items:stretch;flex:1;min-width:0}
+.imgthumb.sel{border-color:var(--ac);border-style:solid}
 .imgstate{font-size:12px;color:var(--mut)}
 .loading{padding:60px 0;text-align:center;color:var(--mut)}
 </style>
@@ -158,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-9';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-10';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -336,7 +337,7 @@ function renderField(f,val,path){
     const v=String(val||'');const fp=!v?'':(/^(https?:|blob:|data:)/.test(v)||v.indexOf('/')>=0?v:f.dir+v);
     const src=fp?viewUrl(fp):'';
     return '<div class="field"><label>'+esc(f.label)+hint+'</label><div class="imgfield"><div class="imgthumb" data-imgslot="'+p+'" data-dir="'+esc(f.dir)+'" data-prefix="'+esc(f.prefix||'img')+'">'+(src?'<img src="'+esc(src)+'" alt="" referrerpolicy="no-referrer">':'<span class="baempty">＋<br>사진</span>')+'</div>'+
-      '<div class="imgbtns"><button class="btn sm" data-act="imgfetch" data-path="'+p+'">링크에서 가져오기</button><button class="btn sm" data-act="imgpick" data-path="'+p+'">사진 직접 넣기</button>'+(v?'<button class="btn sm" data-act="imgclear" data-path="'+p+'">사진 빼기</button>':'')+'<span class="imgstate" data-imgstate="'+p+'"></span></div></div></div>';
+      '<div class="imgbtns"><input type="url" class="imgurl" data-path="'+p+'" placeholder="사진 주소 붙여넣기 (https://...)" value="'+esc(/^https?:/.test(v)?v:'')+'"><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="imgfetch" data-path="'+p+'">링크에서 가져오기</button><button class="btn sm" data-act="imgpick" data-path="'+p+'">사진 파일 넣기</button>'+(v?'<button class="btn sm" data-act="imgclear" data-path="'+p+'">빼기</button>':'')+'</div><span class="imgstate" data-imgstate="'+p+'">사진 칸을 누른 뒤 Ctrl+V 로 복사한 사진을 붙여넣어도 돼요</span></div></div></div>';
   }
   if(f.type==='bool')return '<div class="field"><label class="toggle"><input type="checkbox" data-path="'+p+'" data-type="bool"'+(val?' checked':'')+'>'+esc(f.label)+'</label>'+(f.hint?'<span style="font-size:12px;color:var(--mut)">'+esc(f.hint)+'</span>':'')+'</div>';
   if(f.type==='number'){const n=Number(val)||0;return '<div class="field"><label>'+esc(f.label)+hint+'</label><input type="number" inputmode="numeric" data-path="'+p+'" data-type="number" value="'+esc(val==null?'':val)+'">'+(/가격|원/.test(f.label)?'<span class="won" data-won="'+p+'">'+n.toLocaleString('ko-KR')+'원</span>':'')+'</div>';}
@@ -456,7 +457,8 @@ document.addEventListener('click',(e)=>{
   setDirty(true);const ed=document.querySelector('.edit'),y=window.scrollY,ey=ed.scrollTop;render();window.scrollTo(0,y);ed.scrollTop=ey;
 });
 document.addEventListener('click',(e)=>{const t=e.target.closest&&e.target.closest('[data-imgslot]');if(!t)return;imgTarget={path:JSON.parse(t.dataset.imgslot),dir:t.dataset.dir,prefix:t.dataset.prefix};$('imgIn').click();});
-document.addEventListener('change',(e)=>{if(e.target.id==='imgIn'&&e.target.files[0]&&imgTarget){setFieldImage(imgTarget.path,e.target.files[0],imgTarget.dir,imgTarget.prefix);e.target.value='';}});
+document.addEventListener('change',(e)=>{if(e.target.classList&&e.target.classList.contains('imgurl')){const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;return;}
+  if(e.target.id==='imgIn'&&e.target.files[0]&&imgTarget){setFieldImage(imgTarget.path,e.target.files[0],imgTarget.dir,imgTarget.prefix);e.target.value='';}});
 document.addEventListener('click',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(!sl)return;baSlot=JSON.parse(sl.dataset.baslot);$('baIn').click();});
 document.addEventListener('change',(e)=>{if(e.target.id==='baIn'&&e.target.files[0]){setBaImage(baSlot,e.target.files[0]);e.target.value='';}});
 document.addEventListener('dragover',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(sl){e.preventDefault();sl.classList.add('over');}});
@@ -483,6 +485,7 @@ function toWebp(file){return new Promise((res,rej)=>{
 /* 링크의 대표 사진(공유 미리보기 이미지)을 찾아요 */
 async function fetchOgImage(link){
   link=String(link||'').trim();if(!link)return '';if(!/^https?:\/\//i.test(link))link='https://'+link;
+  if(/booth\.pm/i.test(link))return 'BOOTH';
   try{const r=await fetch('https://api.microlink.io/?url='+encodeURIComponent(link),{cache:'no-store'});const j=await r.json();
     const u=j&&j.data&&((j.data.image&&j.data.image.url)||(j.data.logo&&j.data.logo.url));if(u)return u;}catch(e){}
   const m=link.match(/booth\.pm\/(?:[a-z-]+\/)?items\/(\d+)/i);
@@ -495,10 +498,21 @@ async function autoImage(path,force){
   const st=document.querySelector('[data-imgstate="'+CSS.escape(JSON.stringify(path))+'"]');if(st)st.textContent='대표 사진 찾는 중…';
   const url=await fetchOgImage(link);
   if(String(getAt(linkPath)||'')!==String(link||''))return; /* 그 사이 링크가 바뀌었으면 무시 */
+  if(url==='BOOTH'){const s3=document.querySelector('[data-imgstate="'+CSS.escape(JSON.stringify(path))+'"]');const msg='BOOTH는 자동으로 못 가져와요. BOOTH 페이지에서 대표 사진을 우클릭 → "이미지 주소 복사" 후 위 칸에 붙여넣거나, Claude에게 "대표 사진 넣어줘"라고 해 주세요.';if(s3){s3.textContent=msg;s3.style.color='var(--ac)';}if(force)toast(msg,7000);return;}
   if(url){setAt(path,url);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;toast('대표 사진을 가져왔어요.');}
   else{const s2=document.querySelector('[data-imgstate="'+CSS.escape(JSON.stringify(path))+'"]');if(s2)s2.textContent='사진을 못 찾았어요. "사진 직접 넣기"를 써 주세요.';else if(force)toast('사진을 못 찾았어요. "사진 직접 넣기"를 써 주세요.',4000);}
 }
-let imgTarget=null;
+let imgTarget=null, pasteTarget=null;
+document.addEventListener('mouseover',(e)=>{const t=e.target.closest&&e.target.closest('[data-imgslot]');if(t){pasteTarget={path:JSON.parse(t.dataset.imgslot),dir:t.dataset.dir,prefix:t.dataset.prefix};}});
+document.addEventListener('focusin',(e)=>{const t=e.target.closest&&e.target.closest('.imgfield');if(t){const sl=t.querySelector('[data-imgslot]');pasteTarget={path:JSON.parse(sl.dataset.imgslot),dir:sl.dataset.dir,prefix:sl.dataset.prefix};}});
+document.addEventListener('paste',(e)=>{
+  if(!pasteTarget)return;const items=[...(e.clipboardData&&e.clipboardData.items||[])];
+  const fileItem=items.find((it)=>it.kind==='file'&&/^image\//.test(it.type));
+  if(fileItem){e.preventDefault();setFieldImage(pasteTarget.path,fileItem.getAsFile(),pasteTarget.dir,pasteTarget.prefix);return;}
+  const tag=(e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea')return;
+  const text=(e.clipboardData&&e.clipboardData.getData('text')||'').trim();
+  if(/^https?:\/\/\S+\.(png|jpe?g|webp|gif)(\?\S*)?$/i.test(text)||/pximg\.net/.test(text)){e.preventDefault();setAt(pasteTarget.path,text);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;toast('사진을 넣었어요.');}
+});
 async function setFieldImage(path,file,dir,prefix){
   if(!/^image\//.test(file.type)){toast('사진 파일만 넣을 수 있어요.');return;}
   try{toast('사진 준비 중…',8000);
