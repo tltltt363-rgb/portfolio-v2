@@ -11,10 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=34 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
-
-  ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
-    [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
+  ※ 글자·가격·사진 목록은 거의 다 config.js 에서 고쳐요. 이 파일은 화면 배치라 고칠 일이 거의 없어요.
     {{ ... }} 로 된 부분은 config.js 값이나 계산 결과가 들어가는 자리라 그대로 두세요.
 -->
 <template id="dc-template">
@@ -66,7 +63,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:14px clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;">
 <a href="#top" style="display:flex;align-items:center;gap:10px;font-size:22px;font-weight:600;color:#2B2327;min-height:44px;">
 <span style="width:14px;height:14px;border-radius:50%;background:{{accent}};box-shadow:0 3px 6px -1px rgba(164,73,91,0.5),inset 0 1px 0 rgba(255,255,255,0.35);"></span>
-<span>[브랜드명]</span>
+<span>{{brandLabel}}</span>
 </a>
 <nav aria-label="주요 메뉴" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
 <a href="#works" style="min-height:44px;padding:0 14px;display:flex;align-items:center;font-size:15px;">작업물</a>
@@ -82,9 +79,9 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 
 <section id="top" style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:clamp(28px,4vw,44px) clamp(20px,5vw,80px) 64px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:48px;">
 <div style="flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:24px;">
-<span style="font-size:13px;font-weight:600;letter-spacing:0.14em;color:{{accent}};">STREAMING AVATAR PORTFOLIO</span>
-<h1 style="margin:0;font-weight:700;font-size:clamp(36px,5vw,56px);line-height:1.28;color:#2B2327;">방송 화면에서<br>더 빛나는 아바타로</h1>
-<p style="margin:0;max-width:520px;font-size:18px;line-height:1.7;color:#6E6266;">성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.</p>
+<span style="font-size:13px;font-weight:600;letter-spacing:0.14em;color:{{accent}};">{{heroEyebrow}}</span>
+<h1 style="margin:0;font-weight:700;font-size:clamp(36px,5vw,56px);line-height:1.28;color:#2B2327;"><sc-for list="{{heroLines}}" as="hl" hint-placeholder-count="2">{{hl.t}}<sc-if value="{{hl.br}}" hint-placeholder-val="{{ false }}"><br></sc-if></sc-for></h1>
+<p style="margin:0;max-width:520px;font-size:18px;line-height:1.7;color:#6E6266;">{{heroDesc}}</p>
 <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:8px;">
 <a href="#price" style="height:52px;padding:0 30px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:16px;font-weight:600;box-shadow:0 10px 20px -8px rgba(164,73,91,0.6),inset 0 1px 0 rgba(255,255,255,0.22);">견적 계산하기</a>
 <a href="#before-after" style="min-height:44px;display:flex;align-items:center;font-size:16px;font-weight:500;text-decoration:underline;text-underline-offset:6px;">비포·애프터 보기</a>
@@ -125,7 +122,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:88px clamp(20px,5vw,80px);display:flex;flex-direction:column;gap:32px;">
 <div style="display:flex;flex-direction:column;gap:10px;">
 <span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>01 · WHY ME</span>
-<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">[브랜드명]에게 맡기면 좋은 점</h2>
+<h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">{{strengthsTitle}}</h2>
 </div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;">
 <sc-for list="{{strengths}}" as="g" hint-placeholder-count="4">
@@ -245,7 +242,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="display:flex;flex-direction:column;gap:10px;">
 <span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>03 · WORKS</span>
 <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">작업물</h2>
-<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[작업물 영역 설명을 한 줄로 적어주세요]</p>
+<sc-if value="{{hasWorksIntro}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">{{worksIntro}}</p></sc-if>
 </div>
 <div role="group" aria-label="미디어 종류" style="display:flex;flex-wrap:wrap;gap:8px;">
 <sc-for list="{{chips}}" as="chip" hint-placeholder-count="3">
@@ -370,7 +367,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="display:flex;flex-direction:column;gap:10px;">
 <span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>04 · FOR SALE</span>
 <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">분양 아바타</h2>
-<sc-if value="{{saleReady}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[분양 아바타 소개를 한 줄로 적어주세요]</p></sc-if>
+<sc-if value="{{saleReady}}" hint-placeholder-val="{{ true }}"><sc-if value="{{hasSaleIntro}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">{{saleIntro}}</p></sc-if></sc-if>
 </div>
 <sc-if value="{{saleReady}}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;align-items:center;gap:10px;">
@@ -437,7 +434,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="display:flex;flex-direction:column;gap:10px;">
 <span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>05 · MY AVATARS</span>
 <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">보유 아바타</h2>
-<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">[보유 아바타 소개를 한 줄로 적어주세요]</p>
+<sc-if value="{{hasAvatarsIntro}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">{{avatarsIntro}}</p></sc-if>
 </div>
 <div style="display:flex;align-items:center;gap:10px;">
 <span style="height:44px;box-sizing:border-box;padding:0 16px;display:flex;align-items:center;gap:8px;border-radius:999px;background:#F5E8EA;color:#5F5458;font-size:14px;font-weight:600;">
@@ -681,7 +678,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="display:flex;flex-direction:column;gap:10px;">
 <span style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.14em;color:{{accent}};"><span aria-hidden="true" style="width:28px;height:2px;border-radius:2px;background:{{accent}};"></span>07 · PROCESS</span>
 <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.4vw,38px);line-height:1.3;">이렇게 진행돼요</h2>
-<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">문의부터 전달까지 6단계예요. 단계마다 진행 상황을 알려드려요.</p>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#6E6266;">문의부터 전달까지 {{stepCount}}단계예요. 단계마다 진행 상황을 알려드려요.</p>
 </div>
 <div style="box-sizing:border-box;padding:clamp(28px,4vw,48px) clamp(20px,3vw,36px);border-radius:32px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 2px 4px rgba(80,40,55,0.05),0 28px 48px -28px rgba(80,40,55,0.3);">
 <ol class="proc" style="margin:0;padding:0;list-style:none;">
@@ -707,15 +704,11 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </ol>
 </div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+<sc-for list="{{processFacts}}" as="pf" hint-placeholder-count="3">
 <div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-<span style="font-size:14px;color:#5F5458;">작업 기한</span><span style="font-size:18px;font-weight:700;">7~14일</span>
+<span style="font-size:14px;color:#5F5458;">{{pf.label}}</span><span style="font-size:18px;font-weight:700;">{{pf.value}}</span>
 </div>
-<div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-<span style="font-size:14px;color:#5F5458;">기본 수정 횟수</span><span style="font-size:18px;font-weight:700;">2회</span>
-</div>
-<div style="box-sizing:border-box;padding:18px 22px;border-radius:20px;background:#F3E1E4;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-<span style="font-size:14px;color:#5F5458;">결제 방식</span><span style="font-size:18px;font-weight:700;">선금 100%</span>
-</div>
+</sc-for>
 </div>
 </div>
 </section>
@@ -796,45 +789,24 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 
 <div style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:clamp(20px,3vw,32px);border-radius:28px;background:#FFFFFF;border:1px solid #EFE4E5;box-shadow:0 1px 2px rgba(80,40,55,0.05),0 24px 40px -28px rgba(80,40,55,0.35);">
 <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
-<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#FDEDEE;border:1px solid #F4C9CE;">
-<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#C0262D;color:#FFFFFF;font-size:14px;font-weight:700;">1</span>
+<sc-for list="{{notices2}}" as="nt" hint-placeholder-count="4">
+<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:{{nt.bg}};border:{{nt.border}};">
+<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{nt.numBg}};color:#FFFFFF;font-size:14px;font-weight:700;">{{nt.no}}</span>
 <div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
-<p style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:17px;font-weight:700;line-height:1.5;color:#C0262D;"><span style="height:22px;padding:0 8px;display:inline-flex;align-items:center;border-radius:6px;background:#C0262D;color:#FFFFFF;font-size:12px;font-weight:700;">필독</span>꼭!! 꼭!! 이용규약 확인 후 에셋 가져와주세요!</p>
+<sc-if value="{{nt.hot}}" hint-placeholder-val="{{ false }}">
+<p style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:17px;font-weight:700;line-height:1.5;color:#C0262D;"><sc-if value="{{nt.hasTag}}" hint-placeholder-val="{{ false }}"><span style="height:22px;padding:0 8px;display:inline-flex;align-items:center;border-radius:6px;background:#C0262D;color:#FFFFFF;font-size:12px;font-weight:700;">{{nt.tag}}</span></sc-if><span><sc-for list="{{nt.parts}}" as="pt" hint-placeholder-count="1"><sc-if value="{{pt.b}}" hint-placeholder-val="{{ false }}"><strong style="font-weight:800;">{{pt.t}}</strong></sc-if><sc-if value="{{pt.n}}" hint-placeholder-val="{{ true }}">{{pt.t}}</sc-if></sc-for><sc-if value="{{nt.hasNote}}" hint-placeholder-val="{{ false }}"> <span style="font-weight:500;color:#6E6266;">{{nt.note}}</span></sc-if></span></p>
+</sc-if>
+<sc-if value="{{nt.calm}}" hint-placeholder-val="{{ true }}">
+<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;"><sc-for list="{{nt.parts}}" as="pt" hint-placeholder-count="1"><sc-if value="{{pt.b}}" hint-placeholder-val="{{ false }}"><strong style="font-weight:700;color:{{accent}};">{{pt.t}}</strong></sc-if><sc-if value="{{pt.n}}" hint-placeholder-val="{{ true }}">{{pt.t}}</sc-if></sc-for><sc-if value="{{nt.hasNote}}" hint-placeholder-val="{{ false }}"> <span style="font-weight:500;color:#6E6266;">{{nt.note}}</span></sc-if></p>
+</sc-if>
 <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#4A3E44;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>유의사항을 숙지하지 않아 생기는 문제는 작가가 책임지지 않습니다.</li>
+<sc-for list="{{nt.subs}}" as="ns" hint-placeholder-count="1">
+<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:{{nt.subColor}};"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>{{ns.t}}</li>
+</sc-for>
 </ul>
 </div>
 </li>
-<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
-<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">2</span>
-<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
-<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">작업 후 보관 기간은 <strong style="font-weight:700;color:{{accent}};">한 달</strong>입니다.</p>
-<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>장기 보관이 필요한 경우 미리 문의해주세요.</li>
-</ul>
-</div>
-</li>
-<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
-<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">3</span>
-<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
-<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">모든 작업은 결제 확인 후 시작됩니다.</p>
-<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>의뢰인 본인만 사용 가능합니다.</li>
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>무단 복제, 배포, 재판매, 상업적 사용을 금지합니다.</li>
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>타인의 모델, 유료 에셋 무단 공유 등 작가와 무관한 저작권 문제로 인한 상황은 작가가 책임지지 않습니다.</li>
-</ul>
-</div>
-</li>
-<li style="display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:#F8F2F1;">
-<span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{accent}};color:#FFFFFF;font-size:14px;font-weight:700;">4</span>
-<div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
-<p style="margin:0;font-size:16px;font-weight:600;line-height:1.6;color:#2B2327;">작업한 결과물은 포트폴리오로 사용될 수 있습니다. <span style="font-weight:500;color:#6E6266;">(원하시지 않는 분은 미리 문의해주세요)</span></p>
-<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>헤어 및 의상 추가는 파라미터 상황에 따라 추가 요청이 거절될 수 있습니다.</li>
-<li style="position:relative;padding-left:14px;font-size:15px;line-height:1.6;color:#5F5458;"><span aria-hidden="true" style="position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:#D9A3AE;"></span>지나치게 모호한 요청(“대충 예쁘게 해주세요”)은 작업 진행이 어렵습니다.</li>
-</ul>
-</div>
-</li>
+</sc-for>
 </ol>
 </div>
 
@@ -843,16 +815,16 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <h3 style="margin:0;display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;">
 <span style="width:36px;height:36px;border-radius:12px;background:#FDEDEE;color:#C0262D;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m5.7 5.7 12.6 12.6"></path></svg></span>불가능 작업</h3>
 <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;">
-<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>아바타 100% 풀 모델링 <span style="color:#6E6266;">(제로베이스 제작)</span></span></li>
-<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>저작권 침해 가능성이 있는 캐릭터 도용 요청 <span style="color:#6E6266;">(특정 게임 캐릭터)</span></span></li>
-<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>R18 관련 작업</span></li>
+<sc-for list="{{impossible}}" as="im" hint-placeholder-count="3">
+<li style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;background:#F8F2F1;font-size:15px;line-height:1.55;color:#2B2327;"><span style="flex-shrink:0;margin-top:2px;width:20px;height:20px;border-radius:50%;background:#C0262D;color:#FFFFFF;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></span><span>{{im.main}}<sc-if value="{{im.hasNote}}" hint-placeholder-val="{{ false }}"> <span style="color:#6E6266;">{{im.note}}</span></sc-if></span></li>
+</sc-for>
 </ul>
 </div>
 <div style="box-sizing:border-box;padding:26px;border-radius:28px;background:#2B2327;color:#FFFFFF;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 40px -24px rgba(43,35,39,0.6);">
 <h3 style="margin:0;display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:#FFFFFF;">
 <span style="width:36px;height:36px;border-radius:12px;background:#3A3036;color:#F2B8C4;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>작업 기한</h3>
-<p style="margin:4px 0 0;font-size:36px;font-weight:700;line-height:1.2;color:#FFFFFF;">7일 ~ 14일</p>
-<p style="margin:0;font-size:14px;line-height:1.65;color:#D9CCD0;">작업량 및 상황에 따라 일정이 변동될 수 있으며, 변동 시 미리 안내드립니다.</p>
+<p style="margin:4px 0 0;font-size:36px;font-weight:700;line-height:1.2;color:#FFFFFF;">{{deadlineText}}</p>
+<sc-if value="{{hasDeadlineNote}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:14px;line-height:1.65;color:#D9CCD0;">{{deadlineNote}}</p></sc-if>
 </div>
 </div>
 
@@ -883,7 +855,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 
 <footer style="border-top:1px solid #EFE4E5;">
 <div style="max-width:1280px;margin:0 auto;box-sizing:border-box;padding:24px clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-<span style="font-size:14px;color:#6E6266;">© 2026 [브랜드명]</span>
+<span style="font-size:14px;color:#6E6266;">© 2026 {{footerBrand}}</span>
 <a href="#top" style="min-height:44px;display:flex;align-items:center;gap:6px;font-size:14px;color:#6E6266;">맨 위로
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg>
 </a>
@@ -967,10 +939,11 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=34"></script>
+<!-- config.js 는 열 때마다 새로 불러와요. 고친 내용이 GitHub에 올라가면(1~2분) 새로고침만 하면 보여요. -->
+<script>document.write('<script src="config.js?t=' + Date.now() + '"><\/script>');</script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=34"></script>
-<script src="js/portfolio.js?v=34"></script>
-<script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
+<script src="js/dc-runtime.js?v=35"></script>
+<script src="js/portfolio.js?v=35"></script>
+<script>window.mountPortfolio(window.PortfolioComponent, window.normalizePortfolioConfig(window.PORTFOLIO_CONFIG));</script>
 </body>
 </html>

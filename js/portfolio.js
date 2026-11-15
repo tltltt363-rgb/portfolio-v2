@@ -134,6 +134,47 @@ class Component extends DCLogic {
     window.addEventListener('mouseup', up);
     this._dragCleanup = cleanup;
   }
+  /* config.js 의 문구들 (비우면 그 줄은 안 보여요) */
+  textVals(accent) {
+    const P = this.props;
+    const txt = (k, d) => (P[k] === undefined || P[k] === null ? d : String(P[k]).trim());
+    const rich = (t) => String(t || '').split(/\*\*(.+?)\*\*/).map((x, i) => ({ t: x, b: i % 2 === 1, n: i % 2 === 0 })).filter((x) => x.t);
+    const splitNote = (t) => { const m = String(t || '').trim().match(/^(.*?)\s*(\([^()]*\))$/); return m && m[1] ? { main: m[1], note: m[2] } : { main: String(t || '').trim(), note: '' }; };
+    const brand = txt('brandName', '');
+    const brandLabel = brand || '[브랜드명]';
+    if (typeof document !== 'undefined') document.title = brandLabel + ' · 방송용 아바타 포트폴리오';
+    const heroLines = txt('heroTitle', '방송 화면에서 // 더 빛나는 아바타로').split(/\s*\/\/\s*/);
+    const intro = (k, d) => { const v = txt(k, d); return { v, has: !!v }; };
+    const wi = intro('worksIntro', '[작업물 영역 설명을 한 줄로 적어주세요]');
+    const si = intro('saleIntro', '[분양 아바타 소개를 한 줄로 적어주세요]');
+    const ai = intro('avatarsIntro', '[보유 아바타 소개를 한 줄로 적어주세요]');
+    const facts = (Array.isArray(P.processFacts) ? P.processFacts : [
+      { label: '작업 기한', value: '7~14일' }, { label: '기본 수정 횟수', value: '2회' }, { label: '결제 방식', value: '선금 100%' }
+    ]).filter((f) => f && (f.label || f.value)).map((f) => ({ label: String(f.label || ''), value: String(f.value || '') }));
+    const noticeSrc = Array.isArray(P.notices) ? P.notices : [];
+    const notices2 = noticeSrc.filter((n) => n && n.title).map((n, i) => {
+      const hot = !!String(n.tag || '').trim();
+      const sp = splitNote(n.title);
+      return {
+        no: i + 1, tag: String(n.tag || '').trim(), hasTag: hot, hot, calm: !hot,
+        parts: rich(sp.main), note: sp.note, hasNote: !!sp.note,
+        subs: (Array.isArray(n.items) ? n.items : []).filter(Boolean).map((t) => ({ t: String(t) })),
+        bg: hot ? '#FDEDEE' : '#F8F2F1', border: hot ? '1px solid #F4C9CE' : '0', numBg: hot ? '#C0262D' : accent,
+        subColor: hot ? '#4A3E44' : '#5F5458'
+      };
+    });
+    const impossible = (Array.isArray(P.impossible) ? P.impossible : []).filter(Boolean).map((t) => { const sp = splitNote(t); return { main: sp.main, note: sp.note, hasNote: !!sp.note }; });
+    return {
+      brandLabel, footerBrand: brandLabel, strengthsTitle: brandLabel + '에게 맡기면 좋은 점',
+      heroEyebrow: txt('heroEyebrow', 'STREAMING AVATAR PORTFOLIO'),
+      heroLines: heroLines.map((t, i) => ({ t, br: i < heroLines.length - 1 })),
+      heroDesc: txt('heroDesc', '성형, 페이셜, 텍스쳐, 뽀잉눈까지. 작업 전후를 직접 비교해 보고, 견적을 계산한 뒤 문의 양식을 복사해서 바로 보내주세요.'),
+      worksIntro: wi.v, hasWorksIntro: wi.has, saleIntro: si.v, hasSaleIntro: si.has, avatarsIntro: ai.v, hasAvatarsIntro: ai.has,
+      processFacts: facts, notices2, hasNotices: notices2.length > 0, impossible, hasImpossible: impossible.length > 0,
+      deadlineText: txt('deadlineText', '7일 ~ 14일'), deadlineNote: txt('deadlineNote', ''), hasDeadlineNote: !!txt('deadlineNote', '')
+    };
+  }
+
   renderVals() {
     const accent = this.props.accent ?? '#A4495B';
     const st = this.state || {};
@@ -617,17 +658,20 @@ class Component extends DCLogic {
     const today = dt.getFullYear() + '.' + pad(dt.getMonth() + 1) + '.' + pad(dt.getDate());
 
     /* ---------- process ---------- */
-    const steps = [
-      ['문의 보내기', '양식을 복사해서 붙여넣어 보내주세요.', '복사 → 붙여넣기', 'iChat'],
-      ['상담 · 견적', '레퍼런스를 보고 범위와 금액을 정해요.', '레퍼런스 공유', 'iQuote'],
-      ['입금 · 일정', '입금 확인 후 마감일을 알려드려요.', '입금 후 확정', 'iPay'],
-      ['작업 진행', '정해진 일정에 맞춰 작업해요.', '7~14일 소요', 'iWork'],
-      ['시안 확인', '중간 결과를 보고 수정을 요청해요.', '수정 요청 가능', 'iCheck'],
-      ['최종 전달', '완성 파일과 적용 방법을 보내드려요.', '파일 + 적용법', 'iDone']
-    ].map(([title, desc, chip, icon], i, arr) => {
+    const stepIcons = ['iChat', 'iQuote', 'iPay', 'iWork', 'iCheck', 'iDone'];
+    const stepSrc = Array.isArray(this.props.processSteps) && this.props.processSteps.length ? this.props.processSteps.map((x) => [x.title || '', x.desc || '', x.chip || '']) : [
+      ['문의 보내기', '양식을 복사해서 붙여넣어 보내주세요.', '복사 → 붙여넣기'],
+      ['상담 · 견적', '레퍼런스를 보고 범위와 금액을 정해요.', '레퍼런스 공유'],
+      ['입금 · 일정', '입금 확인 후 마감일을 알려드려요.', '입금 후 확정'],
+      ['작업 진행', '정해진 일정에 맞춰 작업해요.', '7~14일 소요'],
+      ['시안 확인', '중간 결과를 보고 수정을 요청해요.', '수정 요청 가능'],
+      ['최종 전달', '완성 파일과 적용 방법을 보내드려요.', '파일 + 적용법']
+    ];
+    const steps = stepSrc.map(([title, desc, chip], i, arr) => {
+      const icon = i === arr.length - 1 ? 'iDone' : stepIcons[i % (stepIcons.length - 1)];
       const last = i === arr.length - 1;
       return {
-        no: pad(i + 1), title, desc, chip,
+        no: pad(i + 1), title, desc, chip, hasChip: !!chip,
         notLast: !last,
         circleBg: last ? accent : '#FFFFFF',
         circleColor: last ? '#FFFFFF' : accent,
@@ -705,12 +749,13 @@ class Component extends DCLogic {
     const notices = ['[주의사항을 한 줄씩 적어주세요]', '[예: 작업 시작 후에는 환불이 어려워요]', '[예: 원본 파일 재배포는 금지예요]', '[예: 진행 기간은 순서에 따라 달라질 수 있어요]']
       .map((text, i) => ({ n: i + 1, text }));
     const faqOpen = st.faq == null ? 0 : st.faq;
-    const faqs = [
+    const faqSrc = Array.isArray(this.props.faqs) ? this.props.faqs.map((x) => [String(x.q || '').trim(), String(x.a || '').trim()]).filter((x) => x[0] && x[1]) : [
       ['작업 기간은 얼마나 걸리나요?', '[작업 기간 안내를 적어주세요]'],
       ['어떤 플랫폼의 아바타를 작업하나요?', '[작업 가능한 플랫폼과 파일 형식을 적어주세요]'],
       ['결제는 어떻게 하나요?', '[결제 방법과 선금 비율을 적어주세요]'],
       ['수정은 몇 번까지 되나요?', '[기본 수정 횟수와 추가 비용을 적어주세요]']
-    ].map(([q, a], i) => ({
+    ];
+    const faqs = faqSrc.map(([q, a], i) => ({
       q, a,
       open: faqOpen === i,
       expanded: faqOpen === i ? 'true' : 'false',
@@ -741,7 +786,7 @@ class Component extends DCLogic {
     };
 
     return {
-      accent, heroTiles, strengths, heroStrengths,
+      accent, heroTiles, strengths, heroStrengths, ...this.textVals(accent),
       saleReady: !(this.props.saleReady === false || this.props.saleReady === 'false'),
       saleSoon: this.props.saleReady === false || this.props.saleReady === 'false',
       saleSoonTitle: String(this.props.saleSoonTitle ?? '').trim() || '분양 아바타는 준비 중이에요',
@@ -801,7 +846,7 @@ class Component extends DCLogic {
       hasOpt: optLines.length > 0, optLines, optLabel: '+' + won(optAmt),
       listLabel: won(listN), hasSave: saveN > 0, saveLabel: '-' + won(saveN), saveShort: won(saveN),
       resetCalc: () => set({ sel: {}, set: null, deadline: null, rev: 0 }),
-      steps,
+      steps, stepCount: steps.length,
       fNick: f.nick || '', fContact: f.contact || '', fRef: f.ref || '', fParts: f.parts || '', fMemo: f.memo || '',
       onNick: setF('nick'), onContact: setF('contact'), onRef: setF('ref'), onParts: setF('parts'), onMemo: setF('memo'),
       fAgree: !!st.agree, onAgree: (e) => set({ agree: !!e.target.checked }),
@@ -824,3 +869,39 @@ class Component extends DCLogic {
   }
 }
 window.PortfolioComponent = Component;
+
+/* config.js 의 목록(배열) 형식을 계산기·카드가 읽는 이름으로 바꿔줘요.
+   예전 형식(set1Name, item1Price …)으로 적어도 그대로 동작해요. */
+window.normalizePortfolioConfig = function (cfg) {
+  const c = Object.assign({}, cfg || {});
+  const arr = (v) => (Array.isArray(v) ? v.filter((x) => x && typeof x === 'object') : null);
+  const str = arr(c.strengths);
+  if (str) { c.strengthCount = str.length; str.forEach((x, i) => { const k = 'str' + (i + 1); c[k + 'Title'] = x.title || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Tag'] = x.tag || ''; }); }
+  const folders = { A: 'media/seonghyeong/', B: 'media/facial/', C: 'media/texture/', D: 'media/boing/' };
+  ['A', 'B', 'C', 'D'].forEach((L) => {
+    const w = arr(c['works' + L]);
+    if (!w) return;
+    const dir = String(c['worksFolder' + L] || folders[L]).replace(/\/?$/, '/');
+    const path = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:)?\/\//.test(f) || f.indexOf('/') >= 0 ? f : dir + f); };
+    const rows = w.filter((x) => x.file);
+    c['worksMedia' + L] = rows.map((x) => path(x.file));
+    c['worksTitles' + L] = rows.map((x) => x.title || '');
+    c['worksDescs' + L] = rows.map((x) => x.desc || '');
+  });
+  const sales = arr(c.sales);
+  if (sales) { c.countF = Math.max(1, sales.length); sales.forEach((x, i) => { const k = 'sale' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Price'] = x.price ?? ''; c[k + 'Link'] = x.link || ''; c[k + 'Sold'] = !!x.sold; }); }
+  const avs = arr(c.avatars);
+  if (avs) { c.avatarCount = Math.max(1, avs.length); avs.forEach((x, i) => { const k = 'av' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Link'] = x.link || ''; }); }
+  const sets = arr(c.sets);
+  if (sets) { c.setCount = sets.length; sets.forEach((x, i) => { const k = 'set' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Items'] = x.items || ''; c[k + 'Price'] = Number(x.price) || 0; c[k + 'Note'] = x.note || ''; }); }
+  const items = arr(c.items);
+  if (items) {
+    c.itemCount = items.length;
+    items.forEach((x, i) => {
+      const k = 'item' + (i + 1);
+      c[k + 'Group'] = x.group || ''; c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || '';
+      c[i < 4 ? 'price' + 'ABCD'[i] : k + 'Price'] = Number(x.price) || 0;
+    });
+  }
+  return c;
+};
