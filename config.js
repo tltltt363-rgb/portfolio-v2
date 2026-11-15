@@ -117,6 +117,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-01.webp", title: "Milltina", desc: "메이크업", link: "https://muridayo.booth.pm/items/9151568" },
     { file: "texture-03.webp", title: "Airi", desc: "메이크업 + 블렌드쉐이프", link: "" },
     { file: "texture-16.webp", title: "Milltin", desc: "아이 텍스쳐 + 메이크업 + 애니메이션", link: "https://booth.pm/ko/items/9115943" },
+    { file: "texture-17.webp", title: "M", desc: "메이크업", link: "https://muridayo.booth.pm/items/9078145" },
     { file: "texture-02.webp", title: "Milltina", desc: "메이크업", link: "" },
     { file: "texture-04.webp", title: "Mayo", desc: "메이크업", link: "" },
     { file: "texture-05.webp", title: "Airi", desc: "메이크업", link: "" },
@@ -130,7 +131,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-13.jpg", title: "Shinano", desc: "메이크업 + 아이 텍스쳐 + 블렌드쉐이프", link: "" },
     { file: "texture-14.webp", title: "Shinano", desc: "ROLLY · 아이 텍스쳐 + 메이크업 + 블렌드쉐이프", link: "" },
     { file: "texture-15.webp", title: "Shinano", desc: "아이 텍스쳐 + 메이크업 + 애니메이션", link: "" },
-    { file: "texture-17.webp", title: "M", desc: "메이크업", link: "https://muridayo.booth.pm/items/9078145" },
   ],
   worksLinkC: "https://muridayo.booth.pm/",  // 텍스쳐 판매 링크
   worksLinkLabelC: "BOOTH에서 보기",  // 버튼 글자
