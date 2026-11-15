@@ -171,12 +171,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:stretch;">
 <div style="flex:999 1 600px;min-width:0;">
 <sc-if value="{{isSlider}}" hint-placeholder-val="{{ true }}">
-<div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:28px;overflow:hidden;background:#E9E3E4;box-shadow:0 2px 4px rgba(80,40,55,0.08),0 24px 40px -18px rgba(80,40,55,0.35);">
+<div style="position:relative;width:100%;aspect-ratio:{{baRatio}};border-radius:28px;overflow:hidden;background:#E9E3E4;box-shadow:0 2px 4px rgba(80,40,55,0.08),0 24px 40px -18px rgba(80,40,55,0.35);">
 <div style="position:absolute;top:0;right:0;bottom:0;left:0;background:{{baBefore}};display:flex;align-items:center;justify-content:center;">
-<svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+<sc-if value="{{baHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{baBeforeSrc}}" alt="작업 전" draggable="false" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{baNoBefore}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg></sc-if>
 </div>
 <div style="position:absolute;top:0;right:0;bottom:0;left:0;background:{{baAfter}};display:flex;align-items:center;justify-content:center;clip-path:inset(0 0 0 {{ba}}%);">
-<svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="81" cy="93" r="1.6" fill="#FFFFFF"></circle><circle cx="113" cy="93" r="1.6" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+<sc-if value="{{baHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{baAfterSrc}}" alt="작업 후" draggable="false" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{baNoAfter}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:56%;height:auto;max-height:90%;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="81" cy="93" r="1.6" fill="#FFFFFF"></circle><circle cx="113" cy="93" r="1.6" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg></sc-if>
 </div>
 <span style="position:absolute;top:18px;left:18px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
 <span style="position:absolute;top:18px;right:18px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
@@ -192,12 +194,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </sc-if>
 <sc-if value="{{isSide}}" hint-placeholder-val="{{ false }}">
 <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
-<div style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:{{baBefore}};display:flex;align-items:center;justify-content:center;">
-<svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+<div style="position:relative;aspect-ratio:{{baSideRatio}};border-radius:24px;overflow:hidden;background:{{baBefore}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{baHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{baBeforeSrc}}" alt="작업 전" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{baNoBefore}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
 </div>
-<div style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:{{baAfter}};display:flex;align-items:center;justify-content:center;">
-<svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+<div style="position:relative;aspect-ratio:{{baSideRatio}};border-radius:24px;overflow:hidden;background:{{baAfter}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{baHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{baAfterSrc}}" alt="작업 후" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+<sc-if value="{{baNoAfter}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:78%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
 </div>
 </div>
@@ -223,12 +227,12 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 <aside style="flex:1 1 300px;min-width:0;box-sizing:border-box;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #EFE4E5;display:flex;flex-direction:column;gap:18px;">
 <span style="font-size:13px;font-weight:600;color:{{accent}};">{{baLabel}} · CASE {{baCaseNo}}</span>
-<h3 style="margin:0;font-size:24px;font-weight:700;line-height:1.35;">{{baTitle}}</h3>
-<p style="margin:0;font-size:15px;line-height:1.7;color:#5F5458;">[이 사례에서 무엇을 바꿨는지 두세 줄로 적어주세요. 예: 턱선을 부드럽게 다듬고 눈 크기를 키웠어요.]</p>
+<sc-if value="{{hasBaTitle}}" hint-placeholder-val="{{ true }}"><h3 style="margin:0;font-size:24px;font-weight:700;line-height:1.35;">{{baTitle}}</h3></sc-if>
+<sc-if value="{{hasBaDesc}}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:15px;line-height:1.7;color:#5F5458;">{{baDesc}}</p></sc-if>
 <div style="display:flex;flex-direction:column;gap:10px;">
-<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">작업 기간</span><span style="font-weight:600;">[N]일</span></div>
+<sc-if value="{{hasBaPeriod}}" hint-placeholder-val="{{ true }}"><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">작업 기간</span><span style="font-weight:600;">{{baPeriod}}</span></div></sc-if>
 <div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">작업 항목</span><span style="font-weight:600;">{{baLabel}}</span></div>
-<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;border-bottom:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">사용 플랫폼</span><span style="font-weight:600;">[예: VRChat · 치지직]</span></div>
+<sc-if value="{{hasBaPlatform}}" hint-placeholder-val="{{ true }}"><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #EFE4E5;font-size:14px;"><span style="color:#6E6266;">사용 플랫폼</span><span style="font-weight:600;text-align:right;">{{baPlatform}}</span></div></sc-if>
 </div>
 <button onClick="{{baZoom}}" style="margin-top:auto;height:48px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;border:0;background:#2B2327;color:#FFFFFF;font-size:15px;font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path></svg>전후 사진 크게 보기</button>
 </aside>
@@ -873,12 +877,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 
 <sc-if value="{{lbIsBa}}" hint-placeholder-val="{{ false }}">
 <div style="width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
-<div style="position:relative;max-height:68vh;aspect-ratio:4/5;margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbBefore}};display:flex;align-items:center;justify-content:center;">
-<svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg>
+<div style="position:relative;max-height:68vh;aspect-ratio:{{baSideRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbBefore}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{baHasBefore}}" hint-placeholder-val="{{ false }}"><img src="{{baBeforeSrc}}" alt="작업 전" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
+<sc-if value="{{baNoBefore}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#CFC6C8"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#CFC6C8"></path><ellipse cx="84" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse><ellipse cx="116" cy="86" rx="5" ry="6" fill="#8E8487"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,0.78);color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">BEFORE</span>
 </div>
-<div style="position:relative;max-height:68vh;aspect-ratio:4/5;margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbAfter}};display:flex;align-items:center;justify-content:center;">
-<svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg>
+<div style="position:relative;max-height:68vh;aspect-ratio:{{baSideRatio}};margin:0 auto;width:100%;border-radius:22px;overflow:hidden;background:{{lbAfter}};display:flex;align-items:center;justify-content:center;">
+<sc-if value="{{baHasAfter}}" hint-placeholder-val="{{ false }}"><img src="{{baAfterSrc}}" alt="작업 후" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#1E1719;"></sc-if>
+<sc-if value="{{baNoAfter}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 200 200" style="width:74%;height:auto;" aria-hidden="true"><circle cx="100" cy="84" r="44" fill="#FFFFFF"></circle><path d="M28 200c0-52 32-72 72-72s72 20 72 72z" fill="#FFFFFF"></path><ellipse cx="84" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><ellipse cx="116" cy="88" rx="9" ry="11" fill="#5B2A38"></ellipse><circle cx="87" cy="83" r="3.4" fill="#FFFFFF"></circle><circle cx="119" cy="83" r="3.4" fill="#FFFFFF"></circle><ellipse cx="72" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse><ellipse cx="128" cy="104" rx="8" ry="4" fill="#F2B8C4"></ellipse></svg></sc-if>
 <span style="position:absolute;top:16px;left:16px;height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.08em;">AFTER</span>
 </div>
 </div>
@@ -942,8 +948,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <!-- config.js 는 열 때마다 새로 불러와요. 고친 내용이 GitHub에 올라가면(1~2분) 새로고침만 하면 보여요. -->
 <script>document.write('<script src="config.js?t=' + Date.now() + '"><\/script>');</script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=39"></script>
-<script src="js/portfolio.js?v=39"></script>
+<script src="js/dc-runtime.js?v=40"></script>
+<script src="js/portfolio.js?v=40"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.normalizePortfolioConfig(window.PORTFOLIO_CONFIG));</script>
 <script>
 /* 편집기(editor.html) 미리보기 연결 — 일반 방문자에게는 아무 일도 안 해요 */

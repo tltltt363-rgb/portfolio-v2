@@ -224,17 +224,33 @@ class Component extends DCLogic {
       shadow: baMode === k ? '0 2px 6px rgba(80,40,55,0.18)' : 'none',
       pick: () => set({ baMode: k })
     }));
-    const caseDefs = [
-      { id: 'a', label: '성형', n: num(this.props.baCountA, 4), ex: '부드러운 인상으로 성형' },
-      { id: 'c', label: '텍스쳐', n: num(this.props.baCountC, 3), ex: '피부·헤어 텍스쳐 리페인트' },
-      { id: 'd', label: '뽀잉눈', n: num(this.props.baCountD, 3), ex: '반짝이는 뽀잉눈 적용' },
-      { id: 'b', label: '페이셜', n: num(this.props.baCountB, 3), ex: '표정 블렌드쉐이프 보강' }
-    ].map((c) => ({ ...c, n: Math.min(500, Math.max(1, Math.round(c.n))) }));
+    /* 실제 사례(config.js 의 baA~baD)가 하나라도 있으면 그것만 보여주고, 없으면 임시 칸을 보여줘요 */
+    const baList = (L) => (Array.isArray(this.props['ba' + L]) ? this.props['ba' + L] : []).filter((x) => x && (x.before || x.after || x.title));
+    const caseDefs0 = [
+      { id: 'a', L: 'A', label: '성형', n: num(this.props.baCountA, 4), ex: '부드러운 인상으로 성형' },
+      { id: 'c', L: 'C', label: '텍스쳐', n: num(this.props.baCountC, 3), ex: '피부·헤어 텍스쳐 리페인트' },
+      { id: 'd', L: 'D', label: '뽀잉눈', n: num(this.props.baCountD, 3), ex: '반짝이는 뽀잉눈 적용' },
+      { id: 'b', L: 'B', label: '페이셜', n: num(this.props.baCountB, 3), ex: '표정 블렌드쉐이프 보강' }
+    ].map((c) => ({ ...c, real: baList(c.L) }));
+    const baAnyReal = caseDefs0.some((c) => c.real.length > 0);
+    const caseDefs = (baAnyReal ? caseDefs0.filter((c) => c.real.length > 0) : caseDefs0)
+      .map((c) => ({ ...c, n: baAnyReal ? c.real.length : Math.min(500, Math.max(1, Math.round(c.n))) }));
     const baCase = st.baCase || 'a';
     const baCat = caseDefs.find((c) => c.id === baCase) || caseDefs[0];
     const baPosAll = st.baPos || {};
     const baPos = Math.min(baCat.n - 1, num(baPosAll[baCat.id], 0));
     const goCase = (i) => set({ baPos: { ...baPosAll, [baCat.id]: (i + baCat.n) % baCat.n }, ba: 50 });
+    const baCur = baAnyReal ? (baCat.real[baPos] || {}) : null;
+    const baStr = (v) => String(v == null ? '' : v).trim();
+    const baV = baCur ? {
+      beforeSrc: baStr(baCur.before), afterSrc: baStr(baCur.after),
+      title: baStr(baCur.title), desc: baStr(baCur.desc), period: baStr(baCur.period), platform: baStr(baCur.platform)
+    } : {
+      beforeSrc: '', afterSrc: '',
+      title: '[' + baCat.label + ' 사례 ' + (baPos + 1) + ' 제목: 예) ' + baCat.ex + ']',
+      desc: '[이 사례에서 무엇을 바꿨는지 두세 줄로 적어주세요. 예: 턱선을 부드럽게 다듬고 눈 크기를 키웠어요.]',
+      period: '[N]일', platform: '[예: VRChat · 치지직]'
+    };
     const beforeTones = ['#E6E0E1', '#E2E0E6', '#E6E3DE', '#E0E3E2'];
     const afterTones = ['#F3DDE2', '#EEDDEB', '#F4E2D9', '#F1DAE4'];
     const baCases = caseDefs.map((c) => {
@@ -796,7 +812,7 @@ class Component extends DCLogic {
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
       lbSrc: lbCur.src || '', lbHasImg: !!lbCur.src && !!lbCur.isImage, lbHasVid: !!lbCur.src && !!lbCur.isVideo,
       lbTitle: lbIsBa ? baCat.label + ' 사례 ' + (baPos + 1) : (lbCur.title || ''),
-      lbMeta: lbIsBa ? '[' + baCat.label + ' 사례 ' + (baPos + 1) + ' 제목: 예) ' + baCat.ex + ']' : (lbCur.meta || ''),
+      lbMeta: lbIsBa ? baV.title : (lbCur.meta || ''),
       lbCounter: lbIsBa ? baCounter0 : (lbN ? pad(lbI + 1) + ' / ' + pad(lbN) : ''),
       lbHasNav: lbIsBa ? baCat.n > 1 : lbN > 1,
       lbPrev: () => lbGo(-1), lbNext: () => lbGo(1), lbClose, lbKey,
@@ -806,7 +822,11 @@ class Component extends DCLogic {
       ba, onBa: (e) => set({ ba: Number(e.target.value) }),
       baModes, isSlider: baMode === 'slider', isSide: baMode === 'side',
       baCases, baDots, baCaseNo: pad(baPos + 1), baLabel: baCat.label,
-      baTitle: '[' + baCat.label + ' 사례 ' + (baPos + 1) + ' 제목: 예) ' + baCat.ex + ']',
+      baTitle: baV.title, hasBaTitle: !!baV.title, baDesc: baV.desc, hasBaDesc: !!baV.desc,
+      baPeriod: baV.period, hasBaPeriod: !!baV.period, baPlatform: baV.platform, hasBaPlatform: !!baV.platform,
+      baBeforeSrc: baV.beforeSrc, baAfterSrc: baV.afterSrc,
+      baHasBefore: !!baV.beforeSrc, baNoBefore: !baV.beforeSrc, baHasAfter: !!baV.afterSrc, baNoAfter: !baV.afterSrc,
+      baRatio: baAnyReal ? String(this.props.baRatio || '4 / 3') : '16 / 10', baSideRatio: baAnyReal ? String(this.props.baRatio || '4 / 3') : '4 / 5',
       baCounter: baCounter0,
       baBefore: beforeTones[baPos % beforeTones.length], baAfter: afterTones[baPos % afterTones.length],
       baPrev: () => goCase(baPos - 1), baNext: () => goCase(baPos + 1),
@@ -887,6 +907,13 @@ window.normalizePortfolioConfig = function (cfg) {
     c['worksMedia' + L] = rows.map((x) => path(x.file));
     c['worksTitles' + L] = rows.map((x) => x.title || '');
     c['worksDescs' + L] = rows.map((x) => x.desc || '');
+  });
+  ['A', 'B', 'C', 'D'].forEach((L) => {
+    const b = arr(c['ba' + L]);
+    if (!b) return;
+    const dir = String(c.baFolder || 'media/before-after/').replace(/\/?$/, '/');
+    const path = (f) => { f = String(f || '').trim(); return !f ? '' : (/^(https?:|blob:)/.test(f) || f.indexOf('/') >= 0 ? f : dir + f); };
+    c['ba' + L] = b.map((x) => Object.assign({}, x, { before: path(x.before), after: path(x.after) }));
   });
   const sales = arr(c.sales);
   if (sales) { c.countF = Math.max(1, sales.length); sales.forEach((x, i) => { const k = 'sale' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Price'] = x.price ?? ''; c[k + 'Link'] = x.link || ''; c[k + 'Sold'] = !!x.sold; }); }

@@ -89,6 +89,14 @@ textarea.long{min-height:70px}
 .pill.ok{background:#E3F2EA;color:#1F6146}
 @media (max-width:600px){.works{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.wk .bd input{font-size:13px;padding:7px 8px}.top{gap:8px}}
 @media (max-width:700px){.pv-bar>span:not(.sp){display:none}.pv-bar b{white-space:nowrap}}
+.bapair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.baslot{position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#F3E6E9;border:2px dashed #D9B8C1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.baslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.baslot.over{background:#F7DCE3}
+.baempty{color:var(--ac);font-weight:700;text-align:center;font-size:13px;line-height:1.6}
+.balabel{position:absolute;top:8px;left:8px;background:rgba(43,35,39,.78);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;border-radius:999px;padding:3px 9px}
+.balabel.af{background:var(--ac)}
+.bachange{position:absolute;right:8px;bottom:8px;background:#fff;color:var(--ink);font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .loading{padding:60px 0;text-align:center;color:var(--mut)}
 </style>
 </head>
@@ -143,10 +151,12 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-4';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-5';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
+const BA_DIR='media/before-after/';
+const BA_SLUG={A:'seonghyeong',B:'facial',C:'texture',D:'boing'};
 const CAT={A:'성형',B:'페이셜',C:'텍스쳐',D:'뽀잉눈'};
 
 /* ── 설정 항목 정의: 화면(탭)과 config.js 저장 순서를 함께 정해요 ── */
@@ -165,6 +175,11 @@ const SCHEMA=[
     F('worksC','텍스쳐',{type:'works',L:'C'}),F('worksLinkC','텍스쳐 판매 링크',{opt:1}),F('worksLinkLabelC','버튼 글자',{opt:1}),F('worksLinkTextC','버튼 옆 안내 문구',{opt:1}),
     F('worksD','뽀잉눈',{type:'works',L:'D'}),F('worksLinkD','뽀잉눈 판매 링크',{opt:1}),F('worksLinkLabelD','버튼 글자',{opt:1}),F('worksLinkTextD','버튼 옆 안내 문구',{opt:1})]}
  ]},
+ {tab:'비포·애프터',sections:[
+  {title:'비포·애프터',ba:true,desc:'카테고리마다 사례를 넣어요. 사례 하나 = 작업 전(before) 사진 + 작업 후(after) 사진 + 설명.\nbefore / after: media/before-after/ 폴더의 파일 이름 (편집기에서 사진을 넣으면 자동으로 올라가요)\ntitle: 제목   desc: 설명   period: 작업 기간 (예: 7일)   platform: 사용 플랫폼 (예: VRChat · 치지직)\n사례를 하나라도 넣으면 임시 칸은 사라지고, 사례가 없는 카테고리는 숨겨져요.\nbaRatio: 사진 비율 (예: "4 / 3", "1 / 1", "16 / 10")',
+   keys:[F('baRatio','사진 비율',{hint:'예: 4 / 3, 1 / 1, 16 / 10',cm:'사진 비율'}),F('baA','성형',{type:'ba',L:'A'}),F('baB','페이셜',{type:'ba',L:'B'}),F('baC','텍스쳐',{type:'ba',L:'C'}),F('baD','뽀잉눈',{type:'ba',L:'D'}),
+    F('baCountA','',{hidden:1,cm:'사례를 안 넣었을 때 성형 임시 칸 수'}),F('baCountB','',{hidden:1,cm:'페이셜 임시 칸 수'}),F('baCountC','',{hidden:1,cm:'텍스쳐 임시 칸 수'}),F('baCountD','',{hidden:1,cm:'뽀잉눈 임시 칸 수'})]}
+ ]},
  {tab:'가격',sections:[
   {title:'가격 계산기 · 이벤트',keys:[F('eventText','이벤트 안내',{hint:'비우면 이벤트 배너가 안 보여요',cm:'이벤트 안내 (비우면 이벤트 배너가 안 보여요)'})]},
   {title:'가격 계산기 · 세트 상품',desc:'items: 포함 작업을 + 로 나눠 적어요. 개별 작업 이름이 들어 있으면 그 작업이 "세트 포함"으로 잠겨요.\nnote: 추가 안내 (// 를 넣으면 줄이 바뀌어요, 비우면 안 보여요)\nbestSet: 추천 표시할 세트 번호 (0이면 없음)',
@@ -177,8 +192,7 @@ const SCHEMA=[
   {title:'분양 아바타',desc:'saleReady: false 면 "준비 중" 안내만 보여요. 아래 목록을 채운 뒤 true 로 바꿔요.\nprice 는 "35,000원" 처럼 글자로 적어요. sold: true 면 "분양완료" 로 바뀌어요.',
    keys:[F('saleReady','분양 아바타 공개',{type:'bool',hint:'끄면 "준비 중" 안내만 보여요',cm:'true = 카드 보이기 / false = 준비 중'}),F('saleSoonTitle','준비 중 제목',{cm:'준비 중 제목'}),F('saleSoonText','준비 중 설명',{cm:'준비 중 설명'}),F('saleIntro','분양 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'분양 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),
     F('sales','분양 아바타',{type:'list',item:'분양 아바타',fields:[F('name','이름'),F('desc','소개'),F('price','분양가 (예: 35,000원)'),F('link','판매 링크'),F('sold','분양 완료',{type:'bool'})]})]},
-  {title:'보유 아바타',desc:'link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.',keys:[F('avatarsIntro','보유 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'보유 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),F('avatars','보유 아바타',{type:'list',item:'아바타',fields:[F('name','이름'),F('desc','소개'),F('link','아바타 링크')]})]},
-  {title:'비포·애프터',desc:'카테고리별 사례 개수예요.',keys:[F('baCountA','성형 사례 수',{type:'number',cm:'성형 사례 수'}),F('baCountB','페이셜 사례 수',{type:'number',cm:'페이셜 사례 수'}),F('baCountC','텍스쳐 사례 수',{type:'number',cm:'텍스쳐 사례 수'}),F('baCountD','뽀잉눈 사례 수',{type:'number',cm:'뽀잉눈 사례 수'})]}
+  {title:'보유 아바타',desc:'link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.',keys:[F('avatarsIntro','보유 아바타 제목 아래 한 줄',{hint:'비우면 안 보여요',cm:'보유 아바타 제목 아래 한 줄 (비우면 안 보여요)'}),F('avatars','보유 아바타',{type:'list',item:'아바타',fields:[F('name','이름'),F('desc','소개'),F('link','아바타 링크')]})]}
  ]},
  {tab:'진행·주의사항',sections:[
   {title:'진행 과정',desc:'chip 은 단계 아래 작은 회색 칩이에요. 마지막 단계는 진한 색으로 표시돼요.',keys:[F('processSteps','진행 단계',{type:'list',item:'단계',fields:[F('title','제목'),F('desc','설명'),F('chip','작은 칩')]}),F('processFacts','아래 분홍 칸',{type:'list',item:'칸',fields:[F('label','이름'),F('value','내용')],cm:'진행 과정 아래 분홍 칸들'})]},
@@ -189,7 +203,7 @@ const SCHEMA=[
 ];
 
 /* ── 상태 ── */
-let cfg=null, tabIdx=0, worksL='A', dirty=false, saving=false;
+let cfg=null, tabIdx=0, worksL='A', baL='A', baSlot=null, dirty=false, saving=false;
 let pending={}; /* path -> {b64, url, size} */
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
@@ -227,6 +241,7 @@ async function load(){
 }
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
+  if(cfg.baRatio==null)cfg.baRatio='4 / 3';
   ['A','B','C','D'].forEach((L)=>{
     if(!Array.isArray(cfg['works'+L])&&Array.isArray(cfg['worksMedia'+L])){
       const t=cfg['worksTitles'+L]||[],d=cfg['worksDescs'+L]||[];
@@ -234,6 +249,7 @@ function normalizeOld(){
       delete cfg['worksMedia'+L];delete cfg['worksTitles'+L];delete cfg['worksDescs'+L];
     }
     if(!Array.isArray(cfg['works'+L]))cfg['works'+L]=[];
+    if(!Array.isArray(cfg['ba'+L]))cfg['ba'+L]=[];
   });
 }
 
@@ -281,6 +297,7 @@ function render(){
   t.sections.forEach((sec)=>{
     h+='<section class="card"><h2>'+esc(sec.title)+'</h2>'+(sec.desc&&!sec.works?'<p class="hint">'+esc(sec.desc)+'</p>':'');
     if(sec.works){h+=renderWorks(sec);}
+    else if(sec.ba){h+=renderBA(sec);}
     else sec.keys.forEach((f)=>{h+=renderField(f,cfg[f.k],[f.k]);});
     h+='</section>';
   });
@@ -342,6 +359,28 @@ function renderWorks(sec){
   return h;
 }
 
+function baPath(f){f=String(f||'');return !f?'':(f.indexOf('/')>=0||/^https?:/.test(f)?f:BA_DIR+f);}
+function renderBA(sec){
+  let h='<p class="hint">카테고리를 고르고 사례를 추가해요. 사진 칸을 누르거나 사진을 끌어다 놓으면 들어가요.\n사례를 하나라도 넣으면 사이트의 임시 칸은 사라지고, 사례가 없는 카테고리는 숨겨져요.</p>';
+  h+=renderField(sec.keys[0],cfg.baRatio,['baRatio']);
+  h+='<div class="sub">'+['A','B','C','D'].map((L)=>'<button class="tab'+(L===baL?' on':'')+'" data-ba="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['ba'+L]||[]).length+'</span></button>').join('')+'</div>';
+  const list=cfg['ba'+baL]||[];
+  h+='<div class="list">';
+  list.forEach((c,i)=>{
+    const ip=esc(JSON.stringify(['ba'+baL,i]));
+    const slot=(k,label)=>{const fp=baPath(c[k]);const pend=pending[fp];const src=pend?pend.url:fp;
+      return '<div class="baslot" data-baslot="'+esc(JSON.stringify(['ba'+baL,i,k]))+'">'+(c[k]?'<img src="'+esc(src)+'" alt="">':'<span class="baempty">＋<br>'+label+' 사진 넣기</span>')+'<span class="balabel'+(k==='after'?' af':'')+'">'+label.toUpperCase()+'</span>'+(c[k]?'<span class="bachange">바꾸기</span>':'')+'</div>';};
+    h+='<div class="row"><div class="row-h"><b>'+CAT[baL]+' 사례 '+(i+1)+(c.title?' · '+esc(c.title):'')+'</b><span class="sp"></span>'+
+      '<button class="ib" data-act="up" data-path="'+ip+'" title="위로">↑</button><button class="ib" data-act="down" data-path="'+ip+'" title="아래로">↓</button><button class="ib del" data-act="del" data-path="'+ip+'" title="삭제">✕</button></div>'+
+      '<div class="bapair">'+slot('before','Before')+slot('after','After')+'</div>';
+    [F('title','제목'),F('desc','설명',{long:1}),F('period','작업 기간',{hint:'예: 7일'}),F('platform','사용 플랫폼',{hint:'예: VRChat · 치지직'})].forEach((sf)=>{h+=renderField(sf,c[sf.k],['ba'+baL,i,sf.k]);});
+    h+='</div>';
+  });
+  h+='</div><button class="btn sm add" data-act="addba">+ '+CAT[baL]+' 사례 추가</button>';
+  h+='<input type="file" id="baIn" accept="image/*" hidden>';
+  return h;
+}
+
 /* ── 값 바꾸기 ── */
 function getAt(path){let o=cfg;for(let i=0;i<path.length;i++){if(o==null)return undefined;o=o[path[i]];}return o;}
 function setAt(path,v){let o=cfg;for(let i=0;i<path.length-1;i++){if(o[path[i]]==null)o[path[i]]=typeof path[i+1]==='number'?[]:{};o=o[path[i]];}o[path[path.length-1]]=v;}
@@ -367,9 +406,11 @@ document.addEventListener('click',(e)=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.tab!=null){tabIdx=+b.dataset.tab;render();document.querySelector('.edit').scrollTop=0;window.scrollTo(0,0);pvScroll(TAB_SEC[tabIdx]);return;}
   if(b.dataset.works){worksL=b.dataset.works;render();pvScroll('works');return;}
+  if(b.dataset.ba){baL=b.dataset.ba;render();pvScroll('before-after');return;}
   const act=b.dataset.act;if(!act)return;
-  const path=JSON.parse(b.dataset.path);
-  if(act==='add'||act==='addstr'){const arr=getAt(path)||[];const f=findField(path);arr.push(act==='addstr'?'':blankLike(f));setAt(path,arr);}
+  const path=b.dataset.path?JSON.parse(b.dataset.path):[];
+  if(act==='addba'){const arr=cfg['ba'+baL]||[];arr.push({before:'',after:'',title:'',desc:'',period:'',platform:''});cfg['ba'+baL]=arr;}
+  else if(act==='add'||act==='addstr'){const arr=getAt(path)||[];const f=findField(path);arr.push(act==='addstr'?'':blankLike(f));setAt(path,arr);}
   else{
     const idx=path[path.length-1], arrPath=path.slice(0,-1), arr=getAt(arrPath);
     if(act==='up'&&idx>0){[arr[idx-1],arr[idx]]=[arr[idx],arr[idx-1]];}
@@ -380,11 +421,17 @@ document.addEventListener('click',(e)=>{
       const rm=arr.splice(idx,1)[0];
       let pend=null,pendPath=null;
       if(act==='delwork'&&rm){pendPath=mediaPath(arrPath[0].slice(-1),rm.file);if(pending[pendPath]){pend=pending[pendPath];delete pending[pendPath];}}
-      setTimeout(()=>toast('뺐어요.',6000,{label:'되돌리기',run:()=>{const a=getAt(arrPath)||[];a.splice(Math.min(idx,a.length),0,rm);setAt(arrPath,a);if(pend)pending[pendPath]=pend;setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;}}),0);
+      let baPend={};if(/^ba[A-D]$/.test(String(arrPath[0]))&&rm){['before','after'].forEach((k)=>{const fp=baPath(rm[k]);if(rm[k]&&pending[fp]){baPend[fp]=pending[fp];delete pending[fp];}});}
+      setTimeout(()=>toast('뺐어요.',6000,{label:'되돌리기',run:()=>{const a=getAt(arrPath)||[];a.splice(Math.min(idx,a.length),0,rm);setAt(arrPath,a);if(pend)pending[pendPath]=pend;Object.assign(pending,baPend);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;}}),0);
     }
   }
   setDirty(true);const ed=document.querySelector('.edit'),y=window.scrollY,ey=ed.scrollTop;render();window.scrollTo(0,y);ed.scrollTop=ey;
 });
+document.addEventListener('click',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(!sl)return;baSlot=JSON.parse(sl.dataset.baslot);$('baIn').click();});
+document.addEventListener('change',(e)=>{if(e.target.id==='baIn'&&e.target.files[0]){setBaImage(baSlot,e.target.files[0]);e.target.value='';}});
+document.addEventListener('dragover',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(sl){e.preventDefault();sl.classList.add('over');}});
+document.addEventListener('dragleave',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(sl)sl.classList.remove('over');});
+document.addEventListener('drop',(e)=>{const sl=e.target.closest&&e.target.closest('[data-baslot]');if(sl){e.preventDefault();sl.classList.remove('over');const f=e.dataTransfer.files[0];if(f)setBaImage(JSON.parse(sl.dataset.baslot),f);}});
 document.addEventListener('dragover',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d){e.preventDefault();d.classList.add('over');}});
 document.addEventListener('dragleave',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d)d.classList.remove('over');});
 document.addEventListener('drop',(e)=>{const d=e.target.closest&&e.target.closest('#drop');if(d){e.preventDefault();d.classList.remove('over');addFiles(e.dataTransfer.files);}});
@@ -403,6 +450,20 @@ function toWebp(file){return new Promise((res,rej)=>{
     const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);
     c.toBlob((b)=>b?res(b):rej(new Error('변환 실패')),'image/webp',0.88);};
   img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('이미지를 열 수 없어요'));};img.src=url;});}
+async function setBaImage(path,file){
+  if(!path||!file)return;
+  if(!/^image\//.test(file.type)){toast('사진 파일만 넣을 수 있어요.');return;}
+  try{
+    toast('사진 준비 중…',8000);
+    const blob=/gif$/i.test(file.type)?file:await toWebp(file);const ext=/gif$/i.test(file.type)?'gif':'webp';
+    const L=path[0].slice(-1), idx=path[1], kind=path[2];
+    const used=new Set();['A','B','C','D'].forEach((x)=>(cfg['ba'+x]||[]).forEach((c)=>{used.add(c.before);used.add(c.after);}));Object.keys(pending).forEach((p)=>used.add(p.split('/').pop()));
+    let n=idx+1,name;do{name='ba-'+BA_SLUG[L]+'-'+String(n).padStart(2,'0')+'-'+kind+'.'+ext;n++;}while(used.has(name));
+    const old=getAt(path);const oldP=baPath(old);if(old&&pending[oldP]){URL.revokeObjectURL(pending[oldP].url);delete pending[oldP];}
+    pending[BA_DIR+name]={b64:bytesToB64(new Uint8Array(await blob.arrayBuffer())),url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
+    setAt(path,name);setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;toast('넣었어요. 다 고친 뒤 "저장하기"를 눌러 주세요.');
+  }catch(err){toast(err.message,4000);}
+}
 async function addFiles(files){
   const L=worksL;const list=Array.from(files||[]).sort((a,b)=>a.name.localeCompare(b.name,'ko',{numeric:true}));
   if(!list.length)return;
@@ -437,6 +498,8 @@ function buildConfig(){
     sec(s.title,s.desc);
     s.keys.forEach((f)=>{
       if(f.type==='works'){w('');objList(f.k,['file','title','desc'],CAT[f.L]);return;}
+      if(f.type==='ba'){w('');objList(f.k,['before','after','title','desc','period','platform'],CAT[f.L]+' 비포·애프터');return;}
+      if(f.hidden){kv(f.k,f.cm);return;}
       if(f.opt){if(cfg[f.k]!==undefined&&cfg[f.k]!=='')kv(f.k,f.label);else done.add(f.k);return;}
       if(f.type==='list'&&f.k==='notices'){done.add('notices');w('  notices: [');(cfg.notices||[]).forEach((n)=>{w('    {');w('      tag: '+J(n.tag||'')+',');w('      title: '+J(n.title||'')+',');w('      items: [');(n.items||[]).forEach((x)=>w('        '+J(x)+','));w('      ],');w('    },');});w('  ],');return;}
       if(f.type==='list'){objList(f.k,f.fields.map((x)=>x.k),f.cm);return;}
@@ -532,13 +595,14 @@ $('discardBtn').onclick=async()=>{
 document.addEventListener('keydown',(e)=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(dirty&&!saving)save();}});
 
 /* ── 미리보기 ── */
-const TAB_SEC=['strengths','works','price','sale','process'];
-const SEC_TAB={top:0,strengths:0,works:1,price:2,inquiry:2,sale:3,avatars:3,'before-after':3,process:4,notice:4};
+const TAB_SEC=['strengths','works','before-after','price','sale','process'];
+const SEC_TAB={top:0,strengths:0,works:1,'before-after':2,price:3,inquiry:3,sale:4,avatars:4,process:5,notice:5};
 let dev=window.innerWidth<700?'mobile':'pc', pvTimer=null;
 document.querySelectorAll('[data-dev]').forEach((x)=>x.classList.toggle('on',x.dataset.dev===dev));
 function previewCfg(){
   const c=JSON.parse(JSON.stringify(cfg||{}));
   ['A','B','C','D'].forEach((L)=>(c['works'+L]||[]).forEach((w)=>{const p=mediaPath(L,w.file);if(pending[p])w.file=pending[p].url;delete w._orig;}));
+  ['A','B','C','D'].forEach((L)=>(c['ba'+L]||[]).forEach((x)=>{['before','after'].forEach((k)=>{const p=baPath(x[k]);if(x[k]&&pending[p])x[k]=pending[p].url;});}));
   return c;
 }
 function pushPreview(){clearTimeout(pvTimer);pvTimer=setTimeout(()=>{const f=$('pvFrame');if(cfg&&f.contentWindow)f.contentWindow.postMessage({type:'pf-config',cfg:previewCfg()},location.origin);},200);}
