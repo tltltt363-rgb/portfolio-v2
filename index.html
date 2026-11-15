@@ -11,7 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=27 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
+  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=28 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
 
   ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
     [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
@@ -486,6 +486,12 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
 <div style="flex:999 1 640px;min-width:0;display:flex;flex-direction:column;gap:36px;">
+<sc-if value="{{hasEvent}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:14px;background:#FFFFFF;border:1px solid #EFE4E5;margin-bottom:-12px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+<span style="font-size:15px;line-height:1.6;color:#4A3E44;"><strong style="color:{{accent}};font-weight:700;">이벤트</strong> · {{eventText}}</span>
+</div>
+</sc-if>
 
 <sc-if value="{{hasSets}}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:16px;">
@@ -599,15 +605,6 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <button aria-label="수정 횟수 늘리기" onClick="{{revPlus}}" style="width:44px;height:44px;border-radius:50%;border:1px solid #EFE4E5;background:#F8F2F1;color:#2B2327;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
 </span>
 </div>
-<sc-if value="{{hasEvent}}" hint-placeholder-val="{{ false }}">
-<button aria-pressed="{{eventPressed}}" onClick="{{toggleEvent}}" style="grid-column:1 / -1;min-height:76px;box-sizing:border-box;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:18px;border:2px solid {{eventBorder}};background:linear-gradient(150deg,#FDF1F4 0%,#F7DCE3 100%);color:#2B2327;text-align:left;">
-<span style="display:flex;align-items:center;gap:12px;min-width:0;">
-<span style="flex-shrink:0;padding:4px 10px;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:0.02em;">이벤트</span>
-<span style="display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:16px;font-weight:600;line-height:1.4;">{{eventText}}</span><span style="font-size:13px;color:#6E6266;">무료 · 리뷰 작성을 약속하면 선택해 주세요</span></span>
-</span>
-<span style="flex-shrink:0;width:46px;height:28px;box-sizing:border-box;padding:3px;border-radius:999px;background:{{eventTrack}};display:flex;justify-content:{{eventJustify}};"><span style="width:22px;height:22px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(43,35,39,0.3);"></span></span>
-</button>
-</sc-if>
 </div>
 </div>
 </div>
@@ -956,10 +953,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=27"></script>
+<script src="config.js?v=28"></script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=27"></script>
-<script src="js/portfolio.js?v=27"></script>
+<script src="js/dc-runtime.js?v=28"></script>
+<script src="js/portfolio.js?v=28"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
 </body>
 </html>
