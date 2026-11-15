@@ -101,6 +101,7 @@ textarea.long{min-height:70px}
   <button class="btn only-narrow" id="pvToggle">미리보기</button>
   <a class="btn" href="./" target="_blank" rel="noopener">사이트 ↗</a>
   <button id="connBtn" class="btn">GitHub 연결</button>
+  <button id="discardBtn" class="btn" style="display:none" title="저장 안 한 변경을 모두 버려요">되돌리기</button>
   <button id="saveBtn" class="btn pri" disabled>저장하기</button>
 </div>
 <div class="wrap">
@@ -193,9 +194,11 @@ let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(msg,ms){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
-function setDirty(v){dirty=v;if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?('저장 안 한 변경 있음'+(n?' · 새 파일 '+n+'개':'')):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
+function setDirty(v){dirty=v;$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':'')):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
 function connUI(){const c=$('conn');if(token){c.textContent='GitHub 연결됨';c.className='pill ok';$('connBtn').textContent='연결 설정';}else{c.textContent='연결 안 됨';c.className='pill';$('connBtn').textContent='GitHub 연결';}}
-window.addEventListener('beforeunload',(e)=>{if(dirty){e.preventDefault();e.returnValue='';}});
+/* 새로고침·닫기 직전에 임시 저장을 한 번 더 해둬요 */
+window.addEventListener('pagehide',()=>{if(dirty)saveDraft();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty)saveDraft();});
 
 /* ── 불러오기 ── */
 function parseConfig(text){const w={};new Function('window',text)(w);if(!w.PORTFOLIO_CONFIG)throw new Error('config 없음');return w.PORTFOLIO_CONFIG;}
@@ -207,13 +210,17 @@ async function gh(path,opt){
   return r;
 }
 async function load(){
+  /* (아래 cfg 불러오기) */
   let text=null;
   if(token){try{const r=await gh('config.js');if(r.ok){const j=await r.json();text=b64ToText(j.content);}else if(r.status===401){toast('연결 키가 만료됐거나 잘못됐어요. 다시 연결해 주세요.',4000);}}catch(e){}}
   if(text==null){const r=await fetch('config.js?t='+Date.now(),{cache:'no-store'});text=await r.text();}
   cfg=parseConfig(text);
   normalizeOld();
+  base=JSON.parse(JSON.stringify(cfg));
+  const restored=await restoreDraft();
   render();
   pushPreview();
+  if(restored){setDirty(true);toast('저장 안 한 변경 내용을 다시 불러왔어요. 사이트에 올리려면 "저장하기"를 눌러 주세요.',5000);}
 }
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
@@ -226,6 +233,38 @@ function normalizeOld(){
     if(!Array.isArray(cfg['works'+L]))cfg['works'+L]=[];
   });
 }
+
+/* ── 임시 저장: 저장하기 전에 새로고침해도 고친 내용이 남아 있어요 (이 브라우저에만) ── */
+let base=null, draftTimer=null;
+const DB_NAME='pf-editor', STORE='draft';
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+async function idbSet(v){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,'draft');tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
+async function idbGet(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readonly');const r=tx.objectStore(STORE).get('draft');r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error);});}
+async function idbDel(){const db=await idb();return new Promise((res)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete('draft');tx.oncomplete=()=>res();tx.onerror=()=>res();});}
+function queueDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,300);}
+async function saveDraft(){
+  if(!cfg||!base)return;
+  const changed={},removed=[];
+  Object.keys(cfg).forEach((k)=>{if(JSON.stringify(cfg[k])!==JSON.stringify(base[k]))changed[k]=JSON.parse(JSON.stringify(cfg[k]));});
+  Object.keys(base).forEach((k)=>{if(!(k in cfg))removed.push(k);});
+  const files={};Object.keys(pending).forEach((p)=>{files[p]={b64:pending[p].b64,type:pending[p].type||''};});
+  try{
+    if(!Object.keys(changed).length&&!removed.length&&!Object.keys(files).length){await idbDel();return;}
+    await idbSet({changed,removed,files,t:Date.now()});
+  }catch(e){}
+}
+async function restoreDraft(){
+  let d=null;try{d=await idbGet();}catch(e){}
+  if(!d)return false;
+  Object.keys(d.changed||{}).forEach((k)=>{cfg[k]=d.changed[k];});
+  (d.removed||[]).forEach((k)=>{delete cfg[k];});
+  Object.keys(d.files||{}).forEach((p)=>{
+    const f=d.files[p];const bin=atob(f.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    const blob=new Blob([u],{type:f.type||''});pending[p]={b64:f.b64,url:URL.createObjectURL(blob),size:blob.size,type:f.type||''};
+  });
+  return Object.keys(d.changed||{}).length>0||(d.removed||[]).length>0||Object.keys(d.files||{}).length>0;
+}
+function clearDraft(){clearTimeout(draftTimer);idbDel().catch(()=>{});}
 
 /* ── 그리기 ── */
 function render(){
@@ -368,7 +407,7 @@ async function addFiles(files){
       const name=nextName(L,ext);
       const b64=bytesToB64(new Uint8Array(await blob.arrayBuffer()));
       const path=FOLDERS[L]+name;
-      pending[path]={b64,url:URL.createObjectURL(blob),size:blob.size};
+      pending[path]={b64,url:URL.createObjectURL(blob),size:blob.size,type:blob.type||''};
       const base=f.name.replace(/\.[^.]+$/,'');
       cfg['works'+L].push({file:name,title:'',desc:(cfg['works'+L][0]||{}).desc||CAT[L],_orig:base});
     }catch(err){toast(f.name+': '+err.message,4000);}
@@ -454,6 +493,7 @@ async function save(){
     toast('내용 저장 중…',60000);
     await putFile('config.js',textToB64(text),'편집기로 내용 수정');
     Object.values(pending).forEach((p)=>URL.revokeObjectURL(p.url));pending={};
+    base=JSON.parse(JSON.stringify(cfg));clearDraft();
     setDirty(false);render();
     toast('저장 완료! 1~2분 뒤 사이트를 새로고침하면 보여요.',5000);
   }catch(e){toast(e.message,7000);}
@@ -473,6 +513,11 @@ $('tokenSave').onclick=async()=>{
   catch(e){token=old;toast(e.message,6000);}
 };
 $('saveBtn').onclick=save;
+$('discardBtn').onclick=async()=>{
+  if(!confirm('저장 안 한 변경을 모두 버리고, 사이트에 저장된 내용으로 되돌릴까요?'))return;
+  clearDraft();Object.values(pending).forEach((p)=>URL.revokeObjectURL(p.url));pending={};
+  cfg=JSON.parse(JSON.stringify(base));setDirty(false);clearDraft();render();pushPreview();toast('되돌렸어요.');
+};
 document.addEventListener('keydown',(e)=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(dirty&&!saving)save();}});
 
 /* ── 미리보기 ── */
