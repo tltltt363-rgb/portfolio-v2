@@ -44,8 +44,8 @@ window.PORTFOLIO_CONFIG = {
      사진을 비워두면 그 칸은 임시 그림으로 보여요.
   */
   heroPhotos: [
-    { file: "hero-01.webp", label: "BEFORE" },
-    { file: "hero-02.webp", label: "AFTER" },
+    { file: "hero-01.webp", label: "" },
+    { file: "hero-02.webp", label: "" },
     { file: "hero-06.webp", label: "" },
   ],
 
