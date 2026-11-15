@@ -233,7 +233,7 @@ window.PORTFOLIO_CONFIG = {
   avatars: [
     { link: "https://booth.pm/ko/items/6538026", image: "https://booth.pximg.net/01965a9e-bce5-4027-bc0e-0b8e7df43c6e/i/6538026/182b133f-1c86-4ae8-8536-5e00f63b86cf_base_resized.jpg", name: "Milltina / 밀티나 ", desc: "" },
     { link: "https://booth.pm/ko/items/8122803", image: "https://booth.pximg.net/817e9a9a-020c-4fac-8b21-96f80d6e25cb/i/8122803/d9c776e9-d7e4-4f7c-a091-c777beecf3bb_base_resized.jpg", name: "Mayo / 마요", desc: "" },
-    { link: "https://booth.pm/ko/items/6106863", image: "https://booth.pximg.net/ed52788c-0b3b-4e38-9ded-1e5797daf0ef/i/6106863/07bd77df-a8ee-4244-8c4e-16cf7cb584bb_base_resized.jpg", name: "", desc: "" },
+    { link: "https://booth.pm/ko/items/6106863", image: "https://booth.pximg.net/ed52788c-0b3b-4e38-9ded-1e5797daf0ef/i/6106863/07bd77df-a8ee-4244-8c4e-16cf7cb584bb_base_resized.jpg", name: "Shinano / 시나노", desc: "" },
     { link: "", image: "", name: "", desc: "" },
   ],
 
