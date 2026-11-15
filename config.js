@@ -96,7 +96,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-15.webp", title: "Suzuya", desc: "성형", link: "" },
     { file: "seonghyeong-16.webp", title: "Mayo", desc: "성형", link: "" },
     { file: "seonghyeong-17.webp", title: "Mayo", desc: "성형", link: "" },
-    { file: "seonghyeong-37.webp", title: "", desc: "성형", link: "" },
+    { file: "seonghyeong-37.webp", title: "Minase", desc: "성형", link: "" },
     { file: "seonghyeong-18.webp", title: "Rurune", desc: "성형", link: "" },
     { file: "seonghyeong-19.webp", title: "Kaguya", desc: "성형", link: "" },
     { file: "seonghyeong-20.webp", title: "Milfy", desc: "성형", link: "" },
