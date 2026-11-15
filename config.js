@@ -243,7 +243,7 @@ window.PORTFOLIO_CONFIG = {
     { link: "https://booth.pm/ko/items/5957830", image: "https://booth.pximg.net/96d1d589-6879-4d30-8891-a2c6b8d64186/i/5957830/a4e0ae5b-7797-448b-80b1-e852c861e080_base_resized.jpg", name: "rurune / 루루네", desc: "" },
     { link: "https://booth.pm/ko/items/6571299", image: "https://booth.pximg.net/1ae5d9f5-29a4-4574-ab86-a316c22db92a/i/6571299/7bda05bb-f9d5-45a8-811a-b95ac555beb8_base_resized.jpg", name: "Milfy / 밀피", desc: "" },
     { link: "https://booth.pm/ko/items/7328764", image: "https://booth.pximg.net/7d1d1238-0c5a-4d1b-a4d4-fcbc42bebca8/i/7328764/68d88751-994d-4dd3-8e54-5be5bcb51fdf_base_resized.jpg", name: "Eku / 이쿠", desc: "" },
-    { link: "https://booth.pm/ko/items/3681787", image: "", name: "", desc: "" },
+    { link: "https://booth.pm/ko/items/3681787", image: "https://booth.pximg.net/ed52788c-0b3b-4e38-9ded-1e5797daf0ef/i/3681787/2409bb9f-24f3-42dd-8ad6-89a0656f2166_base_resized.jpg", name: "kikyo / 키쿄", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
