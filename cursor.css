@@ -5,4 +5,11 @@
    - image-set 없이 그림 한 장만 써요 (탭·창을 바꿨다 돌아올 때 기본 커서로 돌아가는 문제 방지)
    - !important + 높은 우선순위로 사이트 자체 커서 설정보다 항상 이겨요 */
 html:not(#pf-cur),html:not(#pf-cur):hover,html:not(#pf-cur):active,html:not(#pf-cur):focus,body:not(#pf-cur),body:not(#pf-cur):hover,body:not(#pf-cur):active,body:not(#pf-cur):focus,*:not(#pf-cur),*:not(#pf-cur):hover,*:not(#pf-cur):active,*:not(#pf-cur):focus{cursor:url(media/cursor/default.png?v=4) 0 0,default !important}
+/* 입력 칸 안쪽 부품(슬라이더 손잡이, 영상 등)도 나루토 화살표 — 브라우저마다 지원이 달라서 따로 적어요 */
+input:not(#pf-cur)::-webkit-slider-thumb{cursor:inherit !important}
+input:not(#pf-cur)::-webkit-slider-runnable-track{cursor:inherit !important}
+input:not(#pf-cur)::-moz-range-thumb{cursor:inherit !important}
+input:not(#pf-cur)::-webkit-inner-spin-button{cursor:inherit !important}
+input:not(#pf-cur)::-webkit-calendar-picker-indicator{cursor:inherit !important}
+input:not(#pf-cur)::file-selector-button{cursor:inherit !important}
 html::after{content:url(media/cursor/default.png?v=4);position:absolute;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;z-index:-1}
