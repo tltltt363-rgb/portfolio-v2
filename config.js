@@ -356,7 +356,7 @@ window.PORTFOLIO_CONFIG = {
   item10Group: "추가",  // 10번 분류
   item10Name: "뽀잉귀",  // 10번 이름
   item10Desc: "",  // 10번 설명 (비우면 안 보여요)
-  item10Price: 0,  // 10번 가격 (원, 0이면 가격 문의)
+  item10Price: 30000,  // 10번 가격 (원, 0이면 가격 문의)
   item11Group: "텍스쳐",  // 11번 분류
   item11Name: "오리지널 텍스쳐 (메이크업)",  // 11번 이름
   item11Desc: "자체 제작",  // 11번 설명 (비우면 안 보여요)
