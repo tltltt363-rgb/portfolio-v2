@@ -193,7 +193,7 @@ class Component extends DCLogic {
       const lbl = (this.props.heroLabels || [])[i];
       const vid = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(src);
       const label = src ? String(lbl == null ? '' : lbl).trim() : t.label;
-      return { ...t, delay: ['0s', '-2.2s', '-4.1s'][i] || '0s', dur: ['6.2s', '5.4s', '6.8s'][i] || '6s', src, hasImg: !!src && !vid, hasVid: !!src && vid, ph: !src, label, hasLabel: !!label, isImage: !src && t.isImage, isVideo: !src && t.isVideo };
+      return { ...t, delay: ['0s', '-1.1s', '-2.3s'][i] || '0s', dur: ['3.2s', '2.8s', '3.6s'][i] || '3.2s', src, hasImg: !!src && !vid, hasVid: !!src && vid, ph: !src, label, hasLabel: !!label, isImage: !src && t.isImage, isVideo: !src && t.isVideo };
     });
 
     /* ---------- strengths ---------- */
