@@ -192,6 +192,9 @@
 
   window.mountPortfolio = function (Component, props) {
     var el = document.getElementById('app');
-    window.ReactDOMClient.createRoot(el).render(h(Component, props || {}));
+    var root = window.ReactDOMClient.createRoot(el);
+    root.render(h(Component, props || {}));
+    /* 편집기 미리보기용: 새 설정으로 다시 그려요 */
+    window.__pfRender = function (p) { root.render(h(Component, p || {})); };
   };
 })();
