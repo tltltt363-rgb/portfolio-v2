@@ -115,7 +115,7 @@ window.PORTFOLIO_CONFIG = {
 
   worksC: [  // 텍스쳐 (link: 구경하기 버튼 주소, 비우면 버튼 없음)
     { file: "texture-01.webp", title: "Milltina", desc: "메이크업", link: "https://muridayo.booth.pm/items/9151568" },
-    { file: "texture-03.webp", title: "Airi", desc: "메이크업 + 블렌드쉐이프", link: "" },
+    { file: "texture-03.webp", title: "Airi", desc: "메이크업 + 블렌드쉐이프", link: "https://muridayo.booth.pm/items/8029973" },
     { file: "texture-16.webp", title: "Milltina", desc: "아이 텍스쳐 + 메이크업 + 애니메이션", link: "https://booth.pm/ko/items/9115943" },
     { file: "texture-17.webp", title: "Mayo", desc: "메이크업", link: "https://muridayo.booth.pm/items/9078145" },
     { file: "texture-02.webp", title: "Milltina", desc: "메이크업", link: "" },
