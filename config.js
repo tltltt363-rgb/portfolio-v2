@@ -45,7 +45,7 @@ window.PORTFOLIO_CONFIG = {
   */
   heroPhotos: [
     { file: "hero-01.webp", label: "BEFORE" },
-    { file: "", label: "AFTER" },
+    { file: "hero-02.webp", label: "AFTER" },
     { file: "", label: "" },
   ],
 
