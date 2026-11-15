@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="58">
+<meta name="pf-build" content="59">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -514,7 +514,7 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 </button>
 <div style="padding:0 8px;display:flex;flex-direction:column;gap:6px;">
 <h3 style="margin:0;font-size:20px;font-weight:700;line-height:1.35;">{{av.name}}</h3>
-<p style="margin:0;font-size:14px;line-height:1.55;color:#6E6266;">{{av.desc}}</p>
+<sc-if value="{{av.hasDesc}}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;line-height:1.55;color:#6E6266;">{{av.desc}}</p></sc-if>
 </div>
 <div style="margin-top:auto;padding:0 8px;">
 <sc-if value="{{av.hasLink}}" hint-placeholder-val="{{ false }}">
@@ -1023,8 +1023,8 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=58"></script>
-<script src="js/portfolio.js?v=58"></script>
+<script src="js/dc-runtime.js?v=59"></script>
+<script src="js/portfolio.js?v=59"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */

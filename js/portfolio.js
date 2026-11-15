@@ -438,7 +438,7 @@ class Component extends DCLogic {
         no: 'No.' + pad(i + 1),
         tone: avTones[i % avTones.length],
         name: txt(this.props[k + 'Name']) || '[아바타 이름 ' + pad(i + 1) + ']',
-        desc: txt(this.props[k + 'Desc']) || '[아바타 소개를 한두 줄로 적어주세요]',
+        desc: txt(this.props[k + 'Desc']), hasDesc: !!txt(this.props[k + 'Desc']),
         link, hasLink: !!link, noLink: !link
       });
     }
