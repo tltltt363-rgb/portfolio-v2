@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-4';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-5';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -264,7 +264,7 @@ async function load(){
 /* 예전 형식이 남아 있으면 목록 형식으로 바꿔서 보여줘요 */
 function normalizeOld(){
   if(!Array.isArray(cfg.worksE))cfg.worksE=[];
-  cfg.worksE=cfg.worksE.filter((x)=>x&&(x.file||x.after||x.before||x.title)).map((x)=>({file:x.file||x.after||x.before||'',title:x.title||'',desc:x.desc||''}));
+  cfg.worksE=cfg.worksE.filter((x)=>x&&(x.file||x.after||x.before||x.title)).map((x)=>({file:x.file||x.after||x.before||'',title:x.title||'',desc:x.desc||'',link:x.link||''}));
   if(!Array.isArray(cfg.heroPhotos))cfg.heroPhotos=[{file:'',label:'BEFORE'},{file:'',label:'AFTER'},{file:'',label:''}];
   if(cfg.baRatio==null)cfg.baRatio='4 / 3';
   ['A','B','C','D'].forEach((L)=>{
@@ -393,6 +393,7 @@ function renderWorksGrid(L){
     const ip=esc(JSON.stringify(['works'+L,i]));
     h+='<div class="wk"><div class="th">'+(isVid(w.file)?'<video src="'+esc(src)+'" muted loop playsinline autoplay preload="metadata"></video>':'<img src="'+esc(src)+'" loading="lazy" alt="">')+'<span class="no">'+(i+1)+'</span>'+(pend?'<span class="new">새 파일</span>':'')+'</div>'+
        '<div class="bd"><input type="text" placeholder="제목 (아바타 이름)" data-path="'+esc(JSON.stringify(['works'+L,i,'title']))+'" value="'+esc(w.title)+'"><input type="text" placeholder="한 줄 설명" data-path="'+esc(JSON.stringify(['works'+L,i,'desc']))+'" value="'+esc(w.desc)+'">'+
+       '<input type="url" placeholder="구경하기 링크 (비우면 버튼 없음)" data-path="'+esc(JSON.stringify(['works'+L,i,'link']))+'" value="'+esc(w.link||'')+'">'+
        '<span class="fn">'+esc(w.file)+'</span><div class="ops"><button class="ib" data-act="up" data-path="'+ip+'" title="앞으로">◀</button><button class="ib" data-act="down" data-path="'+ip+'" title="뒤로">▶</button><button class="ib del" data-act="delwork" data-path="'+ip+'" title="빼기">✕</button></div></div></div>';
   });
   h+='<label class="drop" id="drop"><span style="font-size:30px">＋</span>사진·영상 추가<small>여러 개를 한 번에 골라도 돼요<br>여기로 끌어다 놓아도 돼요</small><input type="file" id="fileIn" accept="image/*,video/mp4,video/webm,video/quicktime" multiple hidden></label>';
@@ -609,7 +610,7 @@ function buildConfig(){
   SCHEMA.forEach((tab)=>tab.sections.forEach((s)=>{
     sec(s.title,s.desc);
     s.keys.forEach((f)=>{
-      if(f.type==='works'){w('');objList(f.k,['file','title','desc'],CAT[f.L]);return;}
+      if(f.type==='works'){w('');objList(f.k,['file','title','desc','link'],CAT[f.L]+' (link: 구경하기 버튼 주소, 비우면 버튼 없음)');return;}
       if(f.type==='ba'){w('');objList(f.k,['before','after','title','desc','period','platform'],CAT[f.L]+' 비포·애프터');return;}
       if(f.hidden){kv(f.k,f.cm);return;}
       if(f.opt){if(cfg[f.k]!==undefined&&cfg[f.k]!=='')kv(f.k,f.label);else done.add(f.k);return;}

@@ -368,6 +368,8 @@ class Component extends DCLogic {
     const textList = (v) => (Array.isArray(v) ? v.map((x) => String(x == null ? '' : x)) : String(v == null ? '' : v).split('|').map((x) => x.trim()));
     const curTitles = textList(this.props['worksTitles' + cur.id.toUpperCase()]).filter((x, i, arr) => arr.length > 1 || x);
     const curDescs = textList(this.props['worksDescs' + cur.id.toUpperCase()]);
+    const curLinks = Array.isArray(this.props['worksLinks' + cur.id.toUpperCase()]) ? this.props['worksLinks' + cur.id.toUpperCase()] : [];
+    const linkOf = (v) => { const t = String(v || '').trim(); return !t ? '' : (/^https?:\/\//i.test(t) ? t : 'https://' + t); };
     for (let i = 0; i < nFor(cur); i++) {
       const type = typeFor(cur, i);
       if (filter !== 'all' && filter !== type) continue;
@@ -376,6 +378,7 @@ class Component extends DCLogic {
       const pBefore = cur.pair ? String(curBefore[i] || '').trim() : '';
       const isPair = !!cur.pair;
       cards.push({
+        link: linkOf(curLinks[i]), hasLink: !!linkOf(curLinks[i]),
         isPair, notPair: !isPair, pairBefore: pBefore, pairAfter: src, pairHasBefore: !!pBefore, pairHasAfter: !!src,
         tone: tones[i % tones.length],
         label: isPair ? 'BEFORE · AFTER' : (type === 'image' ? 'IMAGE' : 'MP4'),
@@ -800,7 +803,7 @@ class Component extends DCLogic {
     /* ---------- lightbox ---------- */
     const lb = st.lb || null;
     let lbList = [];
-    if (lb && lb.kind === 'works') lbList = cards.map((c) => ({ tone: c.tone, label: c.label, isImage: c.isImage, isGif: c.isGif, isVideo: c.isVideo, isAvatar: false, title: c.title, meta: c.meta, ratio: '4 / 5', src: c.src, isPair: c.isPair, before: c.pairBefore, after: c.pairAfter }));
+    if (lb && lb.kind === 'works') lbList = cards.map((c) => ({ tone: c.tone, label: c.label, isImage: c.isImage, isGif: c.isGif, isVideo: c.isVideo, isAvatar: false, title: c.title, meta: c.meta, ratio: '4 / 5', src: c.src, isPair: c.isPair, before: c.pairBefore, after: c.pairAfter, link: c.link }));
     if (lb && lb.kind === 'sales') lbList = sales.map((a) => ({ tone: a.tone, label: a.statusLabel, isImage: false, isGif: false, isVideo: false, isAvatar: true, title: a.name, meta: a.desc + ' · ' + a.price, ratio: '3 / 4' }));
     if (lb && lb.kind === 'avatars') lbList = avatars.map((a) => ({ tone: a.tone, label: a.no, isImage: a.hasImage, isGif: false, isVideo: false, isAvatar: !a.hasImage, title: a.name, meta: a.desc, ratio: '3 / 4', src: a.image }));
     const lbIsBa = !!lb && lb.kind === 'ba';
@@ -832,6 +835,7 @@ class Component extends DCLogic {
       lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
       lbSrc: lbCur.src || '', lbHasImg: !!lbCur.src && !!lbCur.isImage, lbHasVid: !!lbCur.src && !!lbCur.isVideo,
+      lbLink: lbCur.link || '', lbHasLink: !!lbCur.link,
       lbTitle: lbIsBa ? baCat.label + ' 사례 ' + (baPos + 1) : (lbCur.title || ''),
       lbMeta: lbIsBa ? baV.title : (lbCur.meta || ''),
       lbCounter: lbIsBa ? baCounter0 : (lbN ? pad(lbI + 1) + ' / ' + pad(lbN) : ''),
@@ -929,6 +933,7 @@ window.normalizePortfolioConfig = function (cfg) {
     c['worksMedia' + L] = rows.map((x) => path(x.file));
     c['worksTitles' + L] = rows.map((x) => x.title || '');
     c['worksDescs' + L] = rows.map((x) => x.desc || '');
+    c['worksLinks' + L] = rows.map((x) => x.link || '');
   });
   ['A', 'B', 'C', 'D'].forEach((L) => {
     const b = arr(c['ba' + L]);

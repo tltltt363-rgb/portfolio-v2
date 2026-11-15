@@ -118,7 +118,7 @@ worksA: [
 | 맨 위 사진 묶음 (3장) | `heroPhotos` (사진은 `media/hero`) |
 | 장점 카드 | `strengths` |
 | 비포·애프터 사례 | `baA` ~ `baD` (사진은 `media/before-after`) |
-| 작업물 사진·제목 | `worksA` ~ `worksD` |
+| 작업물 사진·제목·구경하기 링크 | `worksA` ~ `worksD` (`link` 를 넣으면 카드에 "구경하기" 버튼) |
 | 텍스쳐 비포·애프터 (작업물 칸) | `worksE` (사진 한 장씩, `media/texture-ba`) |
 | 판매(BOOTH) 링크 버튼 | `worksLinkC` (다른 카테고리는 `worksLinkA` 등) |
 | 분양 아바타 열기 / 준비 중 | `saleReady` (`true` / `false`), 목록은 `sales` |
