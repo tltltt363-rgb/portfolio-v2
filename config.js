@@ -78,7 +78,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-03.webp", title: "Salt", desc: "성형", link: "" },
     { file: "seonghyeong-04.webp", title: "Mayo", desc: "성형", link: "" },
     { file: "seonghyeong-05.webp", title: "Shinano", desc: "성형", link: "" },
-    { file: "seonghyeong-35.webp", title: "A", desc: "성형", link: "" },
+    { file: "seonghyeong-35.webp", title: "Airi", desc: "성형", link: "" },
     { file: "seonghyeong-14.webp", title: "Milltina", desc: "성형", link: "" },
     { file: "seonghyeong-06.webp", title: "Milltina", desc: "성형", link: "" },
     { file: "seonghyeong-01.webp", title: "Milltina", desc: "성형", link: "" },
