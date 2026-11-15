@@ -94,7 +94,6 @@ window.PORTFOLIO_CONFIG = {
     { file: "seonghyeong-30.webp", title: "Shinano", desc: "성형" },
     { file: "seonghyeong-31.webp", title: "Eku", desc: "성형" },
   ],
-  worksLinkA: "ㅁㄴㄹ",  // 성형 판매 링크
 
   worksB: [  // 페이셜
     { file: "facial-01.mp4", title: "Milltina", desc: "페이셜" },
