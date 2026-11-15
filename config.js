@@ -144,7 +144,7 @@ window.PORTFOLIO_CONFIG = {
     { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-02-after.webp", title: "개인용 Milltina", desc: "개인용 밀티나", period: "4일~5일", platform: "VRchat" },
     { before: "ba-seonghyeong-03-before.webp", after: "ba-seonghyeong-04-after.webp", title: "개인용 Mayo", desc: "개인용 마요", period: "7일", platform: "VRchat" },
     { before: "ba-seonghyeong-04-before.webp", after: "ba-seonghyeong-05-after.webp", title: "개인용 salt", desc: "개인용 솔트", period: "5일", platform: "VRchat" },
-    { before: "", after: "", title: "", desc: "", period: "", platform: "" },
+    { before: "ba-seonghyeong-05-before.webp", after: "", title: "", desc: "", period: "", platform: "" },
   ],
 
   baB: [  // 페이셜 비포·애프터
