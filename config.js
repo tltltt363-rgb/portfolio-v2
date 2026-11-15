@@ -125,7 +125,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-07.webp", title: "Airi", desc: "메이크업", link: "" },
     { file: "texture-08.webp", title: "Airi", desc: "AIRI & CHOCOLAT · 메이크업 + 아이 텍스쳐 + 애니메이션", link: "https://muridayo.booth.pm/items/8357778" },
     { file: "texture-09.webp", title: "Chocolat", desc: "AIRI & CHOCOLAT · 메이크업 + 아이 텍스쳐 + 애니메이션", link: "https://muridayo.booth.pm/items/8357778" },
-    { file: "texture-10.webp", title: "Mong Eye", desc: "아이 텍스쳐 · 아바타 10종", link: "" },
+    { file: "texture-10.webp", title: "Mong Eye", desc: "아이 텍스쳐 · 아바타 10종", link: "https://muridayo.booth.pm/items/8611231" },
     { file: "texture-11.webp", title: "Mayo", desc: "메이크업 + 블렌드쉐이프", link: "" },
     { file: "texture-12.webp", title: "Kumaly", desc: "HELTY · 블렌드쉐이프 + 아이 텍스쳐 + 메이크업", link: "" },
     { file: "texture-13.jpg", title: "Shinano", desc: "메이크업 + 아이 텍스쳐 + 블렌드쉐이프", link: "" },
