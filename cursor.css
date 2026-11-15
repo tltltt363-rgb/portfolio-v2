@@ -12,4 +12,6 @@ input:not(#pf-cur)::-moz-range-thumb{cursor:inherit !important}
 input:not(#pf-cur)::-webkit-inner-spin-button{cursor:inherit !important}
 input:not(#pf-cur)::-webkit-calendar-picker-indicator{cursor:inherit !important}
 input:not(#pf-cur)::file-selector-button{cursor:inherit !important}
+/* cursor.js 가 켜지면(마우스 기기) 브라우저 커서는 숨기고 나루토 그림이 마우스를 따라다녀요 */
+html.pf-jscur:not(#pf-cur),html.pf-jscur:not(#pf-cur) *:not(#pf-cur),html.pf-jscur:not(#pf-cur) *:not(#pf-cur):hover,html.pf-jscur:not(#pf-cur) *:not(#pf-cur):active{cursor:none !important}
 html::after{content:url(media/cursor/default.png?v=4);position:absolute;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none;z-index:-1}
