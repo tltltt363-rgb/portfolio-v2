@@ -11,7 +11,7 @@
 <div id="app"></div>
 
 <!--
-  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=32 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
+  ※ config.js 를 고쳤는데 사이트에 바로 안 보이면, 아래쪽 config.js?v=33 의 숫자를 하나 올려주세요. (브라우저가 예전 파일을 기억해서 그래요)
 
   ▼ 화면에 보이는 글자와 배치는 아래 <template> 안에 있어요.
     [브랜드명], [보유 아바타 소개를 한 줄로 적어주세요] 처럼 대괄호로 된 글자를 찾아서 바꾸면 돼요.
@@ -742,10 +742,6 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </div>
 </fieldset>
 <div style="display:flex;flex-direction:column;gap:8px;">
-<label for="f-contact" style="font-size:14px;font-weight:600;">연락받을 곳</label>
-<input id="f-contact" type="text" value="{{fContact}}" onChange="{{onContact}}" placeholder="디스코드 아이디 / 이메일" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
-</div>
-<div style="display:flex;flex-direction:column;gap:8px;">
 <label for="f-ref" style="font-size:14px;font-weight:600;">레퍼런스 링크</label>
 <input id="f-ref" type="text" value="{{fRef}}" onChange="{{onRef}}" placeholder="이미지·영상 링크를 붙여넣어 주세요" style="height:48px;box-sizing:border-box;padding:0 16px;border-radius:14px;border:1px solid #E2CFD3;background:#FBF8F8;font-size:15px;color:#2B2327;">
 </div>
@@ -967,10 +963,10 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 </x-dc>
 </template>
 
-<script src="config.js?v=32"></script>
+<script src="config.js?v=33"></script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=32"></script>
-<script src="js/portfolio.js?v=32"></script>
+<script src="js/dc-runtime.js?v=33"></script>
+<script src="js/portfolio.js?v=33"></script>
 <script>window.mountPortfolio(window.PortfolioComponent, window.PORTFOLIO_CONFIG);</script>
 </body>
 </html>

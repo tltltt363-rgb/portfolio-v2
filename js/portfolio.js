@@ -662,7 +662,6 @@ class Component extends DCLogic {
       '',
       '■ 닉네임 / 방송명 : ' + blank(f.nick),
       '■ 방송 플랫폼 : ' + platform,
-      '■ 연락받을 곳 : ' + blank(f.contact),
       '■ 세트 상품 : ' + (chosenSet ? chosenSet.name + (chosenSet.chips.length ? ' (' + chosenSet.chips.join(' + ') + ')' : '') : '없음'),
       '■ 개별 작업 : ' + (extras.length ? extras.map((it) => it.name).join(', ') : '없음'),
       '■ 추가 옵션 : ' + (optList.length ? optList.join(', ') : '없음'),
