@@ -33,14 +33,30 @@
     if (!root.classList.contains('pf-jscur')) root.classList.add('pf-jscur');
   };
   var opt = { passive: true, capture: true };
+  if ('onpointerrawupdate' in window) window.addEventListener('pointerrawupdate', move, opt);
   window.addEventListener('pointermove', move, opt);
   window.addEventListener('pointerdown', move, opt);
   window.addEventListener('pointerup', move, opt);
   window.addEventListener('mousemove', move, opt);
   window.addEventListener('dragover', function (e) { x = e.clientX; y = e.clientY; place(); }, opt);
-  document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) hide(); }, true);
+  document.addEventListener('mouseout', function (e) {
+    if (e.relatedTarget) return;
+    var w = window.innerWidth, h = window.innerHeight;
+    if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= w - 1 || e.clientY >= h - 1) hide();
+  }, true);
   window.addEventListener('blur', hide);
   document.addEventListener('visibilitychange', function () { if (document.hidden) hide(); });
+  /* 아트머그처럼 다른 페이지 안(iframe)에 있을 때: 바깥 페이지가 스크롤되면
+     마우스는 화면에서 그대로인데 안쪽 내용만 움직이니까, 그림도 같은 만큼 옮겨서 마우스 위치에 붙어 있게 해요 */
+  if (window.parent !== window) {
+    var lastRaw = null;
+    window.addEventListener('message', function (e) {
+      var d = e.data || {};
+      if (d.type !== 'pf-viewport' || typeof d.raw !== 'number') return;
+      if (lastRaw !== null && shown) { y += lastRaw - d.raw; place(); }
+      lastRaw = d.raw;
+    });
+  }
   /* 그림이 빠지는 일이 없게 다른 요소가 body 를 바꿔도 다시 붙여요 */
   setInterval(function () { if (el && !el.isConnected && document.body) document.body.appendChild(el); }, 1000);
   /* 미리 불러오기 */
