@@ -193,7 +193,9 @@ let pending={}; /* path -> {b64, url, size} */
 let token=''; try{token=localStorage.getItem(TOKEN_KEY)||'';}catch(e){}
 const $=(id)=>document.getElementById(id);
 const esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toast(msg,ms){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
+function toast(msg,ms,action){const t=$('toast');t.textContent=msg;
+  if(action){const b=document.createElement('button');b.textContent=action.label;b.style.cssText='margin-left:12px;height:32px;padding:0 14px;border-radius:999px;border:0;background:#fff;color:#2B2327;font-weight:700';b.onclick=()=>{t.classList.remove('on');action.run();};t.appendChild(b);}
+  t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),ms||2600);}
 function setDirty(v){dirty=v;$('discardBtn').style.display=v?'':'none';if(v)queueDraft();if(typeof pushPreview==='function'&&cfg)pushPreview();const s=$('status');const n=Object.keys(pending).length;s.textContent=v?('아직 사이트에 저장 안 됨'+(n?' · 새 파일 '+n+'개':'')):'';s.className='status'+(v?' dirty':'');$('saveBtn').disabled=!v||saving;}
 function connUI(){const c=$('conn');if(token){c.textContent='GitHub 연결됨';c.className='pill ok';$('connBtn').textContent='연결 설정';}else{c.textContent='연결 안 됨';c.className='pill';$('connBtn').textContent='GitHub 연결';}}
 /* 새로고침·닫기 직전에 임시 저장을 한 번 더 해둬요 */
@@ -369,9 +371,11 @@ document.addEventListener('click',(e)=>{
     else if(act==='down'&&idx<arr.length-1){[arr[idx+1],arr[idx]]=[arr[idx],arr[idx+1]];}
     else if(act==='dup'){arr.splice(idx+1,0,JSON.parse(JSON.stringify(arr[idx])));}
     else if(act==='del'||act==='delwork'){
-      if(!confirm('이 항목을 뺄까요? (저장하기 전까지는 되돌릴 수 있어요: 페이지를 새로고침)'))return;
+      /* 확인 창 없이 바로 빼고, 잠깐 "되돌리기" 버튼을 보여줘요 */
       const rm=arr.splice(idx,1)[0];
-      if(act==='delwork'&&rm){const p=mediaPath(arrPath[0].slice(-1),rm.file);if(pending[p]){URL.revokeObjectURL(pending[p].url);delete pending[p];}}
+      let pend=null,pendPath=null;
+      if(act==='delwork'&&rm){pendPath=mediaPath(arrPath[0].slice(-1),rm.file);if(pending[pendPath]){pend=pending[pendPath];delete pending[pendPath];}}
+      setTimeout(()=>toast('뺐어요.',6000,{label:'되돌리기',run:()=>{const a=getAt(arrPath)||[];a.splice(Math.min(idx,a.length),0,rm);setAt(arrPath,a);if(pend)pending[pendPath]=pend;setDirty(true);const ed=document.querySelector('.edit'),ey=ed.scrollTop;render();ed.scrollTop=ey;}}),0);
     }
   }
   setDirty(true);const ed=document.querySelector('.edit'),y=window.scrollY,ey=ed.scrollTop;render();window.scrollTo(0,y);ed.scrollTop=ey;
@@ -514,7 +518,9 @@ $('tokenSave').onclick=async()=>{
 };
 $('saveBtn').onclick=save;
 $('discardBtn').onclick=async()=>{
-  if(!confirm('저장 안 한 변경을 모두 버리고, 사이트에 저장된 내용으로 되돌릴까요?'))return;
+  const btn=$('discardBtn');
+  if(!btn.dataset.arm){btn.dataset.arm='1';btn.textContent='한 번 더 누르면 되돌려요';clearTimeout(btn._t);btn._t=setTimeout(()=>{delete btn.dataset.arm;btn.textContent='되돌리기';},3500);return;}
+  delete btn.dataset.arm;btn.textContent='되돌리기';
   clearDraft();Object.values(pending).forEach((p)=>URL.revokeObjectURL(p.url));pending={};
   cfg=JSON.parse(JSON.stringify(base));setDirty(false);clearDraft();render();pushPreview();toast('되돌렸어요.');
 };

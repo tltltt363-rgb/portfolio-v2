@@ -197,7 +197,7 @@ class Component extends DCLogic {
       { title: '방송 화면 맞춤', desc: '방송 화면에서 잘 보이도록 표정과 디테일을 챙겨요.', tag: '' }
     ];
     const stIcons = ['iZap', 'iSpark', 'iChat', 'iScreen', 'iHeart', 'iShield'];
-    const strN = Math.min(500, Math.max(1, Math.round(num(this.props.strengthCount, 4))));
+    const strN = Math.min(500, Math.max(0, Math.round(num(this.props.strengthCount, 4))));
     const strengths = [];
     for (let i = 0; i < strN; i++) {
       const k = 'str' + (i + 1);
