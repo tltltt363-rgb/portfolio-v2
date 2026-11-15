@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="57">
+<meta name="pf-build" content="58">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -60,6 +60,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 @media (max-width:1100px){.quote-col{position:static;max-width:none !important}}
 .zoomable .zoom-chip{opacity:0.85;transition:opacity 0.2s ease,transform 0.2s ease}
 .zoomable:hover .zoom-chip,.zoomable:focus-visible .zoom-chip{opacity:1;transform:scale(1.08)}
+/* 다른 사이트(아트머그 등)에 끼워 넣었을 때 */
+html.pf-embed [style*="min-height: 100vh"]{min-height:0 !important}
+html.pf-embed #lightbox{position:absolute !important;top:var(--vp-top,0px) !important;bottom:auto !important;height:var(--vp-h,100vh) !important}
+html.pf-embed #lightbox [style*="68vh"]{max-height:calc(var(--vp-h,100vh)*.68) !important}
+html.pf-embed #lightbox [style*="70vh"]{height:min(calc(var(--vp-h,100vh)*.7),760px) !important}
+html.pf-embed .pf-fixbar{position:absolute !important;bottom:auto !important;top:calc(var(--vp-top,0px) + var(--vp-h,100vh) - 20px) !important;transform:translate(-50%,-100%) !important}
+html.pf-embed .pf-fixbtn{position:absolute !important;bottom:auto !important;top:calc(var(--vp-top,0px) + var(--vp-h,100vh) - 72px) !important}
+html.pf-artmug .pf-shoplink,html.pf-artmug #works a[target="_blank"],html.pf-artmug #lightbox a[target="_blank"]{display:none !important}
 /* 마우스 올렸을 때 반응 (마우스가 있는 기기에서만) */
 @media (hover:hover) and (pointer:fine){
 #app button:not(:disabled),#app a{transition:translate .2s ease,scale .2s ease,filter .2s ease,outline-color .2s ease,background-color .2s ease,color .2s ease}
@@ -302,7 +310,7 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 <sc-if value="{{hasCards}}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:16px;">
 <sc-if value="{{hasWorksLink}}" hint-placeholder-val="{{ false }}">
-<div style="box-sizing:border-box;padding:16px 16px 16px 22px;border-radius:20px;background:#F5E8EA;border:1px solid #EFD3DA;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;">
+<div class="pf-shoplink" style="box-sizing:border-box;padding:16px 16px 16px 22px;border-radius:20px;background:#F5E8EA;border:1px solid #EFD3DA;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;">
 <span style="display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#2B2327;">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
 {{worksLinkText}}
@@ -963,7 +971,7 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 </div>
 </sc-if>
 <sc-if value="{{showBar}}" hint-placeholder-val="{{ false }}">
-<div role="region" aria-label="선택한 견적 요약" style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:30;width:min(620px,calc(100% - 24px));box-sizing:border-box;padding:10px 10px 10px 22px;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:14px;box-shadow:0 18px 40px -12px rgba(43,35,39,0.65);">
+<div role="region" aria-label="선택한 견적 요약" class="pf-fixbar" style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:30;width:min(620px,calc(100% - 24px));box-sizing:border-box;padding:10px 10px 10px 22px;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:14px;box-shadow:0 18px 40px -12px rgba(43,35,39,0.65);">
 <span style="flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:1px;">
 <span style="font-size:12px;color:#D9CCD0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{barSummary}}</span>
 <span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;">{{total}}</span>
@@ -977,7 +985,7 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 </div>
 </sc-if>
 <sc-if value="{{showMiniBar}}" hint-placeholder-val="{{ false }}">
-<button aria-label="견적 요약 다시 보기" onClick="{{showBarAgain}}" style="position:fixed;right:20px;bottom:20px;z-index:30;height:52px;padding:0 18px 0 14px;border:0;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 14px 30px -10px rgba(43,35,39,0.6);">
+<button aria-label="견적 요약 다시 보기" onClick="{{showBarAgain}}" class="pf-fixbtn" style="position:fixed;right:20px;bottom:20px;z-index:30;height:52px;padding:0 18px 0 14px;border:0;border-radius:999px;background:#2B2327;color:#FFFFFF;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 14px 30px -10px rgba(43,35,39,0.6);">
 <span style="width:30px;height:30px;border-radius:50%;background:{{accent}};display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></span>
 {{total}}
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg>
@@ -1015,8 +1023,8 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=57"></script>
-<script src="js/portfolio.js?v=57"></script>
+<script src="js/dc-runtime.js?v=58"></script>
+<script src="js/portfolio.js?v=58"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
@@ -1088,6 +1096,39 @@ header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
       var u = new URL(location.href); u.searchParams.set('b', m[1]); location.replace(u.toString());
     }).catch(function () {});
   } catch (e) {}
+})();
+</script>
+<script>
+/* 아트머그 같은 다른 사이트 글에 iframe 으로 넣었을 때: 높이 알려주기, 화면 위치 맞추기, 문의 연결 */
+(function () {
+  if (window.parent === window || /[?&]preview\b/.test(location.search)) return;
+  var root = document.documentElement, ao = '';
+  try { ao = (location.ancestorOrigins && location.ancestorOrigins[0]) || document.referrer || ''; } catch (e) {}
+  var artmug = /[?&]embed=artmug\b/.test(location.search) || /^https?:\/\/([^/]*\.)?artmug\.kr(\/|$)/i.test(ao);
+  root.classList.add('pf-embed'); if (artmug) { root.classList.add('pf-artmug'); window.__pfArtmug = true; }
+  var send = function (m) { try { window.parent.postMessage(m, '*'); } catch (e) {} };
+  var last = 0, post = function () {
+    var app = document.getElementById('app'); if (!app) return;
+    var h = Math.ceil(app.getBoundingClientRect().height);
+    if (h > 300 && Math.abs(h - last) > 2) { last = h; send({ type: 'portfolio-height', height: h }); }
+  };
+  window.addEventListener('load', post); setInterval(post, 1500);
+  if (window.ResizeObserver) document.addEventListener('DOMContentLoaded', function () { var app = document.getElementById('app'); if (app) new ResizeObserver(post).observe(app); });
+  root.style.setProperty('--vp-h', Math.min(window.innerHeight, screen.height || 900) + 'px');
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.type === 'portfolio-height?') { last = 0; post(); }
+    if (d.type === 'pf-viewport') { root.style.setProperty('--vp-top', (d.top || 0) + 'px'); if (d.height > 100) root.style.setProperty('--vp-h', d.height + 'px'); }
+  });
+  /* 메뉴(#가격 등)를 누르면 바깥 페이지를 그 위치로 스크롤 */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute('href').slice(1), t = id ? document.getElementById(id) : null;
+    var y = t ? t.getBoundingClientRect().top + window.scrollY : 0;
+    e.preventDefault(); send({ type: 'pf-goto', y: Math.max(0, Math.round(y)) });
+  }, true);
+  window.__pfContact = function () { if (artmug) send({ type: 'portfolio-contact' }); };
+  send({ type: 'pf-viewport?' });
 })();
 </script>
 </body>

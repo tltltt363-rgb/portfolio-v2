@@ -759,6 +759,8 @@ class Component extends DCLogic {
       this.setState({ copied: mode });
       clearTimeout(this._copyT);
       this._copyT = setTimeout(() => this.setState({ copied: null }), mode === 'ok' ? 2200 : 4000);
+      /* 아트머그 글 안에서는 복사 후 아트머그 '문의하기' 창을 열어줘요 */
+      if (mode === 'ok' && window.__pfArtmug && window.__pfContact) setTimeout(window.__pfContact, 700);
     };
     const fallback = () => {
       try {
@@ -905,7 +907,7 @@ class Component extends DCLogic {
       copyColor: !st.agree ? '#BFB1B6' : '#FFFFFF',
       copyShadow: !st.agree ? 'none' : '0 12px 24px -10px rgba(0,0,0,0.6)',
       copyCursor: !st.agree ? 'not-allowed' : 'pointer',
-      copyHint: !st.agree ? '양식의 「주의사항을 모두 확인했어요」에 체크하면 버튼이 켜져요' : '복사한 양식을 문의 채널에 붙여넣어 보내주세요',
+      copyHint: !st.agree ? '양식의 「주의사항을 모두 확인했어요」에 체크하면 버튼이 켜져요' : (window.__pfArtmug ? "복사 후 열리는 아트머그 '문의하기' 창에 붙여넣어 보내주세요" : '복사한 양식을 문의 채널에 붙여넣어 보내주세요'),
       copyHintColor: !st.agree ? '#E7B9C3' : '#BFB1B6',
       agreeBorder: st.agree ? '#2E7D5B' : accent,
       agreeBg: st.agree ? '#EEF7F2' : '#FBF2F4',
