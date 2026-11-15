@@ -241,7 +241,7 @@ window.PORTFOLIO_CONFIG = {
     { link: "https://booth.pm/ko/items/8562330", image: "https://booth.pximg.net/96d1d589-6879-4d30-8891-a2c6b8d64186/i/8562330/4b163f36-c55d-4468-8c60-476c86d0f26b_base_resized.jpg", name: "Kaguya / 카구야", desc: "" },
     { link: "https://booth.pm/ko/items/5260363", image: "https://booth.pximg.net/a724e93d-5634-41cf-ac1f-8f8985536a5a/i/5260363/051a65d4-583a-439b-add8-5170e4fcd25f_base_resized.jpg", name: "Komano / 코마노", desc: "" },
     { link: "https://booth.pm/ko/items/5957830", image: "https://booth.pximg.net/96d1d589-6879-4d30-8891-a2c6b8d64186/i/5957830/a4e0ae5b-7797-448b-80b1-e852c861e080_base_resized.jpg", name: "rurune / 루루네", desc: "" },
-    { link: "", image: "", name: "", desc: "" },
+    { link: "https://booth.pm/ko/items/6571299", image: "", name: "", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
