@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="51">
+<meta name="pf-build" content="52">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -36,6 +36,11 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 .av-track::-webkit-scrollbar{display:none}
 .av-track{overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none}
 .av-track.is-dragging{cursor:grabbing !important;scroll-snap-type:none !important;scroll-behavior:auto !important}
+@keyframes pfFloat{0%,100%{translate:0 0}50%{translate:0 -12px}}
+@keyframes pfFloatSoft{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.pf-float{animation:pfFloat 6s ease-in-out infinite;will-change:translate}
+.pf-float-soft{animation:pfFloatSoft 7s ease-in-out infinite;will-change:translate}
+@media (prefers-reduced-motion:reduce){.pf-float,.pf-float-soft{animation:none}}
 @keyframes evPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,0.85),0 8px 18px -6px rgba(43,35,39,0.45)}70%{box-shadow:0 0 0 14px rgba(255,255,255,0),0 8px 18px -6px rgba(43,35,39,0.45)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 8px 18px -6px rgba(43,35,39,0.45)}}
 .ev-pulse{animation:evPulse 1.8s ease-out infinite}
 .ev-btn{transition:transform .15s ease}.ev-btn:hover{transform:translateY(-1px)}
@@ -81,7 +86,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <section id="top" style="max-width:1280px;width:100%;margin:0 auto;box-sizing:border-box;padding:clamp(28px,4vw,44px) clamp(20px,5vw,80px) 64px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:48px;">
 <div style="flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:24px;">
 <span style="font-size:13px;font-weight:600;letter-spacing:0.14em;color:{{accent}};">{{heroEyebrow}}</span>
-<h1 style="margin:0;font-weight:800;font-size:clamp(38px,5.4vw,62px);line-height:1.25;letter-spacing:-0.025em;color:#2B2327;word-break:keep-all;"><sc-for list="{{heroLines}}" as="hl" hint-placeholder-count="2"><sc-if value="{{hl.plain}}" hint-placeholder-val="{{ true }}">{{hl.t}}</sc-if><sc-if value="{{hl.em}}" hint-placeholder-val="{{ false }}"><span style="color:{{accent}};background:linear-gradient(transparent 64%,rgba(247,220,227,0.95) 64%,rgba(247,220,227,0.95) 92%,transparent 92%);padding:0 4px;margin:0 -4px;-webkit-box-decoration-break:clone;box-decoration-break:clone;">{{hl.t}}</span></sc-if><sc-if value="{{hl.br}}" hint-placeholder-val="{{ false }}"><br></sc-if></sc-for></h1>
+<h1 class="pf-float-soft" style="margin:0;font-weight:800;font-size:clamp(38px,5.4vw,62px);line-height:1.25;letter-spacing:-0.025em;color:#2B2327;word-break:keep-all;"><sc-for list="{{heroLines}}" as="hl" hint-placeholder-count="2"><sc-if value="{{hl.plain}}" hint-placeholder-val="{{ true }}">{{hl.t}}</sc-if><sc-if value="{{hl.em}}" hint-placeholder-val="{{ false }}"><span style="color:{{accent}};background:linear-gradient(transparent 64%,rgba(247,220,227,0.95) 64%,rgba(247,220,227,0.95) 92%,transparent 92%);padding:0 4px;margin:0 -4px;-webkit-box-decoration-break:clone;box-decoration-break:clone;">{{hl.t}}</span></sc-if><sc-if value="{{hl.br}}" hint-placeholder-val="{{ false }}"><br></sc-if></sc-for></h1>
 <p style="margin:0;max-width:520px;font-size:18px;line-height:1.7;color:#6E6266;">{{heroDesc}}</p>
 <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:8px;">
 <a href="#price" style="height:52px;padding:0 30px;display:flex;align-items:center;border-radius:999px;background:{{accent}};color:#FFFFFF;font-size:16px;font-weight:600;box-shadow:0 10px 20px -8px rgba(164,73,91,0.6),inset 0 1px 0 rgba(255,255,255,0.22);">견적 계산하기</a>
@@ -98,7 +103,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 <div style="position:absolute;top:7%;left:7%;right:-4%;bottom:-5%;border-radius:36px;background:#F0DCE0;transform:rotate(3deg);"></div>
 <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px;">
 <sc-for list="{{heroTiles}}" as="t" hint-placeholder-count="3">
-<div style="grid-column:{{t.col}};grid-row:{{t.row}};position:relative;box-sizing:border-box;border:6px solid #FFFFFF;border-radius:24px;overflow:hidden;background-color:{{t.tone}};box-shadow:0 3px 6px rgba(80,40,55,0.1),0 22px 36px -14px rgba(80,40,55,0.38);transform:rotate({{t.rot}}deg);">
+<div class="pf-float" style="grid-column:{{t.col}};grid-row:{{t.row}};position:relative;box-sizing:border-box;border:6px solid #FFFFFF;border-radius:24px;overflow:hidden;background-color:{{t.tone}};box-shadow:0 3px 6px rgba(80,40,55,0.1),0 22px 36px -14px rgba(80,40,55,0.38);transform:rotate({{t.rot}}deg);animation-delay:{{t.delay}};animation-duration:{{t.dur}};">
 <sc-if value="{{t.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{t.src}}" alt="" draggable="false" referrerpolicy="no-referrer" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></sc-if>
 <sc-if value="{{t.hasVid}}" hint-placeholder-val="{{ false }}"><video src="{{t.src}}" autoplay muted loop playsinline preload="auto" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></video></sc-if>
 <sc-if value="{{t.ph}}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;right:0;bottom:0;left:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.4) 0px,rgba(255,255,255,0.4) 12px,rgba(255,255,255,0) 12px,rgba(255,255,255,0) 24px);"></div></sc-if>
@@ -989,8 +994,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=51"></script>
-<script src="js/portfolio.js?v=51"></script>
+<script src="js/dc-runtime.js?v=52"></script>
+<script src="js/portfolio.js?v=52"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
