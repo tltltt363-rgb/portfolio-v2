@@ -15,6 +15,25 @@ window.PORTFOLIO_CONFIG = {
      포인트 색: "#A4495B" 같은 색 코드
   */
   accent: "#A4495B",  // 포인트 색
+  brandName: "",  // 브랜드 이름 (비우면 "아바타 포트폴리오"로 나와요. 예: "MURI")
+
+  /* ──────── 칸 보이기 / 숨기기 ────────
+     true = 보이기, false = 숨기기. 내용을 채운 뒤 true로 바꾸면 메뉴와 화면에 다시 나와요.
+  */
+  showBeforeAfter: false,  // 비포·애프터 칸
+  showAvatars: false,  // 보유 아바타 칸
+  saleReady: false,  // 분양 아바타 (false면 "준비 중" 안내만 보여요)
+  saleSoonTitle: "분양 아바타는 준비 중이에요",  // 준비 중 제목
+  saleSoonText: "새 분양 아바타를 준비하고 있어요. 조금만 기다려 주세요!",  // 준비 중 설명
+
+  /* ──────── 맨 위 그림 ────────
+     맨 위 오른쪽 사진 3장 (첫 번째가 왼쪽 큰 칸이에요). 비우면 임시 그림이 나와요.
+  */
+  heroMedia: [
+    "media/seonghyeong/seonghyeong-01.webp",
+    "media/seonghyeong/seonghyeong-04.webp",
+    "media/seonghyeong/seonghyeong-12.webp",
+  ],
 
   /* ──────── 장점 (01 · WHY ME) ────────
      개수를 늘렸다면 str5Title, str5Desc, str5Tag 처럼 번호를 이어서 적어요.
@@ -50,6 +69,7 @@ window.PORTFOLIO_CONFIG = {
      카드 제목·설명은 worksTitlesA / worksDescsA 에 파일과 같은 순서로 적어요. (없으면 기본 문구)
      판매 링크 버튼은 worksLinkA (버튼 글자 worksLinkLabelA, 안내 문구 worksLinkTextA) 로 카테고리마다 달 수 있어요.
   */
+  worksIntro: "",  // 작업물 칸 제목 아래 한 줄 설명 (비우면 안 보여요)
   countA: 16,  // 성형 임시 카드 수 (파일을 넣으면 무시돼요)
   countB: 12,  // 페이셜 임시 카드 수 (파일을 넣으면 무시돼요)
   countC: 12,  // 텍스쳐 임시 카드 수 (파일을 넣으면 무시돼요)
@@ -287,22 +307,22 @@ window.PORTFOLIO_CONFIG = {
   set1Desc: "",  // 세트 1 한 줄 설명 (비우면 안 보여요)
   set1Items: "52가지 페이셜 + 성형 + 의상 1 + 헤어 1 + 텍스쳐 수정",  // 세트 1 포함 작업
   set1Price: 380000,  // 세트 1 가격 (원)
-  set1Note: "[추가 안내 글을 적어주세요]",  // 세트 1 추가 안내
+  set1Note: "",  // 세트 1 추가 안내
   set2Name: "원화 기반 성형 세트",  // 세트 2 이름
   set2Desc: "",  // 세트 2 한 줄 설명 (비우면 안 보여요)
   set2Items: "52가지 페이셜 + 원화 기반 성형 + 의상 1 + 헤어 1 + 텍스쳐 수정",  // 세트 2 포함 작업
   set2Price: 430000,  // 세트 2 가격 (원)
-  set2Note: "[추가 안내 글을 적어주세요]",  // 세트 2 추가 안내
+  set2Note: "",  // 세트 2 추가 안내
   set3Name: "목소리 기반 성형 세트",  // 세트 3 이름
   set3Desc: "",  // 세트 3 한 줄 설명 (비우면 안 보여요)
   set3Items: "52가지 페이셜 + 목소리 기반 성형 + 의상 1 + 헤어 1 + 텍스쳐 수정",  // 세트 3 포함 작업
   set3Price: 430000,  // 세트 3 가격 (원)
-  set3Note: "[추가 안내 글을 적어주세요]",  // 세트 3 추가 안내
+  set3Note: "",  // 세트 3 추가 안내
   set4Name: "오마카세 성형 세트",  // 세트 4 이름
   set4Desc: "",  // 세트 4 한 줄 설명 (비우면 안 보여요)
   set4Items: "52가지 페이셜 + 오마카세 성형 + 의상 1 + 헤어 1 + 텍스쳐 수정",  // 세트 4 포함 작업
   set4Price: 430000,  // 세트 4 가격 (원)
-  set4Note: "[추가 안내 글을 적어주세요]",  // 세트 4 추가 안내
+  set4Note: "",  // 세트 4 추가 안내
 
   /* ──────── 가격 계산기 · 개별 작업 ────────
      개수를 늘렸다면 item18Group, item18Name, item18Desc, item18Price … 처럼 이어서 적어요.
@@ -388,4 +408,18 @@ window.PORTFOLIO_CONFIG = {
   revisionFree: 2,  // 무료 수정 횟수 (0이면 안내 안 보여요)
   revisionPrice: 10000,  // 수정 1회 추가 가격 (원)
   eventText: "리뷰 작성 시 사진 1개 추가 (약속)",  // 이벤트 안내 (비우면 안 보여요)
+
+  /* ──────── 진행 과정 · 자주 묻는 질문 ────────
+     답변(A)을 비우면 그 질문은 안 보여요. 질문을 늘리려면 faq5Q, faq5A 처럼 이어서 적어요.
+  */
+  paymentText: "결제 확인 후 시작",  // 진행 과정 '결제 방식' 칸 (비우면 안 보여요)
+  faqCount: 4,
+  faq1Q: "작업 기간은 얼마나 걸리나요?",
+  faq1A: "7일 ~ 14일이에요. 작업량 및 상황에 따라 일정이 변동될 수 있으며, 변동 시 미리 안내드려요.",
+  faq2Q: "어떤 플랫폼의 아바타를 작업하나요?",
+  faq2A: "",
+  faq3Q: "결제는 어떻게 하나요?",
+  faq3A: "모든 작업은 결제 확인 후 시작돼요.",
+  faq4Q: "수정은 몇 번까지 되나요?",
+  faq4A: "기본 2회까지 무료이고, 추가 수정은 1회당 10,000원이에요.",
 };

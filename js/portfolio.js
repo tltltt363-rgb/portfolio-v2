@@ -142,11 +142,26 @@ class Component extends DCLogic {
     const num = (v, d) => { const n = Number(v); return isFinite(n) && v !== null && v !== '' && v !== undefined ? n : d; };
 
     /* ---------- hero ---------- */
+    const heroMedia = (Array.isArray(this.props.heroMedia) ? this.props.heroMedia : String(this.props.heroMedia ?? '').split(/[\s,]+/)).map((u) => String(u || '').trim()).filter(Boolean);
+    const heroVid = (u) => /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u);
     const heroTiles = [
       { col: '1', row: '1 / span 2', tone: '#E6E0E1', rot: '-1.5', label: 'BEFORE', labelBg: 'rgba(43,35,39,0.78)', labelColor: '#FFFFFF', isImage: true, isVideo: false },
       { col: '2', row: '1', tone: '#F3DDE2', rot: '1.2', label: 'AFTER', labelBg: accent, labelColor: '#FFFFFF', isImage: true, isVideo: false },
       { col: '2', row: '2', tone: '#F2E5E1', rot: '-1', label: 'MP4', labelBg: '#FFFFFF', labelColor: '#2B2327', isImage: false, isVideo: true }
-    ];
+    ].map((t, i) => {
+      const src = heroMedia[i] || '';
+      return { ...t, src, hasImg: !!src && !heroVid(src), hasVid: !!src && heroVid(src), ph: !src, isImage: !src && t.isImage, isVideo: !src && t.isVideo };
+    });
+    /* brand + 칸 보이기 */
+    const brand = String(this.props.brandName ?? '').trim();
+    const brandLabel = brand || '아바타 포트폴리오';
+    if (typeof document !== 'undefined') document.title = (brand ? brand + ' · ' : '') + '방송용 아바타 포트폴리오';
+    const flag = (v, d) => (v === undefined || v === null || v === '' ? d : !(v === false || v === 'false' || v === 0));
+    const showBa = flag(this.props.showBeforeAfter, true);
+    const showAv = flag(this.props.showAvatars, true);
+    const saleReady = flag(this.props.saleReady, true);
+    const secOrder = ['strengths'].concat(showBa ? ['ba'] : [], ['works', 'sale'], showAv ? ['avatars'] : [], ['price', 'process', 'inquiry', 'notice']);
+    const secNo = (k) => pad(secOrder.indexOf(k) + 1);
 
     /* ---------- strengths ---------- */
     const baseStrengths = [
@@ -702,12 +717,14 @@ class Component extends DCLogic {
     const notices = ['[주의사항을 한 줄씩 적어주세요]', '[예: 작업 시작 후에는 환불이 어려워요]', '[예: 원본 파일 재배포는 금지예요]', '[예: 진행 기간은 순서에 따라 달라질 수 있어요]']
       .map((text, i) => ({ n: i + 1, text }));
     const faqOpen = st.faq == null ? 0 : st.faq;
-    const faqs = [
-      ['작업 기간은 얼마나 걸리나요?', '[작업 기간 안내를 적어주세요]'],
-      ['어떤 플랫폼의 아바타를 작업하나요?', '[작업 가능한 플랫폼과 파일 형식을 적어주세요]'],
-      ['결제는 어떻게 하나요?', '[결제 방법과 선금 비율을 적어주세요]'],
-      ['수정은 몇 번까지 되나요?', '[기본 수정 횟수와 추가 비용을 적어주세요]']
-    ].map(([q, a], i) => ({
+    const faqN = Math.min(100, Math.max(0, Math.round(num(this.props.faqCount, 0))));
+    const faqSrc = [];
+    for (let i = 0; i < faqN; i++) {
+      const q = String(this.props['faq' + (i + 1) + 'Q'] ?? '').trim();
+      const a = String(this.props['faq' + (i + 1) + 'A'] ?? '').trim();
+      if (q && a) faqSrc.push([q, a]);
+    }
+    const faqs = faqSrc.map(([q, a], i) => ({
       q, a,
       open: faqOpen === i,
       expanded: faqOpen === i ? 'true' : 'false',
@@ -739,6 +756,16 @@ class Component extends DCLogic {
 
     return {
       accent, heroTiles, strengths, heroStrengths,
+      brandLabel, footerBrand: brand, strengthsTitle: (brand ? brand + '에게' : '저에게') + ' 맡기면 좋은 점',
+      showBa, showAv, saleReady, saleSoon: !saleReady,
+      saleSoonTitle: String(this.props.saleSoonTitle ?? '').trim() || '분양 아바타는 준비 중이에요',
+      saleSoonText: String(this.props.saleSoonText ?? '').trim(),
+      worksIntro: String(this.props.worksIntro ?? '').trim(), hasWorksIntro: !!String(this.props.worksIntro ?? '').trim(),
+      hasFaqs: faqs.length > 0,
+      revFreeLabel: revFree > 0 ? revFree + '회 무료' : '', hasRevFree: revFree > 0,
+      paymentLabel: String(this.props.paymentText ?? '').trim(), hasPayment: !!String(this.props.paymentText ?? '').trim(),
+      noStrengths: secNo('strengths'), noBa: secNo('ba'), noWorks: secNo('works'), noSale: secNo('sale'), noAvatars: secNo('avatars'),
+      noPrice: secNo('price'), noProcess: secNo('process'), noInquiry: secNo('inquiry'), noNotice: secNo('notice'),
       lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
       lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,
