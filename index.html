@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="pf-build" content="56">
+<meta name="pf-build" content="57">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>[브랜드명] · 방송용 아바타 포트폴리오</title>
 <meta name="description" content="방송용 아바타 성형 · 페이셜 · 텍스쳐 · 뽀잉눈 작업 포트폴리오">
@@ -60,6 +60,24 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 @media (max-width:1100px){.quote-col{position:static;max-width:none !important}}
 .zoomable .zoom-chip{opacity:0.85;transition:opacity 0.2s ease,transform 0.2s ease}
 .zoomable:hover .zoom-chip,.zoomable:focus-visible .zoom-chip{opacity:1;transform:scale(1.08)}
+/* 마우스 올렸을 때 반응 (마우스가 있는 기기에서만) */
+@media (hover:hover) and (pointer:fine){
+#app button:not(:disabled),#app a{transition:translate .2s ease,scale .2s ease,filter .2s ease,outline-color .2s ease,background-color .2s ease,color .2s ease}
+#app button:active:not(:disabled),#app a:active{scale:.97}
+header nav a{border-radius:999px}
+header nav a:hover{background:rgba(164,73,91,.09);color:#A4495B}
+#app button[aria-pressed]:not(:disabled):hover,#app button[role="tab"]:hover,#app button[aria-expanded]:hover{translate:0 -2px;outline:3px solid rgba(164,73,91,.22);outline-offset:0}
+#app button[aria-pressed="true"]:hover,#app button[aria-selected="true"]:hover{outline-color:rgba(164,73,91,.12)}
+#app button[aria-expanded][style*="background: transparent"]:hover{translate:none;background-color:rgba(164,73,91,.09) !important;color:#A4495B !important;outline:0}
+.zoomable{transition:translate .25s ease !important}
+.zoomable:hover{translate:0 -3px}
+.zoomable img,.zoomable video,.zoomable svg{transition:scale .5s ease}
+.zoomable:hover img,.zoomable:hover video,.zoomable:hover>svg{scale:1.05}
+#app button[aria-label^="이전"]:hover,#app button[aria-label^="다음"]:hover,#app button[aria-label="닫기"]:hover,#app button[aria-label*="견적 요약"]:hover{scale:1.1;filter:brightness(1.15)}
+#app a[target="_blank"][style*="border-radius: 999px"]:hover,#app button[aria-describedby="copy-hint"]:not(:disabled):hover,#app button:not([aria-pressed]):not([role]):not([aria-label]):not([aria-expanded]):not(.zoomable):not(:disabled):hover{translate:0 -2px;filter:brightness(1.1) saturate(1.05)}
+#app a[target="_blank"][style*="background: rgb(255, 255, 255)"]:hover{filter:brightness(.95)}
+#app a[style*="background: rgb(43, 35, 39)"]:hover,#app button[style*="background: rgb(43, 35, 39)"]:not(:disabled):hover{background-color:#A4495B !important;filter:none;color:#FFFFFF}
+}
 @media (max-width:820px){.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
 @media (max-width:720px){.works-page{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:16px !important}}
 </style>
@@ -997,8 +1015,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 })();
 </script>
 <script src="js/react.bundle.js"></script>
-<script src="js/dc-runtime.js?v=56"></script>
-<script src="js/portfolio.js?v=56"></script>
+<script src="js/dc-runtime.js?v=57"></script>
+<script src="js/portfolio.js?v=57"></script>
 <script>
 (function () {
   /* 내 브라우저(편집기 연결됨)에서는 방금 올린 사진도 바로 보이게 GitHub 원본 주소로 불러와요 */
