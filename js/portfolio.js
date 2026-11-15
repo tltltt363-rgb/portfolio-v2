@@ -739,6 +739,10 @@ class Component extends DCLogic {
 
     return {
       accent, heroTiles, strengths, heroStrengths,
+      saleReady: !(this.props.saleReady === false || this.props.saleReady === 'false'),
+      saleSoon: this.props.saleReady === false || this.props.saleReady === 'false',
+      saleSoonTitle: String(this.props.saleSoonTitle ?? '').trim() || '분양 아바타는 준비 중이에요',
+      saleSoonText: String(this.props.saleSoonText ?? '').trim(),
       lbOpen: !!lb && (lbIsBa || lbN > 0), lbIsBa, lbIsSingle: !lbIsBa,
       lbTone: lbCur.tone || '#EED9DD', lbRatio: lbCur.src ? (lbCur.isVideo ? '16 / 9' : '1 / 1') : (lbCur.ratio || '4 / 5'), lbLabel: lbCur.label || '', lbShowLabel: !!lbCur.label,
       lbIsVideo: !!lbCur.isVideo && !lbCur.src, lbIsGif: !!lbCur.isGif, lbIsImage: !!lbCur.isImage && !lbCur.src, lbIsAvatar: !!lbCur.isAvatar,

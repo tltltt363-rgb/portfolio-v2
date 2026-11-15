@@ -16,6 +16,13 @@ window.PORTFOLIO_CONFIG = {
   */
   accent: "#A4495B",  // 포인트 색
 
+  /* ──────── 분양 아바타 준비 중 ────────
+     분양 아바타를 채운 뒤 saleReady 를 true 로 바꾸면 카드가 다시 보여요.
+  */
+  saleReady: false,  // false면 "준비 중" 안내만 보여요
+  saleSoonTitle: "분양 아바타는 준비 중이에요",  // 준비 중 제목
+  saleSoonText: "새 분양 아바타를 준비하고 있어요. 조금만 기다려 주세요!",  // 준비 중 설명
+
   /* ──────── 장점 (01 · WHY ME) ────────
      개수를 늘렸다면 str5Title, str5Desc, str5Tag 처럼 번호를 이어서 적어요.
      Tag는 카드 아래 검은 칩이에요. 비워두면 안 보여요.
