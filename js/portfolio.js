@@ -532,7 +532,7 @@ class Component extends DCLogic {
     });
 
     const ITEM_PREVIEW = 8;
-    const itemsAll = !!st.itemsAll;
+    const itemsAll = st.itemsAll !== false;  // 처음엔 다 펼쳐서 보여줘요
     /* 미리보기: 묶음(분류)이 중간에 잘리지 않게 묶음 단위로 보여줘요 */
     let previewN = Math.min(ITEM_PREVIEW, items.length);
     if (items.some((it) => it.group)) {
