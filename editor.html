@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-16-3';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-16-4';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/',E:'media/texture-ba/'};
@@ -382,8 +382,11 @@ function renderWorks(sec){
   let h='<p class="hint">카테고리를 고르고, 사진 아래 칸에 제목·설명을 적어요. ◀ ▶ 로 순서를 바꾸고 ✕ 로 빼요.\n새 사진·영상은 "사진·영상 추가"를 눌러 올리면 자동으로 알맞은 크기(webp)로 바뀌어요.</p>';
   h+=renderField(sec.keys[0],cfg.worksIntro,['worksIntro']);
   h+='<div class="sub">'+['A','B','C','E','D'].map((L)=>'<button class="tab'+(L===worksL?' on':'')+'" data-works="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['works'+L]||[]).length+'</span></button>').join('')+'</div>';
-  const L=worksL, list=cfg['works'+L]||[];
-  h+='<div class="works">';
+  return h+renderWorksGrid(worksL);
+}
+function renderWorksGrid(L){
+  const list=cfg['works'+L]||[];
+  let h='<div class="works">';
   list.forEach((w,i)=>{
     const path=mediaPath(L,w.file), pend=pending[path];
     const src=viewUrl(path);
@@ -418,7 +421,9 @@ function renderPairWorks(list){
 function renderBA(sec){
   let h='<p class="hint">카테고리를 고르고 사례를 추가해요. 사진 칸을 누르거나 사진을 끌어다 놓으면 들어가요.\n사례를 하나라도 넣으면 사이트의 임시 칸은 사라지고, 사례가 없는 카테고리는 숨겨져요.</p>';
   h+=renderField(sec.keys[0],cfg.baRatio,['baRatio']);
-  h+='<div class="sub">'+['A','B','C','D'].map((L)=>'<button class="tab'+(L===baL?' on':'')+'" data-ba="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['ba'+L]||[]).length+'</span></button>').join('')+'</div>';
+  h+='<div class="sub">'+['A','B','C','D'].map((L)=>'<button class="tab'+(L===baL?' on':'')+'" data-ba="'+L+'">'+CAT[L]+' <span style="opacity:.6">'+(cfg['ba'+L]||[]).length+'</span></button>').join('')+
+    '<button class="tab'+(baL==='E'?' on':'')+'" data-ba="E">텍스쳐 비포·애프터 (작업물) <span style="opacity:.6">'+(cfg.worksE||[]).length+'</span></button></div>';
+  if(baL==='E')return h+'<p class="hint">작업물 칸의 "텍스쳐 비포·애프터" 카테고리예요. 작업물 탭에서 고쳐도 같은 내용이에요.\n전후를 한 장에 담은 사진을 올리고, 사진 아래에 제목·설명을 적어요.</p>'+renderWorksGrid('E');
   const list=cfg['ba'+baL]||[];
   h+='<div class="list">';
   list.forEach((c,i)=>{
@@ -463,7 +468,7 @@ document.addEventListener('click',(e)=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.tab!=null){tabIdx=+b.dataset.tab;render();document.querySelector('.edit').scrollTop=0;window.scrollTo(0,0);pvScroll(TAB_SEC[tabIdx]);return;}
   if(b.dataset.works){worksL=b.dataset.works;render();pvScroll('works');return;}
-  if(b.dataset.ba){baL=b.dataset.ba;render();pvScroll('before-after');return;}
+  if(b.dataset.ba){baL=b.dataset.ba;if(baL==='E'){worksL='E';render();pvScroll('works');return;}render();pvScroll('before-after');return;}
   const act=b.dataset.act;if(!act)return;
   const path=b.dataset.path?JSON.parse(b.dataset.path):[];
   if(act==='imgfetch'){autoImage(path,true);return;}
