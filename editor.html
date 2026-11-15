@@ -159,7 +159,7 @@ textarea.long{min-height:70px}
 (function(){
 'use strict';
 const OWNER='tltltt363-rgb', REPO='portfolio-v2', BRANCH='main';
-const EDITOR_VERSION='2026-11-15-11';  /* 편집기를 고칠 때마다 바꿔요 */
+const EDITOR_VERSION='2026-11-15-12';  /* 편집기를 고칠 때마다 바꿔요 */
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/';
 const TOKEN_KEY='pf-editor-token';
 const FOLDERS={A:'media/seonghyeong/',B:'media/facial/',C:'media/texture/',D:'media/boing/'};
@@ -661,6 +661,13 @@ async function save(auto){
       uploaded[f]=pending[f].url;delete pending[f];repoFiles.add(f.split('/').pop());
     }
     st.textContent='내용 저장 중…';
+    /* 다른 곳(Claude, 다른 기기)에서 먼저 바뀐 칸은 지키고, 여기서 고친 칸만 덮어써요 */
+    try{const g=await gh('config.js');if(g.ok){const j=await g.json();shaCache['config.js']=j.sha;const remote=parseConfig(b64ToText(j.content));
+      let merged=false;
+      Object.keys(remote).forEach((k)=>{const mine=JSON.stringify(cfg[k]),was=JSON.stringify(base?base[k]:undefined),theirs=JSON.stringify(remote[k]);
+        if(mine===was&&theirs!==was){cfg[k]=remote[k];merged=true;}});
+      if(merged){const ed=document.querySelector('.edit');render();pushPreview();}
+    }}catch(e){}
     const text2=buildConfig();
     await putFile('config.js',textToB64(text2),'편집기로 내용 수정');
     lastSaved=Date.now();failCount=0;
