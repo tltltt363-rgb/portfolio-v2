@@ -59,7 +59,7 @@ window.PORTFOLIO_CONFIG = {
      .mp4 .webm .mov 는 영상(자동 재생), 나머지는 사진으로 보여요.
      목록에 적은 순서대로 카드가 되고, 6개씩 한 페이지예요.
   */
-  worksIntro: "작가가 ",  // 작업물 제목 아래 한 줄 설명 (비우면 안 보여요)
+  worksIntro: "작가의 작업물 포트폴리오입니다",  // 작업물 제목 아래 한 줄 설명 (비우면 안 보여요)
 
   worksA: [  // 성형
     { file: "seonghyeong-01.webp", title: "Milltina", desc: "성형" },
