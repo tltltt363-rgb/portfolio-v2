@@ -130,7 +130,7 @@ window.PORTFOLIO_CONFIG = {
     { file: "texture-12.webp", title: "Kumaly", desc: "HELTY · 블렌드쉐이프 + 아이 텍스쳐 + 메이크업", link: "https://muridayo.booth.pm/items/7965028" },
     { file: "texture-13.jpg", title: "Shinano", desc: "메이크업 + 아이 텍스쳐 + 블렌드쉐이프", link: "" },
     { file: "texture-14.webp", title: "Shinano", desc: "ROLLY · 아이 텍스쳐 + 메이크업 + 블렌드쉐이프", link: "https://muridayo.booth.pm/items/7901664" },
-    { file: "texture-15.webp", title: "Shinano", desc: "아이 텍스쳐 + 메이크업 + 애니메이션", link: "" },
+    { file: "texture-15.webp", title: "Shinano", desc: "아이 텍스쳐 + 메이크업 + 애니메이션", link: "https://muridayo.booth.pm/items/7977574" },
   ],
   worksLinkC: "https://muridayo.booth.pm/",  // 텍스쳐 판매 링크
   worksLinkLabelC: "BOOTH에서 보기",  // 버튼 글자
