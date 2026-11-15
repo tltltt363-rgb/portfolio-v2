@@ -226,14 +226,15 @@ window.PORTFOLIO_CONFIG = {
   ],
 
   /* ━━━━━━━━━━ 보유 아바타 ━━━━━━━━━━
-     link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생겨요.
+     link 에 아바타 판매 페이지 주소를 넣으면 버튼이 생기고, 대표 사진을 자동으로 가져와요.
+     image: 대표 사진 (자동으로 가져온 주소 또는 media/avatars/ 에 올린 파일 이름)
   */
   avatarsIntro: "작가가 가지고 있는 보유 아바타입니다 / 없는 아바타는 기프트로 선물해주실 경우 할인",  // 보유 아바타 제목 아래 한 줄 (비우면 안 보여요)
   avatars: [
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
-    { name: "", desc: "", link: "" },
+    { link: "https://booth.pm/ko/items/6538026", image: "", name: "", desc: "" },
+    { link: "", image: "", name: "", desc: "" },
+    { link: "", image: "", name: "", desc: "" },
+    { link: "", image: "", name: "", desc: "" },
   ],
 
   /* ━━━━━━━━━━ 진행 과정 ━━━━━━━━━━
