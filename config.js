@@ -138,7 +138,7 @@ window.PORTFOLIO_CONFIG = {
      사례를 하나라도 넣으면 임시 칸은 사라지고, 사례가 없는 카테고리는 숨겨져요.
      baRatio: 사진 비율 (예: "4 / 3", "1 / 1", "16 / 10")
   */
-  baRatio: "4 / 3",  // 사진 비율
+  baRatio: "1 / 1",  // 사진 비율
 
   baA: [  // 성형 비포·애프터
     { before: "ba-seonghyeong-01-before.webp", after: "ba-seonghyeong-09-after.webp", title: "개인용 Milltina", desc: "개인용 밀티나", period: "4일~5일", platform: "VRchat" },
