@@ -134,6 +134,10 @@ window.PORTFOLIO_CONFIG = {
   worksLinkLabelC: "BOOTH에서 보기",  // 버튼 글자
   worksLinkTextC: "텍스쳐 작업물은 BOOTH에서 판매하고 있어요",  // 버튼 옆 안내 문구
 
+  worksE: [  // 텍스쳐 비포·애프터 (before/after: media/texture-ba/ 의 파일 이름)
+    { before: "", after: "", title: "", desc: "텍스쳐" },
+  ],
+
   worksD: [  // 뽀잉눈
     { file: "boing-02.mp4", title: "", desc: "" },
     { file: "boing-03.mp4", title: "", desc: "" },
