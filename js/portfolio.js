@@ -414,7 +414,9 @@ class Component extends DCLogic {
     for (let i = 0; i < avN; i++) {
       const k = 'av' + (i + 1);
       const link = toUrl(this.props[k + 'Link']);
+      const image = txt(this.props[k + 'Image']);
       avatars.push({
+        image, hasImage: !!image, noImage: !image,
         no: 'No.' + pad(i + 1),
         tone: avTones[i % avTones.length],
         name: txt(this.props[k + 'Name']) || '[아바타 이름 ' + pad(i + 1) + ']',
@@ -785,7 +787,7 @@ class Component extends DCLogic {
     let lbList = [];
     if (lb && lb.kind === 'works') lbList = cards.map((c) => ({ tone: c.tone, label: c.label, isImage: c.isImage, isGif: c.isGif, isVideo: c.isVideo, isAvatar: false, title: c.title, meta: c.meta, ratio: '4 / 5', src: c.src }));
     if (lb && lb.kind === 'sales') lbList = sales.map((a) => ({ tone: a.tone, label: a.statusLabel, isImage: false, isGif: false, isVideo: false, isAvatar: true, title: a.name, meta: a.desc + ' · ' + a.price, ratio: '3 / 4' }));
-    if (lb && lb.kind === 'avatars') lbList = avatars.map((a) => ({ tone: a.tone, label: a.no, isImage: false, isGif: false, isVideo: false, isAvatar: true, title: a.name, meta: a.desc, ratio: '3 / 4' }));
+    if (lb && lb.kind === 'avatars') lbList = avatars.map((a) => ({ tone: a.tone, label: a.no, isImage: a.hasImage, isGif: false, isVideo: false, isAvatar: !a.hasImage, title: a.name, meta: a.desc, ratio: '3 / 4', src: a.image }));
     const lbIsBa = !!lb && lb.kind === 'ba';
     const lbN = lbList.length;
     const lbI = lbN && lb ? ((lb.i % lbN) + lbN) % lbN : 0;
@@ -918,7 +920,7 @@ window.normalizePortfolioConfig = function (cfg) {
   const sales = arr(c.sales);
   if (sales) { c.countF = Math.max(1, sales.length); sales.forEach((x, i) => { const k = 'sale' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Price'] = x.price ?? ''; c[k + 'Link'] = x.link || ''; c[k + 'Sold'] = !!x.sold; }); }
   const avs = arr(c.avatars);
-  if (avs) { c.avatarCount = Math.max(1, avs.length); avs.forEach((x, i) => { const k = 'av' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Link'] = x.link || ''; }); }
+  if (avs) { c.avatarCount = Math.max(1, avs.length); avs.forEach((x, i) => { const k = 'av' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Link'] = x.link || ''; const im = String(x.image || '').trim(); c[k + 'Image'] = !im ? '' : (/^(https?:|blob:|data:)/.test(im) || im.indexOf('/') >= 0 ? im : 'media/avatars/' + im); }); }
   const sets = arr(c.sets);
   if (sets) { c.setCount = sets.length; sets.forEach((x, i) => { const k = 'set' + (i + 1); c[k + 'Name'] = x.name || ''; c[k + 'Desc'] = x.desc || ''; c[k + 'Items'] = x.items || ''; c[k + 'Price'] = Number(x.price) || 0; c[k + 'Note'] = x.note || ''; }); }
   const items = arr(c.items);

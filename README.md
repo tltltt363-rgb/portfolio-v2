@@ -120,7 +120,7 @@ worksA: [
 | 작업물 사진·제목 | `worksA` ~ `worksD` |
 | 판매(BOOTH) 링크 버튼 | `worksLinkC` (다른 카테고리는 `worksLinkA` 등) |
 | 분양 아바타 열기 / 준비 중 | `saleReady` (`true` / `false`), 목록은 `sales` |
-| 보유 아바타 | `avatars` |
+| 보유 아바타 | `avatars` (편집기에서 링크를 넣으면 대표 사진 자동) |
 | 이벤트 문구 | `eventText` (비우면 배너가 사라져요) |
 | 세트 상품 | `sets` |
 | 개별 작업과 가격 | `items` |
