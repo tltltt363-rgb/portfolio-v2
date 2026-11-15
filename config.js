@@ -135,9 +135,17 @@ window.PORTFOLIO_CONFIG = {
   worksLinkTextC: "텍스쳐 작업물은 BOOTH에서 판매하고 있어요",  // 버튼 옆 안내 문구
 
   worksE: [  // 텍스쳐 비포·애프터
-    { file: "texture-ba-01.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-01.webp", title: "Mill", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-09.webp", title: "", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-02.webp", title: "", desc: "텍스쳐 비포·애프터" },
     { file: "texture-ba-03.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-04.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-05.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-06.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-07.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-08.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-10.webp", title: "", desc: "텍스쳐 비포·애프터" },
+    { file: "texture-ba-11.webp", title: "", desc: "텍스쳐 비포·애프터" },
   ],
 
   worksD: [  // 뽀잉눈
